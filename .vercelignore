@@ -1,0 +1,10 @@
+node_modules
+data
+.env
+.env*.local
+.git
+npm-debug.log*
+*.log
+
+# Local-development-only Express server (Vercel uses /api functions)
+server.js

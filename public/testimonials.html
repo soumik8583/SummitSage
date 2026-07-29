@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testimonials — What Trekkers Say | Summit Sage</title>
+  <meta name="description" content="Real reviews from Summit Sage trekkers. See why 1,200+ adventurers rate us 4.9/5, and share your own summit story.">
+  <meta name="theme-color" content="#0a1628">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%230A1628'/%3E%3Cpath d='M8 34L19 15l6 9 3-5 12 15H8z' fill='%23E85D04'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script defer src="/js/layout.js"></script>
+  <script defer src="/js/effects.js"></script>
+  <script defer src="/js/content-data.js"></script>
+  <script defer src="/js/treks-data.js"></script>
+  <script defer src="/js/main.js"></script>
+  <script defer src="/js/treks.js"></script>
+  <script defer src="/js/render.js"></script>
+  <script defer src="/js/forms.js"></script>
+</head>
+<body>
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <div class="breadcrumb"><a href="/">Home</a> / Testimonials</div>
+        <span class="eyebrow"><i class="fa-solid fa-quote-left"></i> 4.9/5 · 1,200+ reviews</span>
+        <h1>Don’t take our word for it</h1>
+        <p>Hear from the trekkers who’ve stood on our summits — first-timers, solo travellers and seasoned mountaineers alike.</p>
+      </div>
+    </section>
+
+    <!-- Rating summary -->
+    <section class="section-tight">
+      <div class="container">
+        <div class="stats">
+          <div class="stat" data-reveal><div class="num"><span data-counter="4.9" data-decimals="1">0</span><span class="suffix">★</span></div><div class="label">Average rating</div></div>
+          <div class="stat" data-reveal><div class="num"><span data-counter="1200">0</span><span class="suffix">+</span></div><div class="label">Verified reviews</div></div>
+          <div class="stat" data-reveal><div class="num"><span data-counter="97">0</span><span class="suffix">%</span></div><div class="label">Would recommend</div></div>
+          <div class="stat" data-reveal><div class="num"><span data-counter="63">0</span><span class="suffix">%</span></div><div class="label">Return for more</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reviews -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><span class="eyebrow"><i class="fa-solid fa-star"></i> Trekker stories</span><h2>Words from the summit</h2></div>
+        <div class="grid cols-3" data-render="testimonials"></div>
+      </div>
+    </section>
+
+    <!-- Submit review -->
+    <section class="section" style="background:var(--navy-700)">
+      <div class="container">
+        <div class="split" style="align-items:start">
+          <div data-reveal="left">
+            <span class="eyebrow"><i class="fa-solid fa-pen-nib"></i> Share your story</span>
+            <h2 class="mt-1">Trekked with us? Leave a review</h2>
+            <p class="muted mt-1">Your words help the next first-timer take the leap. It takes a minute — and every published review earns you 50 loyalty points.</p>
+            <div class="card mt-2">
+              <div class="stars" style="font-size:1.4rem"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+              <p class="quote mt-1" style="font-size:1.05rem">“The best decision I made all year. Summit Sage didn’t just take me up a mountain — they gave me a community.”</p>
+              <small class="muted">— A recent Kedarkantha trekker</small>
+            </div>
+          </div>
+          <form class="card" data-form="review" novalidate data-reveal="right">
+            <input type="text" name="website" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <div class="form-row">
+              <div class="form-group"><label>Full name <span class="req">*</span></label><input class="control" name="name" required></div>
+              <div class="form-group"><label>Email <span class="req">*</span></label><input class="control" type="email" name="email" required></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Which trek?</label><input class="control" name="subject" placeholder="e.g. Sandakphu – Phalut"></div>
+              <div class="form-group"><label>Your rating</label>
+                <select class="control" name="rating">
+                  <option value="5">★★★★★ — Incredible</option>
+                  <option value="4">★★★★ — Great</option>
+                  <option value="3">★★★ — Good</option>
+                  <option value="2">★★ — Okay</option>
+                  <option value="1">★ — Poor</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group"><label>City</label><input class="control" name="city" placeholder="Kolkata"></div>
+            <div class="form-group"><label>Your review <span class="req">*</span></label><textarea class="control" name="message" rows="4" placeholder="Tell us about your experience…" required></textarea></div>
+            <button class="btn btn-primary btn-block btn-lg" type="submit"><i class="fa-solid fa-paper-plane"></i> Submit review</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="card center" style="background:linear-gradient(120deg,var(--orange-soft),transparent);padding:50px 30px">
+          <h2>Ready to write your own story?</h2>
+          <p class="muted" style="max-width:500px;margin:10px auto 24px">Your summit is waiting. Find the trek that fits you.</p>
+          <a href="/treks" class="btn btn-primary btn-lg"><i class="fa-solid fa-mountain-sun"></i> Browse treks</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

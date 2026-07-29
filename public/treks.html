@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upcoming Treks — Book Himalayan Adventures | Summit Sage</title>
+  <meta name="description" content="Browse and book upcoming Himalayan treks with Summit Sage. Filter by difficulty, season and budget, compare treks and grab early-bird prices. Live seats & countdowns.">
+  <meta name="theme-color" content="#0a1628">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%230A1628'/%3E%3Cpath d='M8 34L19 15l6 9 3-5 12 15H8z' fill='%23E85D04'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script defer src="/js/layout.js"></script>
+  <script defer src="/js/effects.js"></script>
+  <script defer src="/js/content-data.js"></script>
+  <script defer src="/js/treks-data.js"></script>
+  <script defer src="/js/main.js"></script>
+  <script defer src="/js/treks.js"></script>
+  <script defer src="/js/render.js"></script>
+  <script defer src="/js/forms.js"></script>
+</head>
+<body>
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <div class="breadcrumb"><a href="/">Home</a> / Upcoming Treks</div>
+        <span class="eyebrow"><i class="fa-solid fa-mountain-sun"></i> Departures 2026</span>
+        <h1>Find your next summit</h1>
+        <p>Live seats, early-bird prices and honest difficulty ratings. Filter, compare and reserve in minutes.</p>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <!-- Filters -->
+        <div class="filters">
+          <div class="field search-field">
+            <label>Search</label>
+            <i class="fa-solid fa-magnifying-glass" style="top:66%"></i>
+            <input class="control" id="trekSearch" type="search" placeholder="Try “winter under 8000” or “Sandakphu”">
+          </div>
+          <div class="field">
+            <label>Season</label>
+            <select class="control" id="filterSeason">
+              <option value="all">All seasons</option>
+              <option value="Winter">Winter</option>
+              <option value="Spring">Spring</option>
+              <option value="Summer">Summer</option>
+              <option value="Monsoon">Monsoon</option>
+              <option value="Autumn">Autumn</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Budget</label>
+            <select class="control" id="filterBudget">
+              <option value="all">Any budget</option>
+              <option value="under5k">Under ₹5,000</option>
+              <option value="5-10k">₹5,000 – ₹10,000</option>
+              <option value="10k+">₹10,000+</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Sort by</label>
+            <select class="control" id="sortBy">
+              <option value="date">Departure date</option>
+              <option value="price">Price: low to high</option>
+              <option value="price-desc">Price: high to low</option>
+              <option value="rating">Top rated</option>
+              <option value="difficulty">Difficulty</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>View</label>
+            <div class="chips">
+              <button class="chip active" data-view="grid" aria-label="Grid view"><i class="fa-solid fa-border-all"></i></button>
+              <button class="chip" data-view="calendar" aria-label="Calendar view"><i class="fa-solid fa-calendar-days"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Difficulty chips + toolbar -->
+        <div class="flex between items-center wrap gap-1" style="margin-bottom:26px">
+          <div class="chips">
+            <button class="chip active" data-filter="difficulty" data-value="all">All levels</button>
+            <button class="chip" data-filter="difficulty" data-value="Easy">Easy</button>
+            <button class="chip" data-filter="difficulty" data-value="Moderate">Moderate</button>
+            <button class="chip" data-filter="difficulty" data-value="Challenging">Challenging</button>
+            <button class="chip" data-filter="difficulty" data-value="Extreme">Extreme</button>
+          </div>
+          <button class="chip" id="wishOnly"><i class="fa-solid fa-heart"></i> Saved (<span data-wishcount>0</span>)</button>
+        </div>
+
+        <p class="muted" style="margin-bottom:20px"><b id="resultCount" style="color:#fff">0</b> treks match your filters</p>
+
+        <div class="grid cols-3" id="trekGrid"></div>
+        <div class="hidden" id="calendarView"></div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="card center" style="background:linear-gradient(120deg,var(--orange-soft),transparent);padding:50px 30px">
+          <h2>Can’t decide?</h2>
+          <p class="muted" style="max-width:520px;margin:10px auto 24px">Take the 60-second matcher quiz or chat with us on WhatsApp — we’ll help you pick the perfect trek.</p>
+          <div class="flex gap-1 wrap" style="justify-content:center">
+            <a href="/quiz" class="btn btn-primary"><i class="fa-solid fa-wand-magic-sparkles"></i> Find your trek</a>
+            <a class="btn btn-whatsapp" data-wa><i class="fa-brands fa-whatsapp"></i> Chat with us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

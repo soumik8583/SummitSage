@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community — Leaderboard, Badges &amp; Ambassadors | Summit Sage</title>
+  <meta name="description" content="Join the Summit Sage community — climb the leaderboard, unlock badges, find trek buddies and become an ambassador. Kolkata's warmest trekking family.">
+  <meta name="theme-color" content="#0a1628">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%230A1628'/%3E%3Cpath d='M8 34L19 15l6 9 3-5 12 15H8z' fill='%23E85D04'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script defer src="/js/layout.js"></script>
+  <script defer src="/js/effects.js"></script>
+  <script defer src="/js/content-data.js"></script>
+  <script defer src="/js/treks-data.js"></script>
+  <script defer src="/js/main.js"></script>
+  <script defer src="/js/treks.js"></script>
+  <script defer src="/js/render.js"></script>
+  <script defer src="/js/forms.js"></script>
+</head>
+<body>
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <div class="breadcrumb"><a href="/">Home</a> / Community</div>
+        <span class="eyebrow"><i class="fa-solid fa-people-group"></i> 8,000+ trekkers</span>
+        <h1>Come solo. Leave with a family.</h1>
+        <p>Climb the leaderboard, unlock badges, find your trek buddy and grow into an ambassador. This is more than treks — it’s belonging.</p>
+      </div>
+    </section>
+
+    <!-- Community stats -->
+    <section class="section-tight">
+      <div class="container">
+        <div class="stats">
+          <div class="stat" data-reveal><div class="num"><span data-counter="8000">0</span><span class="suffix">+</span></div><div class="label">Members</div></div>
+          <div class="stat" data-reveal><div class="num"><span data-counter="46">0</span></div><div class="label">Ambassadors</div></div>
+          <div class="stat" data-reveal><div class="num"><span data-counter="120">0</span><span class="suffix">+</span></div><div class="label">Buddy matches / month</div></div>
+          <div class="stat" data-reveal><div class="num"><span data-counter="24">0</span><span class="suffix">/7</span></div><div class="label">WhatsApp support</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Leaderboard + tiers -->
+    <section class="section">
+      <div class="container">
+        <div class="split">
+          <div data-reveal="left">
+            <span class="eyebrow"><i class="fa-solid fa-ranking-star"></i> Leaderboard</span>
+            <h2 class="mt-1">Top trekkers this season</h2>
+            <p class="muted mt-1">Every trek earns points. Climb from Bronze to Summit tier and unlock real perks along the way.</p>
+            <div class="board mt-2"><div data-render="leaderboard"></div></div>
+          </div>
+          <div data-reveal="right">
+            <div class="card">
+              <h3><i class="fa-solid fa-layer-group accent"></i> Loyalty tiers</h3>
+              <div class="mt-1">
+                <div class="flex between items-center" style="padding:12px 0;border-top:1px solid var(--line)"><span class="tier bronze">Bronze</span><span class="muted">0–499 pts · welcome perks</span></div>
+                <div class="flex between items-center" style="padding:12px 0;border-top:1px solid var(--line)"><span class="tier silver">Silver</span><span class="muted">500+ · 5% off every trek</span></div>
+                <div class="flex between items-center" style="padding:12px 0;border-top:1px solid var(--line)"><span class="tier gold">Gold</span><span class="muted">1,200+ · 10% + companion pass</span></div>
+                <div class="flex between items-center" style="padding:12px 0;border-top:1px solid var(--line)"><span class="tier summit">Summit</span><span class="muted">2,500+ · 15% + free annual trek</span></div>
+              </div>
+              <a href="/dashboard" class="btn btn-primary btn-block mt-2"><i class="fa-solid fa-gauge-high"></i> Open my dashboard</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Badges -->
+    <section class="section" style="background:var(--navy-700)">
+      <div class="container">
+        <div class="section-head"><span class="eyebrow"><i class="fa-solid fa-medal"></i> Achievements</span><h2>Collect badges as you climb</h2><p>Unlock all ten and reach legend status.</p></div>
+        <div class="badge-grid" data-render="badges"></div>
+      </div>
+    </section>
+
+    <!-- Ambassador + Buddy forms -->
+    <section class="section">
+      <div class="container">
+        <div class="split" style="align-items:start">
+          <div data-reveal="left">
+            <span class="eyebrow"><i class="fa-solid fa-hands-holding-circle"></i> Ambassador program</span>
+            <h2 class="mt-1">Lead. Inspire. Get rewarded.</h2>
+            <p class="muted mt-1">Love the mountains and your city crew? Become a Summit Sage ambassador — earn free treks, gear and a platform to build your own trekking tribe.</p>
+            <ul class="hero-trust mt-2" style="flex-direction:column;gap:12px;align-items:flex-start">
+              <li><i class="fa-solid fa-gift"></i> Free treks &amp; exclusive gear</li>
+              <li><i class="fa-solid fa-bullhorn"></i> Featured on our socials</li>
+              <li><i class="fa-solid fa-indian-rupee-sign"></i> Referral earnings</li>
+            </ul>
+            <form class="card mt-2" data-form="ambassador" novalidate>
+              <input type="text" name="website" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <div class="form-row">
+                <div class="form-group"><label>Full name <span class="req">*</span></label><input class="control" name="name" required></div>
+                <div class="form-group"><label>Email <span class="req">*</span></label><input class="control" type="email" name="email" required></div>
+              </div>
+              <div class="form-row">
+                <div class="form-group"><label>City</label><input class="control" name="city" placeholder="Kolkata"></div>
+                <div class="form-group"><label>Instagram handle</label><input class="control" name="instagram" placeholder="@yourhandle"></div>
+              </div>
+              <div class="form-group"><label>Why do you want to be an ambassador?</label><textarea class="control" name="message" rows="3"></textarea></div>
+              <button class="btn btn-primary btn-block" type="submit"><i class="fa-solid fa-paper-plane"></i> Apply to be an ambassador</button>
+            </form>
+          </div>
+          <div data-reveal="right">
+            <span class="eyebrow"><i class="fa-solid fa-user-plus"></i> Buddy finder</span>
+            <h2 class="mt-1">Never trek alone</h2>
+            <p class="muted mt-1">Tell us a bit about you and we’ll match you with like-minded trekkers on your next departure — vetted, friendly and ready to summit.</p>
+            <form class="card mt-2" data-form="community" novalidate>
+              <input type="text" name="website" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <div class="form-row">
+                <div class="form-group"><label>Full name <span class="req">*</span></label><input class="control" name="name" required></div>
+                <div class="form-group"><label>Email <span class="req">*</span></label><input class="control" type="email" name="email" required></div>
+              </div>
+              <div class="form-row">
+                <div class="form-group"><label>WhatsApp number</label><input class="control" name="phone" placeholder="+91"></div>
+                <div class="form-group"><label>City</label><input class="control" name="city" placeholder="Kolkata"></div>
+              </div>
+              <div class="form-group"><label>What kind of treks &amp; buddies are you after?</label><textarea class="control" name="message" rows="3" placeholder="Fitness level, preferred season, vibe…"></textarea></div>
+              <button class="btn btn-primary btn-block" type="submit"><i class="fa-solid fa-people-arrows"></i> Find my trek buddies</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WhatsApp CTA -->
+    <section class="section-tight">
+      <div class="container">
+        <div class="card center" style="background:linear-gradient(120deg,rgba(37,211,102,.12),transparent);padding:50px 30px">
+          <i class="fa-brands fa-whatsapp" style="font-size:2.4rem;color:#25d366"></i>
+          <h2 class="mt-1">Join the WhatsApp community</h2>
+          <p class="muted" style="max-width:500px;margin:10px auto 24px">8,000+ trekkers, daily trail talk, gear swaps and instant support. Say hi 👋</p>
+          <a class="btn btn-whatsapp btn-lg" data-wa><i class="fa-brands fa-whatsapp"></i> Join on WhatsApp</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

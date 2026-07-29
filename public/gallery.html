@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — Past Treks &amp; Trail Moments | Summit Sage</title>
+  <meta name="description" content="Relive Summit Sage expeditions through our photo gallery — summits, snow, meadows and the community that makes it magic. Tap any photo to view.">
+  <meta name="theme-color" content="#0a1628">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%230A1628'/%3E%3Cpath d='M8 34L19 15l6 9 3-5 12 15H8z' fill='%23E85D04'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script defer src="/js/layout.js"></script>
+  <script defer src="/js/effects.js"></script>
+  <script defer src="/js/content-data.js"></script>
+  <script defer src="/js/treks-data.js"></script>
+  <script defer src="/js/main.js"></script>
+  <script defer src="/js/treks.js"></script>
+  <script defer src="/js/render.js"></script>
+  <script defer src="/js/forms.js"></script>
+</head>
+<body>
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <div class="breadcrumb"><a href="/">Home</a> / Gallery</div>
+        <span class="eyebrow"><i class="fa-solid fa-images"></i> From the trail</span>
+        <h1>Every frame tells a story</h1>
+        <p>Snapshots from past expeditions — captured by our trek photographers. Tap any photo to view it full-screen.</p>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="gallery-grid" data-render="gallery"></div>
+      </div>
+    </section>
+
+    <!-- Video highlight -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><span class="eyebrow"><i class="fa-solid fa-clapperboard"></i> Watch</span><h2>A Summit Sage season in 90 seconds</h2></div>
+        <div class="media-frame" style="aspect-ratio:16/9;max-width:960px;margin:0 auto;background-image:url(https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=75)">
+          <a data-wa style="position:absolute;inset:0;display:grid;place-items:center" aria-label="Watch the highlight reel">
+            <span style="width:84px;height:84px;border-radius:50%;background:var(--orange);display:grid;place-items:center;color:#fff;font-size:1.6rem;box-shadow:0 14px 40px rgba(232,93,4,.5)"><i class="fa-solid fa-play"></i></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Instagram -->
+    <section class="section" style="background:var(--navy-700)">
+      <div class="container">
+        <div class="section-head"><span class="eyebrow"><i class="fa-brands fa-instagram"></i> @summitsage</span><h2>Follow the adventure</h2><p>Tag us with #SummitSage to be featured.</p></div>
+        <div class="insta-grid" data-render="instagram" data-limit="12"></div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="card center" style="background:linear-gradient(120deg,var(--orange-soft),transparent);padding:50px 30px">
+          <h2>Want to be in the next frame?</h2>
+          <p class="muted" style="max-width:500px;margin:10px auto 24px">Join an upcoming trek and make memories worth framing.</p>
+          <a href="/treks" class="btn btn-primary btn-lg"><i class="fa-solid fa-mountain-sun"></i> Browse treks</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

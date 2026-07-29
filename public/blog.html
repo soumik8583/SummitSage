@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trek Journal — Guides, Gear &amp; Trail Stories | Summit Sage</title>
+  <meta name="description" content="The Summit Sage Journal — beginner guides, gear breakdowns and first-hand trail stories from the Himalayas. Written by trekkers, for trekkers.">
+  <meta name="theme-color" content="#0a1628">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%230A1628'/%3E%3Cpath d='M8 34L19 15l6 9 3-5 12 15H8z' fill='%23E85D04'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script defer src="/js/layout.js"></script>
+  <script defer src="/js/effects.js"></script>
+  <script defer src="/js/content-data.js"></script>
+  <script defer src="/js/treks-data.js"></script>
+  <script defer src="/js/main.js"></script>
+  <script defer src="/js/treks.js"></script>
+  <script defer src="/js/render.js"></script>
+  <script defer src="/js/forms.js"></script>
+</head>
+<body>
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <div class="breadcrumb"><a href="/">Home</a> / Journal</div>
+        <span class="eyebrow"><i class="fa-solid fa-feather"></i> The Journal</span>
+        <h1>Guides, gear &amp; trail stories</h1>
+        <p>Everything we’ve learned across 500+ treks — written to make your next Himalayan adventure safer and more magical. Bilingual: English &amp; বাংলা.</p>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="section-head left"><span class="eyebrow"><i class="fa-solid fa-book-open"></i> Guides</span><h2>Learn the ropes</h2></div>
+        <div class="grid cols-3" data-render="blog" data-cat="Guides"></div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="section-head left"><span class="eyebrow"><i class="fa-solid fa-shirt"></i> Gear</span><h2>Pack smarter</h2></div>
+        <div class="grid cols-3" data-render="blog" data-cat="Gear"></div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="section-head left"><span class="eyebrow"><i class="fa-solid fa-mountain-sun"></i> Trail stories</span><h2>From the mountains, first-hand</h2></div>
+        <div class="grid cols-3" data-render="blog" data-cat="Stories"></div>
+      </div>
+    </section>
+
+    <section class="section snow-section">
+      <div class="snow" aria-hidden="true"></div>
+      <div class="fog"></div>
+      <div class="container center" style="position:relative;z-index:2">
+        <span class="eyebrow" style="justify-content:center"><i class="fa-solid fa-envelope-open-text"></i> Never miss a post</span>
+        <h2 class="mt-1">New guides, straight to your inbox</h2>
+        <p class="muted" style="max-width:500px;margin:10px auto 24px">One thoughtful email a month. Guides, gear tips and trek drops. No spam.</p>
+        <form class="newsletter" data-form="newsletter" style="max-width:440px;margin:0 auto">
+          <input type="text" name="website" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <input type="email" name="email" placeholder="you@email.com" aria-label="Email address" required>
+          <button class="btn btn-primary" type="submit"><i class="fa-solid fa-paper-plane"></i> Subscribe</button>
+        </form>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
