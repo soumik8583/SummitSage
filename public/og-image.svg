@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Summit Sage — Premium Himalayan Treks from Kolkata">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0A1628"/>
+      <stop offset="1" stop-color="#0d2340"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#E85D04"/>
+      <stop offset="1" stop-color="#ff8a3d"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- mountain range -->
+  <path d="M0 630 V430 L180 300 L340 380 L520 250 L700 400 L860 300 L1050 420 L1200 340 V630 Z" fill="#12294a"/>
+  <path d="M0 630 V500 L220 410 L400 470 L600 360 L810 470 L1000 400 L1200 480 V630 Z" fill="#0a1c34"/>
+  <!-- logo mark -->
+  <g transform="translate(96,120)">
+    <rect width="96" height="96" rx="24" fill="#0A1628" stroke="#E85D04" stroke-width="3"/>
+    <path d="M14 74 L37 30 L49 51 L57 40 L84 74 Z" fill="#E85D04"/>
+  </g>
+  <!-- brand + tagline -->
+  <text x="212" y="176" font-family="Segoe UI, Arial, sans-serif" font-size="52" font-weight="700" fill="#ffffff">Summit Sage</text>
+  <text x="96" y="300" font-family="Segoe UI, Arial, sans-serif" font-size="72" font-weight="800" fill="#ffffff">Trek higher.</text>
+  <text x="96" y="384" font-family="Segoe UI, Arial, sans-serif" font-size="72" font-weight="800" fill="url(#accent)">Belong deeper.</text>
+  <text x="98" y="452" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="500" fill="#b9c6db">Premium guided Himalayan treks · Kolkata, India</text>
+</svg>

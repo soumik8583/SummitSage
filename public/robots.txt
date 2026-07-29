@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Block noindex-style utility endpoints
+Disallow: /api/
+
+Sitemap: https://www.summitsage.in/sitemap.xml
