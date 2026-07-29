@@ -8,9 +8,8 @@
 
 /* Central config — replace these placeholders with real details anytime. */
 window.SUMMIT = {
-  // WhatsApp business numbers (country code + number). A click routes to one
-  // of these, chosen at random, so enquiries are shared across both phones.
-  whatsapp: ['918910414249', '917278601577'],
+  // WhatsApp business number (country code + number). All enquiries route here.
+  whatsapp: ['917278601577'],
   whatsappText:
     "Hi Summit Sage! I'd love to know more about your upcoming treks.",
   instagram: 'https://instagram.com',
