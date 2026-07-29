@@ -280,6 +280,24 @@ p {
 .btn-block {
   width: 100%;
 }
+.wa-alt {
+  margin-top: 16px;
+}
+.wa-or {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 12px;
+  color: var(--mist-dim);
+  font-size: 0.8rem;
+}
+.wa-or::before,
+.wa-or::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
 
 /* ---------- Navbar ---------- */
 .navbar {

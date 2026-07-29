@@ -229,6 +229,8 @@
     '<div class="form-group"><label>Emergency contact</label><input class="control" name="emergencyContact" placeholder="Name & phone"></div>' +
     '<div class="form-group"><label>Anything we should know?</label><textarea class="control" name="message" rows="3" placeholder="Fitness, dietary needs, questions…"></textarea></div>' +
     '<button class="btn btn-primary btn-block btn-lg" type="submit"><i class="fa-solid fa-mountain-sun"></i> Confirm my spot</button>' +
+    '<div class="wa-alt"><div class="wa-or">or register instantly</div>' +
+    '<a class="btn btn-whatsapp btn-block" data-wa="Hi Summit Sage! I\'d like to register for the ' + t.name + ' trek."><i class="fa-brands fa-whatsapp"></i> Register via WhatsApp</a></div>' +
     '<p class="muted center" style="font-size:.8rem;margin-top:12px">You’ll get a scratch-card reward on registration 🎁</p>' +
     '</form></div></div></section>' +
 
@@ -311,6 +313,7 @@
   // Wire shared behaviours on the freshly-injected DOM.
   if (SS.wireCards) SS.wireCards(root);
   if (SS.wireForms) SS.wireForms(root);
+  if (SS.wireWA) SS.wireWA(root);
   if (SS.startCountdowns) SS.startCountdowns();
   if (window.SummitEffects) {
     window.SummitEffects.initReveal();
