@@ -22,6 +22,7 @@ const subscribeHandler = require('./api/subscribe');
 const submissionsHandler = require('./api/submissions');
 const healthHandler = require('./api/health');
 const subscribersHandler = require('./api/subscribers');
+const adminsHandler = require('./api/admins');
 const adminSignupHandler = require('./api/admin/signup');
 const adminLoginHandler = require('./api/admin/login');
 const adminGoogleHandler = require('./api/admin/google');
@@ -41,6 +42,7 @@ app.post('/api/subscribe', (req, res) => subscribeHandler(req, res));
 app.get('/api/submissions', (req, res) => submissionsHandler(req, res));
 app.get('/api/health', (req, res) => healthHandler(req, res));
 app.get('/api/subscribers', (req, res) => subscribersHandler(req, res));
+app.get('/api/admins', (req, res) => adminsHandler(req, res));
 
 // ── Admin API routes ──────────────────────────────────────────────────
 app.post('/api/admin/signup', (req, res) => adminSignupHandler(req, res));

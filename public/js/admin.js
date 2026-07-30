@@ -243,6 +243,34 @@
       .join('');
   }
 
+  function adminMethod(a) {
+    if (a.has_password && a.has_google) return 'Password + Google';
+    if (a.has_password) return 'Password';
+    if (a.has_google) return 'Google';
+    return '—';
+  }
+
+  function renderAdmins(rows) {
+    var tbody = document.getElementById('adminsBody');
+    if (!tbody) return;
+    if (!rows || rows.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" class="admin-empty">No admins yet.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows
+      .map(function (a) {
+        return (
+          '<tr>' +
+          '<td>' + esc(a.name) + '</td>' +
+          '<td><a href="mailto:' + esc(a.email) + '">' + esc(a.email) + '</a></td>' +
+          '<td><span class="admin-tag">' + esc(adminMethod(a)) + '</span></td>' +
+          '<td class="admin-date">' + esc(a.created_at) + '</td>' +
+          '</tr>'
+        );
+      })
+      .join('');
+  }
+
   function initDashboard() {
     var root = document.getElementById('adminDash');
     if (!root) return;
@@ -258,6 +286,7 @@
       if (who) who.textContent = res.data.admin.name + ' · ' + res.data.admin.email;
       loadSubs();
       loadSubscribers();
+      loadAdmins();
     });
 
     var allRows = [];
@@ -303,6 +332,21 @@
       });
     }
 
+    function loadAdmins() {
+      api('/api/admins').then(function (res) {
+        if (res.status === 401) {
+          clearToken();
+          window.location.href = '/admin-login';
+          return;
+        }
+        if (!res.data || !res.data.ok) return;
+        var rows = res.data.data || [];
+        var stat = document.getElementById('statAdmins');
+        if (stat) stat.textContent = res.data.total != null ? res.data.total : rows.length;
+        renderAdmins(rows);
+      });
+    }
+
     function updateStats(rows) {
       var total = document.getElementById('statTotal');
       var regs = document.getElementById('statRegs');
@@ -342,6 +386,7 @@
       refresh.addEventListener('click', function () {
         loadSubs();
         loadSubscribers();
+        loadAdmins();
       });
     }
   }

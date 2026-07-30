@@ -36,6 +36,7 @@
         <div class="admin-stat"><div class="n" id="statRegs">—</div><div class="l">Trek registrations</div></div>
         <div class="admin-stat"><div class="n" id="statContacts">—</div><div class="l">Contact enquiries</div></div>
         <div class="admin-stat"><div class="n" id="statSubs">—</div><div class="l">Newsletter subscribers</div></div>
+        <div class="admin-stat"><div class="n" id="statAdmins">—</div><div class="l">Admins with access</div></div>
       </div>
 
       <div class="admin-toolbar">
@@ -78,6 +79,24 @@
           </thead>
           <tbody id="subscribersBody">
             <tr><td colspan="3" class="admin-empty">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 style="font-size:1.3rem;margin:40px 0 6px">Admins with access</h2>
+      <p class="muted" style="margin:0 0 16px">Everyone who can sign in to this control room.</p>
+      <div class="admin-table-wrap">
+        <table class="admin-table" style="min-width:560px">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Sign-in method</th>
+              <th>Added</th>
+            </tr>
+          </thead>
+          <tbody id="adminsBody">
+            <tr><td colspan="4" class="admin-empty">Loading…</td></tr>
           </tbody>
         </table>
       </div>
