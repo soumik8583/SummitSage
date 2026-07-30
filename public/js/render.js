@@ -120,7 +120,12 @@
         case 'featured-treks':
           if (SS.renderFeatured) {
             const slugs = (el.getAttribute('data-slugs') || '').split(',').filter(Boolean);
-            SS.renderFeatured('#' + el.id, slugs.length ? slugs : null);
+            const doFeatured = function () {
+              SS.renderFeatured('#' + el.id, slugs.length ? slugs : null);
+            };
+            // Ensure admin-managed treks are loaded before rendering.
+            if (SS.loadDbTreks) SS.loadDbTreks().then(doFeatured);
+            else doFeatured();
           }
           return;
         case 'testimonials': {

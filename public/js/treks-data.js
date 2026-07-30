@@ -430,6 +430,11 @@
     },
   ];
 
+  // The public trek catalogue is admin-managed: start with an empty list and
+  // fill it only from the database (via SS.loadDbTreks). The sample entries
+  // above are kept for reference/shape but are not shown to users.
+  treks.length = 0;
+
   function fmtINR(n) {
     return '₹' + Number(n).toLocaleString('en-IN');
   }

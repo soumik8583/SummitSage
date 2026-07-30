@@ -151,11 +151,25 @@
   }
 
   function renderResults() {
+    const finish = function () {
     const ranked = SS.treks
       .map(function (t) { return { t: t, s: scoreTrek(t) }; })
       .sort(function (a, b) { return b.s - a.s; });
     const top = ranked.slice(0, 3).map(function (r) { return r.t; });
     const best = top[0];
+
+    if (!best) {
+      mount.innerHTML =
+        '<div class="quiz-card center" data-reveal>' +
+        '<div class="quiz-icon success"><i class="fa-solid fa-mountain-sun"></i></div>' +
+        '<h2 class="mt-1">No treks available yet</h2>' +
+        '<p class="muted" style="max-width:520px;margin:8px auto 0">New expeditions are being added. Check back soon, or reach out to plan a custom trek.</p>' +
+        '<div class="center mt-3"><button class="btn btn-outline" id="quizRestart"><i class="fa-solid fa-rotate-left"></i> Retake quiz</button> <a href="/contact" class="btn btn-ghost">Contact us</a></div></div>';
+      const rb0 = document.getElementById('quizRestart');
+      if (rb0) rb0.addEventListener('click', function () { step = 0; Object.keys(answers).forEach(function (k) { delete answers[k]; }); render(); });
+      if (window.SummitEffects) window.SummitEffects.initReveal();
+      return;
+    }
 
     mount.innerHTML =
       '<div class="quiz-card" data-reveal>' +
@@ -178,7 +192,12 @@
       Object.keys(answers).forEach(function (k) { delete answers[k]; });
       render();
     });
+    };
+    // Make sure admin-managed treks are loaded before ranking.
+    if (SS.loadDbTreks) SS.loadDbTreks().then(finish);
+    else finish();
   }
 
+  if (SS.loadDbTreks) SS.loadDbTreks();
   render();
 })();

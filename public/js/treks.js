@@ -149,9 +149,13 @@
   SS.renderFeatured = function (selector, slugs) {
     const wrap = document.querySelector(selector);
     if (!wrap) return;
-    const list = slugs
-      ? slugs.map(SS.getTrek).filter(Boolean)
-      : treks.slice(0, 3);
+    let list = slugs ? slugs.map(SS.getTrek).filter(Boolean) : [];
+    // Fall back to the first few available (admin-managed) treks.
+    if (!list.length) list = treks.slice(0, 3);
+    if (!list.length) {
+      wrap.innerHTML = '<div class="card center" style="grid-column:1/-1;padding:40px"><p class="muted">New treks are on the way — check back soon.</p></div>';
+      return;
+    }
     wrap.innerHTML = list.map(SS.trekCard).join('');
     SS.wireCards(wrap);
   };
@@ -302,7 +306,9 @@
 
       grid.innerHTML = list.length
         ? list.map(SS.trekCard).join('')
-        : '<div class="card center" style="grid-column:1/-1;padding:60px"><i class="fa-solid fa-mountain" style="font-size:2rem;color:var(--orange);margin-bottom:14px"></i><h3>No treks match your filters</h3><p class="muted">Try widening your search or clearing filters.</p></div>';
+        : (treks.length === 0
+            ? '<div class="card center" style="grid-column:1/-1;padding:60px"><i class="fa-solid fa-mountain-sun" style="font-size:2rem;color:var(--orange);margin-bottom:14px"></i><h3>New treks coming soon</h3><p class="muted">We\u2019re lining up the next set of expeditions. Check back shortly, or <a href="/contact">get in touch</a> to plan a custom trek.</p></div>'
+            : '<div class="card center" style="grid-column:1/-1;padding:60px"><i class="fa-solid fa-mountain" style="font-size:2rem;color:var(--orange);margin-bottom:14px"></i><h3>No treks match your filters</h3><p class="muted">Try widening your search or clearing filters.</p></div>');
       SS.wireCards(grid);
     }
 
