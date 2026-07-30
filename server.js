@@ -24,13 +24,8 @@ const healthHandler = require('./api/health');
 const subscribersHandler = require('./api/subscribers');
 const adminsHandler = require('./api/admins');
 const treksHandler = require('./api/treks');
-const adminTreksHandler = require('./api/admin/treks');
-const adminSignupHandler = require('./api/admin/signup');
-const adminLoginHandler = require('./api/admin/login');
-const adminGoogleHandler = require('./api/admin/google');
-const adminSessionHandler = require('./api/admin/session');
-const adminConfigHandler = require('./api/admin/config');
 const trekImageHandler = require('./api/trek-image');
+const adminActionHandler = require('./api/admin/[action].js');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -50,13 +45,11 @@ app.get('/api/admins', (req, res) => adminsHandler(req, res));
 app.get('/api/treks', (req, res) => treksHandler(req, res));
 app.get('/api/trek-image', (req, res) => trekImageHandler(req, res));
 
-// ── Admin API routes ──────────────────────────────────────────────────
-app.post('/api/admin/signup', (req, res) => adminSignupHandler(req, res));
-app.post('/api/admin/login', (req, res) => adminLoginHandler(req, res));
-app.post('/api/admin/google', (req, res) => adminGoogleHandler(req, res));
-app.get('/api/admin/session', (req, res) => adminSessionHandler(req, res));
-app.get('/api/admin/config', (req, res) => adminConfigHandler(req, res));
-app.all('/api/admin/treks', (req, res) => adminTreksHandler(req, res));
+// ── Admin API routes (single consolidated function, routed by :action) ─
+app.all('/api/admin/:action', (req, res) => {
+  req.query = Object.assign({}, req.query, { action: req.params.action });
+  adminActionHandler(req, res);
+});
 
 // ── Static website (serves /page for /page.html, matching Vercel cleanUrls) ─
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
