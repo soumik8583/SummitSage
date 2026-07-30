@@ -223,6 +223,9 @@ function mapTrekBody(body) {
   if (body.description !== undefined || body.details !== undefined) out.description = clean(pick(body, 'description', 'details'), 8000);
   if (body.highlights !== undefined) out.highlights = clean(body.highlights, 2000);
   if (body.image !== undefined) out.image = typeof body.image === 'string' ? body.image.trim() : '';
+  if (body.active !== undefined) {
+    out.active = (body.active === false || body.active === 'false' || body.active === 0 || body.active === '0') ? 0 : 1;
+  }
   return out;
 }
 async function handleTreks(req, res) {

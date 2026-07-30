@@ -9,5 +9,6 @@ Disallow: /admin-signup
 Disallow: /admin-treks
 Disallow: /admin-trek-add
 Disallow: /admin-trek-edit
+Disallow: /admin-trek-delete
 
 Sitemap: https://www.summitsage.in/sitemap.xml
