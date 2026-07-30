@@ -69,7 +69,7 @@ Copy `.env.example` → `.env` and fill in what you need.
 | `TURSO_AUTH_TOKEN` | Turso auth token | leave blank locally |
 | `GMAIL_USER` | Gmail address that sends notifications | `soumikmondal723@gmail.com` |
 | `GMAIL_APP_PASSWORD` | Gmail **App Password** (not your login password) | leave blank locally |
-| `NOTIFY_EMAIL` | Comma-separated recipients | `soumikmondal723@gmail.com, rupak9609@gmail.com` |
+| `NOTIFY_EMAIL` | Comma-separated recipients | `admin@summitsage.in` |
 | `ADMIN_API_KEY` | Protects `GET /api/submissions` | any string |
 
 ### Getting a Gmail App Password
