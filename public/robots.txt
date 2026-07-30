@@ -3,5 +3,8 @@ Allow: /
 
 # Block noindex-style utility endpoints
 Disallow: /api/
+Disallow: /admin
+Disallow: /admin-login
+Disallow: /admin-signup
 
 Sitemap: https://www.summitsage.in/sitemap.xml

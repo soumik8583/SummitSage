@@ -2,8 +2,9 @@
 
 /**
  * GET /api/submissions
- * Returns stored submissions for the team. Protected by the
- * ADMIN_API_KEY environment variable, supplied via the "x-api-key" header.
+ * Returns stored submissions for the team. Access is granted either by a valid
+ * admin session token (Authorization: Bearer <token>) or by the legacy
+ * ADMIN_API_KEY supplied via the "x-api-key" header.
  *
  * Optional query params:
  *   type    filter by form_type (contact, registration, corporate, …)
@@ -12,6 +13,7 @@
  */
 
 const { listSubmissions } = require('../lib/db');
+const { verifyToken, getBearerToken } = require('../lib/auth');
 
 module.exports = async (req, res) => {
   if (req.method !== 'GET') {
@@ -19,10 +21,12 @@ module.exports = async (req, res) => {
     return res.status(405).json({ ok: false, error: 'Method not allowed.' });
   }
 
+  const admin = verifyToken(getBearerToken(req));
   const apiKey = req.headers['x-api-key'];
   const expected = process.env.ADMIN_API_KEY;
+  const apiKeyOk = Boolean(expected) && apiKey === expected;
 
-  if (!expected || apiKey !== expected) {
+  if (!admin && !apiKeyOk) {
     return res.status(401).json({ ok: false, error: 'Unauthorized.' });
   }
 

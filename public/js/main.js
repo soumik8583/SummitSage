@@ -128,6 +128,9 @@ window.SUMMIT = {
     const input = bot.querySelector('.chatbot-input input');
     const sendBtn = bot.querySelector('.chatbot-input button');
 
+    // A ready-to-use WhatsApp link for the assistant's answers.
+    const waUrl = waLink(SUMMIT.whatsappText);
+
     function add(text, who) {
       const div = document.createElement('div');
       div.className = 'msg ' + who;

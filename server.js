@@ -21,6 +21,11 @@ const contactHandler = require('./api/contact');
 const subscribeHandler = require('./api/subscribe');
 const submissionsHandler = require('./api/submissions');
 const healthHandler = require('./api/health');
+const adminSignupHandler = require('./api/admin/signup');
+const adminLoginHandler = require('./api/admin/login');
+const adminGoogleHandler = require('./api/admin/google');
+const adminSessionHandler = require('./api/admin/session');
+const adminConfigHandler = require('./api/admin/config');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -34,6 +39,13 @@ app.post('/api/contact', (req, res) => contactHandler(req, res));
 app.post('/api/subscribe', (req, res) => subscribeHandler(req, res));
 app.get('/api/submissions', (req, res) => submissionsHandler(req, res));
 app.get('/api/health', (req, res) => healthHandler(req, res));
+
+// ── Admin API routes ──────────────────────────────────────────────────
+app.post('/api/admin/signup', (req, res) => adminSignupHandler(req, res));
+app.post('/api/admin/login', (req, res) => adminLoginHandler(req, res));
+app.post('/api/admin/google', (req, res) => adminGoogleHandler(req, res));
+app.get('/api/admin/session', (req, res) => adminSessionHandler(req, res));
+app.get('/api/admin/config', (req, res) => adminConfigHandler(req, res));
 
 // ── Static website (serves /page for /page.html, matching Vercel cleanUrls) ─
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
