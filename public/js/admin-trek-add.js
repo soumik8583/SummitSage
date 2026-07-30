@@ -73,6 +73,15 @@
     var form = document.getElementById('trekForm');
     if (!form) return;
 
+    // Available seats = Total − Booked (auto-computed, read-only).
+    function updateAvailable() {
+      var total = parseInt(form.totalSeats.value, 10) || 0;
+      var booked = parseInt(form.bookedSeats.value, 10) || 0;
+      form.availableSeats.value = Math.max(0, total - booked);
+    }
+    if (form.totalSeats) form.totalSeats.addEventListener('input', updateAvailable);
+    if (form.bookedSeats) form.bookedSeats.addEventListener('input', updateAvailable);
+
     var fileInput = document.getElementById('imageFile');
     var preview = document.getElementById('imagePreview');
     if (fileInput) {
@@ -93,6 +102,8 @@
 
       var startDate = form.startDate.value;
       var endDate = form.endDate.value;
+      var total = parseInt(form.totalSeats.value, 10) || 0;
+      var booked = parseInt(form.bookedSeats.value, 10) || 0;
       var body = {
         name: form.name.value.trim(),
         location: form.location.value.trim(),
@@ -101,6 +112,8 @@
         startDate: startDate,
         endDate: endDate,
         price: form.price.value,
+        totalSeats: form.totalSeats.value,
+        seatsLeft: Math.max(0, total - booked),
         image: imageDataUrl,
         days: daysBetween(startDate, endDate),
       };

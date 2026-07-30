@@ -118,6 +118,11 @@
       if (field('startDate')) field('startDate').value = dateOnly(current.start_date);
       if (field('endDate')) field('endDate').value = dateOnly(current.end_date);
       if (field('price')) field('price').value = current.price != null ? current.price : '';
+      var totalSeats = current.total_seats != null && current.total_seats !== '' ? Number(current.total_seats) : '';
+      var seatsLeft = current.seats_left != null && current.seats_left !== '' ? Number(current.seats_left) : '';
+      if (field('totalSeats')) field('totalSeats').value = totalSeats;
+      if (field('bookedSeats')) field('bookedSeats').value = (totalSeats !== '' && seatsLeft !== '') ? Math.max(0, totalSeats - seatsLeft) : '';
+      if (field('availableSeats')) field('availableSeats').value = seatsLeft;
       if (field('imageFile')) field('imageFile').value = '';
 
       var imgEl = document.getElementById('currentImage');
@@ -147,6 +152,15 @@
       });
     });
 
+    // Available seats = Total − Booked (auto-computed).
+    function computeAvailable() {
+      var t = parseInt(field('totalSeats') && field('totalSeats').value, 10) || 0;
+      var b = parseInt(field('bookedSeats') && field('bookedSeats').value, 10) || 0;
+      if (field('availableSeats')) field('availableSeats').value = Math.max(0, t - b);
+    }
+    if (field('totalSeats')) field('totalSeats').addEventListener('input', computeAvailable);
+    if (field('bookedSeats')) field('bookedSeats').addEventListener('input', computeAvailable);
+
     var fileInput = field('imageFile');
     if (fileInput) {
       fileInput.addEventListener('change', function () {
@@ -168,6 +182,8 @@
 
     var startDate = field('startDate') ? field('startDate').value : '';
     var endDate = field('endDate') ? field('endDate').value : '';
+    var total = field('totalSeats') ? (parseInt(field('totalSeats').value, 10) || 0) : null;
+    var booked = field('bookedSeats') ? (parseInt(field('bookedSeats').value, 10) || 0) : null;
     var body = {
       id: current.id,
       name: field('name') ? field('name').value.trim() : undefined,
@@ -177,6 +193,8 @@
       startDate: startDate,
       endDate: endDate,
       price: field('price') ? field('price').value : undefined,
+      totalSeats: field('totalSeats') ? field('totalSeats').value : undefined,
+      seatsLeft: (total != null && booked != null) ? Math.max(0, total - booked) : undefined,
       days: daysBetween(startDate, endDate),
     };
     if (newImageDataUrl) body.image = newImageDataUrl;

@@ -46,6 +46,11 @@
             <div class="form-group"><label>Trek end date</label><input class="control" type="date" name="endDate"></div>
           </div>
           <div class="form-group"><label>Trek price (₹) <span class="req">*</span></label><input class="control" type="number" name="price" min="0" required placeholder="9500"></div>
+          <div class="form-row">
+            <div class="form-group"><label>Total seats</label><input class="control" type="number" name="totalSeats" min="0" placeholder="24"></div>
+            <div class="form-group"><label>Booked seats</label><input class="control" type="number" name="bookedSeats" min="0" value="0" placeholder="0"></div>
+          </div>
+          <div class="form-group"><label>Available seats <span class="muted" style="font-weight:400">(auto)</span></label><input class="control" type="number" name="availableSeats" readonly></div>
           <div class="form-group">
             <label>Trek image</label>
             <input class="control" type="file" name="imageFile" accept="image/*" id="imageFile">
