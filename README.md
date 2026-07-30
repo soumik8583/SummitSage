@@ -52,7 +52,7 @@ Then open <http://localhost:3000>.
 
 - The site is served from `/public`.
 - Form submissions are saved to a local SQLite file at `data/local.db` (created automatically, git-ignored).
-- Email sending is **skipped** locally unless you set `GMAIL_APP_PASSWORD` — submissions still save to the DB, so you can develop without email configured.
+- Email sending is **skipped** locally unless you set `SMTP_PASS` — submissions still save to the DB, so you can develop without email configured.
 
 Health check: <http://localhost:3000/api/health>
 
@@ -67,15 +67,17 @@ Copy `.env.example` → `.env` and fill in what you need.
 | `PORT` | Local dev port | `3000` |
 | `TURSO_DATABASE_URL` | Turso libSQL URL | leave blank → uses `file:data/local.db` |
 | `TURSO_AUTH_TOKEN` | Turso auth token | leave blank locally |
-| `GMAIL_USER` | Gmail address that sends notifications | `soumikmondal723@gmail.com` |
-| `GMAIL_APP_PASSWORD` | Gmail **App Password** (not your login password) | leave blank locally |
+| `SMTP_HOST` | SMTP server | `smtp.hostinger.com` |
+| `SMTP_PORT` | SMTP port | `465` |
+| `SMTP_USER` | Mailbox that sends notifications | `admin@summitsage.in` |
+| `SMTP_PASS` | Password for that mailbox | leave blank locally |
 | `NOTIFY_EMAIL` | Comma-separated recipients | `admin@summitsage.in` |
 | `ADMIN_API_KEY` | Protects `GET /api/submissions` | any string |
 
-### Getting a Gmail App Password
-1. Enable **2-Step Verification** on the Google account.
-2. Go to **Google Account → Security → App passwords**.
-3. Generate a password for "Mail" and paste the 16-character value into `GMAIL_APP_PASSWORD`.
+### Setting up email (Hostinger)
+1. In **Hostinger → Emails**, create the mailbox `admin@summitsage.in`.
+2. Use its password as `SMTP_PASS`, with `SMTP_HOST=smtp.hostinger.com` and `SMTP_PORT=465`.
+3. Notifications are then both sent from and delivered to `admin@summitsage.in`.
 
 ---
 
@@ -85,7 +87,7 @@ Copy `.env.example` → `.env` and fill in what you need.
 2. Import the repo in **Vercel**. It auto-detects the config in `vercel.json` (static `/public` + `/api` functions).
 3. In **Project → Settings → Environment Variables**, add:
    - `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`
-   - `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `NOTIFY_EMAIL`
+   - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `NOTIFY_EMAIL`
    - `ADMIN_API_KEY`
 4. **Deploy.** `server.js` is only for local dev (it's in `.vercelignore`); Vercel runs the `/api` functions directly.
 
