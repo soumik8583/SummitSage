@@ -395,7 +395,9 @@
   /* ---------- boot ---------- */
   function boot() {
     setWish(getWish());
-    initTreksPage();
+    // Pull in any admin-managed treks from the DB, then render the grid.
+    if (SS.loadDbTreks) SS.loadDbTreks().then(initTreksPage);
+    else initTreksPage();
   }
   if (document.readyState !== 'loading') boot();
   else document.addEventListener('DOMContentLoaded', boot);

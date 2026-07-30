@@ -12,6 +12,7 @@
   const root = document.getElementById('detailRoot');
   if (!root) return;
 
+  function init() {
   const params = new URLSearchParams(location.search);
   const slug = params.get('trek') || (SS.treks && SS.treks[0] && SS.treks[0].slug);
   const t = SS.getTrek ? SS.getTrek(slug) : null;
@@ -319,4 +320,9 @@
     window.SummitEffects.initReveal();
     window.SummitEffects.initTilt();
   }
+  }
+
+  // Load any admin-managed treks from the DB first, then render.
+  if (SS.loadDbTreks) SS.loadDbTreks().then(init);
+  else init();
 })();

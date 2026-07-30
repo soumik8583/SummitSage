@@ -447,4 +447,72 @@
   window.SS.fmtINR = fmtINR;
   window.SS.diffClass = diffClass;
   window.SS.getTrek = get;
+
+  // ── Admin-managed treks (from the database) ────────────────────────────────
+  // Normalise a DB row into the card/detail shape the site renders from.
+  function normalizeDbTrek(d) {
+    const price = Number(d.price) || 0;
+    const early = d.early_bird != null && d.early_bird !== '' ? Number(d.early_bird) : null;
+    const totalSeats = Number(d.total_seats) || 20;
+    const listOf = function (v, sep) {
+      if (!v) return [];
+      return String(v).split(sep).map(function (s) { return s.trim(); }).filter(Boolean);
+    };
+    return {
+      slug: d.slug,
+      name: d.name,
+      region: d.region || 'Himalaya',
+      base: d.base || '',
+      difficulty: d.difficulty || 'Moderate',
+      seasons: d.season ? [d.season] : ['All'],
+      season: d.season || 'All',
+      days: Number(d.days) || 1,
+      distanceKm: Number(d.distance_km) || 0,
+      maxAltitude: Number(d.max_altitude) || 0,
+      price: price,
+      earlyBird: early && early < price ? early : price,
+      earlyBirdEnds: d.start_date || null,
+      startDate: d.start_date || inDays(30),
+      totalSeats: totalSeats,
+      seatsLeft: d.seats_left != null && d.seats_left !== '' ? Number(d.seats_left) : totalSeats,
+      rating: Number(d.rating) || 4.8,
+      reviews: 0,
+      fitness: 3,
+      budgetTier: price < 5000 ? 'budget' : price <= 10000 ? '5-10k' : '10k-plus',
+      image: d.image || IMG('1516571748831-5d81767b788d'),
+      tags: listOf(d.tags, ','),
+      blurb: d.blurb || d.description || 'A Summit Sage guided adventure.',
+      highlights: listOf(d.highlights, '\n'),
+      coords: { lat: 0, lng: 0 },
+      itinerary: [],
+      altitude: [],
+      included: [],
+      excluded: [],
+      _fromDb: true,
+    };
+  }
+
+  // Fetch admin-managed treks once and merge them into the catalogue (newest
+  // first). Cached so repeated calls across pages only hit the network once.
+  let dbTreksPromise = null;
+  window.SS.loadDbTreks = function () {
+    if (dbTreksPromise) return dbTreksPromise;
+    dbTreksPromise = fetch('/api/treks')
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res && res.ok && Array.isArray(res.data)) {
+          const have = {};
+          treks.forEach(function (t) { have[t.slug] = true; });
+          for (let i = res.data.length - 1; i >= 0; i--) {
+            const nt = normalizeDbTrek(res.data[i]);
+            if (nt.slug && !have[nt.slug]) {
+              treks.unshift(nt);
+              have[nt.slug] = true;
+            }
+          }
+        }
+      })
+      .catch(function () {});
+    return dbTreksPromise;
+  };
 })();

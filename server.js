@@ -23,6 +23,8 @@ const submissionsHandler = require('./api/submissions');
 const healthHandler = require('./api/health');
 const subscribersHandler = require('./api/subscribers');
 const adminsHandler = require('./api/admins');
+const treksHandler = require('./api/treks');
+const adminTreksHandler = require('./api/admin/treks');
 const adminSignupHandler = require('./api/admin/signup');
 const adminLoginHandler = require('./api/admin/login');
 const adminGoogleHandler = require('./api/admin/google');
@@ -43,6 +45,7 @@ app.get('/api/submissions', (req, res) => submissionsHandler(req, res));
 app.get('/api/health', (req, res) => healthHandler(req, res));
 app.get('/api/subscribers', (req, res) => subscribersHandler(req, res));
 app.get('/api/admins', (req, res) => adminsHandler(req, res));
+app.get('/api/treks', (req, res) => treksHandler(req, res));
 
 // ── Admin API routes ──────────────────────────────────────────────────
 app.post('/api/admin/signup', (req, res) => adminSignupHandler(req, res));
@@ -50,6 +53,7 @@ app.post('/api/admin/login', (req, res) => adminLoginHandler(req, res));
 app.post('/api/admin/google', (req, res) => adminGoogleHandler(req, res));
 app.get('/api/admin/session', (req, res) => adminSessionHandler(req, res));
 app.get('/api/admin/config', (req, res) => adminConfigHandler(req, res));
+app.all('/api/admin/treks', (req, res) => adminTreksHandler(req, res));
 
 // ── Static website (serves /page for /page.html, matching Vercel cleanUrls) ─
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));

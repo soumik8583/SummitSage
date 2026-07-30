@@ -6,5 +6,6 @@ Disallow: /api/
 Disallow: /admin
 Disallow: /admin-login
 Disallow: /admin-signup
+Disallow: /admin-treks
 
 Sitemap: https://www.summitsage.in/sitemap.xml
