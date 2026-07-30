@@ -30,13 +30,15 @@ const adminLoginHandler = require('./api/admin/login');
 const adminGoogleHandler = require('./api/admin/google');
 const adminSessionHandler = require('./api/admin/session');
 const adminConfigHandler = require('./api/admin/config');
+const trekImageHandler = require('./api/trek-image');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.set('trust proxy', 1);
-app.use(express.json({ limit: '20kb' }));
-app.use(express.urlencoded({ extended: true, limit: '20kb' }));
+// Larger limit so admins can upload trek images (base64 data URLs).
+app.use(express.json({ limit: '6mb' }));
+app.use(express.urlencoded({ extended: true, limit: '6mb' }));
 
 // ── API routes (delegated to the Vercel-style handlers) ───────────────
 app.post('/api/contact', (req, res) => contactHandler(req, res));
@@ -46,6 +48,7 @@ app.get('/api/health', (req, res) => healthHandler(req, res));
 app.get('/api/subscribers', (req, res) => subscribersHandler(req, res));
 app.get('/api/admins', (req, res) => adminsHandler(req, res));
 app.get('/api/treks', (req, res) => treksHandler(req, res));
+app.get('/api/trek-image', (req, res) => trekImageHandler(req, res));
 
 // ── Admin API routes ──────────────────────────────────────────────────
 app.post('/api/admin/signup', (req, res) => adminSignupHandler(req, res));

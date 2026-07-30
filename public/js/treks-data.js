@@ -458,6 +458,13 @@
       if (!v) return [];
       return String(v).split(sep).map(function (s) { return s.trim(); }).filter(Boolean);
     };
+    // Derive duration from start/end dates when days isn't set explicitly.
+    let days = Number(d.days) || 0;
+    if (!days && d.start_date && d.end_date) {
+      const diff = (new Date(d.end_date) - new Date(d.start_date)) / 86400000;
+      if (isFinite(diff)) days = Math.max(1, Math.round(diff) + 1);
+    }
+    if (!days) days = 1;
     return {
       slug: d.slug,
       name: d.name,
@@ -466,7 +473,7 @@
       difficulty: d.difficulty || 'Moderate',
       seasons: d.season ? [d.season] : ['All'],
       season: d.season || 'All',
-      days: Number(d.days) || 1,
+      days: days,
       distanceKm: Number(d.distance_km) || 0,
       maxAltitude: Number(d.max_altitude) || 0,
       price: price,

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modify Trek | Summit Sage Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0a1628">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%230A1628'/%3E%3Cpath d='M8 34L19 15l6 9 3-5 12 15H8z' fill='%23E85D04'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script defer src="/js/admin-trek-edit.js"></script>
+</head>
+<body>
+  <div>
+    <header class="admin-topbar">
+      <a href="/" class="brand" aria-label="Summit Sage home">
+        <svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect width="48" height="48" rx="13" fill="#0A1628"/><path d="M8 34L19 15l6 9 3-5 12 15H8z" fill="#E85D04"/><path d="M19 15l6 9 3-5 3.6 4.5L27 24l-4 3-4-6-3.5 6H10L19 15z" fill="#fff" opacity=".92"/><circle cx="35" cy="13" r="3.2" fill="#fff"/></svg>
+        <span>Summit<span class="b-sage">Sage</span> Admin</span>
+      </a>
+      <div class="spacer"></div>
+      <span class="admin-who" id="adminWho"></span>
+      <a class="btn btn-outline btn-sm" href="/admin"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+      <button class="btn btn-primary btn-sm" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </header>
+
+    <main class="admin-main" style="max-width:760px">
+      <h1 style="font-size:1.6rem">Modify existing trek</h1>
+      <p class="muted" style="margin:6px 0 22px">Pick a trek, click the pencil beside a field to unlock it, edit, then save.</p>
+
+      <div class="admin-msg" id="trekMsg" role="alert"></div>
+
+      <div class="card" style="margin-bottom:26px">
+        <div class="form-group" style="margin-bottom:0">
+          <label for="trekSelect">Select Trek for edit</label>
+          <select class="control" id="trekSelect">
+            <option value="">— Choose a trek —</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card" id="editSection" style="display:none">
+        <div class="flex between items-center wrap gap-1" style="margin-bottom:16px">
+          <h2 style="font-size:1.25rem">Edit details <span class="muted" id="editTrekId" style="font-size:.85rem"></span></h2>
+          <button class="btn btn-outline btn-sm" id="deleteBtn" type="button"><i class="fa-solid fa-trash"></i> Delete trek</button>
+        </div>
+
+        <div class="edit-field"><label>Trek name</label>
+          <div class="edit-row"><input class="control" data-field="name" disabled><button type="button" class="edit-toggle" data-edit="name" title="Edit"><i class="fa-solid fa-pen"></i></button></div>
+        </div>
+        <div class="edit-field"><label>Trek location</label>
+          <div class="edit-row"><input class="control" data-field="location" disabled><button type="button" class="edit-toggle" data-edit="location" title="Edit"><i class="fa-solid fa-pen"></i></button></div>
+        </div>
+        <div class="edit-field"><label>Altitude (m)</label>
+          <div class="edit-row"><input class="control" type="number" data-field="altitude" disabled><button type="button" class="edit-toggle" data-edit="altitude" title="Edit"><i class="fa-solid fa-pen"></i></button></div>
+        </div>
+        <div class="edit-field"><label>Trek details</label>
+          <div class="edit-row"><textarea class="control" rows="4" data-field="details" disabled></textarea><button type="button" class="edit-toggle" data-edit="details" title="Edit"><i class="fa-solid fa-pen"></i></button></div>
+        </div>
+        <div class="edit-field"><label>Trek start date</label>
+          <div class="edit-row"><input class="control" type="date" data-field="startDate" disabled><button type="button" class="edit-toggle" data-edit="startDate" title="Edit"><i class="fa-solid fa-pen"></i></button></div>
+        </div>
+        <div class="edit-field"><label>Trek end date</label>
+          <div class="edit-row"><input class="control" type="date" data-field="endDate" disabled><button type="button" class="edit-toggle" data-edit="endDate" title="Edit"><i class="fa-solid fa-pen"></i></button></div>
+        </div>
+        <div class="edit-field"><label>Trek price (₹)</label>
+          <div class="edit-row"><input class="control" type="number" data-field="price" disabled><button type="button" class="edit-toggle" data-edit="price" title="Edit"><i class="fa-solid fa-pen"></i></button></div>
+        </div>
+        <div class="edit-field"><label>Trek image</label>
+          <div class="edit-row">
+            <input class="control" type="file" accept="image/*" data-field="imageFile" disabled>
+            <button type="button" class="edit-toggle" data-edit="imageFile" title="Edit"><i class="fa-solid fa-pen"></i></button>
+          </div>
+          <img id="currentImage" alt="Current trek image" style="display:none;margin-top:12px;max-width:100%;border-radius:12px;border:1px solid var(--line)">
+        </div>
+
+        <button class="btn btn-primary btn-block btn-lg" id="saveBtn" type="button" style="margin-top:18px"><i class="fa-solid fa-floppy-disk"></i> Save changes</button>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

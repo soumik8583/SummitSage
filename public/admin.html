@@ -23,7 +23,6 @@
       </a>
       <div class="spacer"></div>
       <span class="admin-who" id="adminWho"></span>
-      <a class="btn btn-outline btn-sm" href="/admin-treks"><i class="fa-solid fa-mountain-sun"></i> Manage Treks</a>
       <button class="btn btn-outline btn-sm" id="refreshBtn"><i class="fa-solid fa-rotate"></i> Refresh</button>
       <button class="btn btn-primary btn-sm" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
     </header>
@@ -31,6 +30,15 @@
     <main class="admin-main">
       <h1 style="font-size:1.6rem">User submissions</h1>
       <p class="muted" style="margin:6px 0 22px">Everyone who has reached out — with their contact details and the trek they're interested in.</p>
+
+      <section class="card" style="margin-bottom:26px">
+        <h2 style="font-size:1.2rem;margin-bottom:4px"><i class="fa-solid fa-mountain-sun accent"></i> Trek management</h2>
+        <p class="muted" style="margin:0 0 16px;font-size:.92rem">Add treks to the public site or edit existing ones.</p>
+        <div class="flex gap-1 wrap">
+          <a class="btn btn-primary" href="/admin-trek-add"><i class="fa-solid fa-plus"></i> Add new Trek</a>
+          <a class="btn btn-outline" href="/admin-trek-edit"><i class="fa-solid fa-pen-to-square"></i> Modify existing trek</a>
+        </div>
+      </section>
 
       <div class="admin-stats">
         <div class="admin-stat"><div class="n" id="statTotal">—</div><div class="l">Total submissions</div></div>
