@@ -237,7 +237,15 @@
       if (res.status !== 200 || !res.data.ok) { window.location.href = '/admin-login'; return; }
       var who = document.getElementById('adminWho');
       if (who) who.textContent = res.data.admin.name + ' · ' + res.data.admin.email;
-      loadTrekList();
+      loadTrekList().then(function () {
+        // Auto-open a trek if arriving from the dashboard list (?id=<n>).
+        var id = new URLSearchParams(location.search).get('id');
+        if (id) {
+          var sel = document.getElementById('trekSelect');
+          if (sel) sel.value = String(id);
+          loadTrek(id);
+        }
+      });
       initToggles();
     });
 

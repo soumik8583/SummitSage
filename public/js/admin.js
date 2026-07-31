@@ -287,6 +287,7 @@
       loadSubs();
       loadSubscribers();
       loadAdmins();
+      loadTreksManagement();
     });
 
     var allRows = [];
@@ -347,6 +348,49 @@
       });
     }
 
+    function loadTreksManagement() {
+      var tbody = document.getElementById('trekMgmtBody');
+      if (!tbody) return;
+      api('/api/admin/treks').then(function (res) {
+        if (res.status === 401) {
+          clearToken();
+          window.location.href = '/admin-login';
+          return;
+        }
+        if (!res.data || !res.data.ok) return;
+        var rows = res.data.data || [];
+        var countEl = document.getElementById('trekMgmtCount');
+        if (countEl) countEl.textContent = '(' + rows.length + ')';
+        if (rows.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="admin-empty">No treks yet. Use “Add new Trek” to create one.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = rows.map(function (t) {
+          var price = t.price != null ? '₹' + Number(t.price).toLocaleString('en-IN') : '—';
+          var seats = (t.seats_left != null && t.total_seats != null) ? (t.seats_left + ' / ' + t.total_seats) : '—';
+          var hidden = Number(t.active) === 0;
+          var status = hidden
+            ? '<span class="admin-tag" style="background:rgba(220,50,50,.15);color:#ffb4b4">Hidden</span>'
+            : '<span class="admin-tag" style="background:rgba(40,180,90,.15);color:#a9f0c4">Live</span>';
+          return (
+            '<tr class="clickable" data-id="' + t.id + '">' +
+            '<td><b style="color:#fff">' + esc(t.name) + '</b></td>' +
+            '<td>' + esc(t.region || '—') + '</td>' +
+            '<td>' + esc(t.difficulty || '—') + '</td>' +
+            '<td>' + price + '</td>' +
+            '<td>' + seats + '</td>' +
+            '<td>' + status + '</td>' +
+            '</tr>'
+          );
+        }).join('');
+        tbody.querySelectorAll('tr.clickable').forEach(function (tr) {
+          tr.addEventListener('click', function () {
+            window.location.href = '/admin-trek-edit?id=' + tr.getAttribute('data-id');
+          });
+        });
+      });
+    }
+
     function updateStats(rows) {
       var total = document.getElementById('statTotal');
       var regs = document.getElementById('statRegs');
@@ -387,6 +431,7 @@
         loadSubs();
         loadSubscribers();
         loadAdmins();
+        loadTreksManagement();
       });
     }
   }

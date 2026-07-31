@@ -39,6 +39,26 @@
           <a class="btn btn-outline" href="/admin-trek-edit"><i class="fa-solid fa-pen-to-square"></i> Modify existing trek</a>
           <a class="btn btn-outline" href="/admin-trek-delete"><i class="fa-solid fa-trash-can"></i> Delete / Abandon trek</a>
         </div>
+
+        <h3 style="font-size:1rem;margin:22px 0 4px">All treks <span class="muted" id="trekMgmtCount" style="font-weight:400"></span></h3>
+        <p class="muted" style="margin:0 0 12px;font-size:.86rem">Click a trek to open it for editing.</p>
+        <div class="admin-table-wrap">
+          <table class="admin-table" style="min-width:640px">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Difficulty</th>
+                <th>Price</th>
+                <th>Seats</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="trekMgmtBody">
+              <tr><td colspan="6" class="admin-empty">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <div class="admin-stats">

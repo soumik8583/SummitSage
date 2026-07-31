@@ -478,6 +478,14 @@ p {
   color: var(--mist-dim);
   padding: 30px;
 }
+.admin-table tr.clickable {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.admin-table tr.clickable:hover td {
+  background: var(--glass-2);
+  color: #fff;
+}
 .edit-field {
   margin-bottom: 16px;
 }
