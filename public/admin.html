@@ -75,12 +75,17 @@
           <option value="">All types</option>
         </select>
         <span class="muted" id="subsStatus" style="font-size:.86rem"></span>
+        <div class="admin-row-actions" id="subsActions">
+          <button class="btn btn-outline btn-sm" id="subsEditBtn" disabled><i class="fa-solid fa-pen"></i> Edit</button>
+          <button class="btn btn-danger btn-sm" id="subsDeleteBtn" disabled><i class="fa-solid fa-trash-can"></i> Delete</button>
+        </div>
       </div>
 
       <div class="admin-table-wrap">
         <table class="admin-table">
           <thead>
             <tr>
+              <th class="sel-col" aria-label="Select"></th>
               <th>Name</th>
               <th>Email</th>
               <th>Phone</th>
@@ -91,46 +96,125 @@
             </tr>
           </thead>
           <tbody id="subsBody">
-            <tr><td colspan="7" class="admin-empty">Loading…</td></tr>
+            <tr><td colspan="8" class="admin-empty">Loading…</td></tr>
           </tbody>
         </table>
       </div>
 
       <h2 style="font-size:1.3rem;margin:40px 0 6px">Newsletter subscribers</h2>
       <p class="muted" style="margin:0 0 16px">People who signed up in the "Join the pack" section for trek drops &amp; alerts.</p>
+      <div class="admin-toolbar">
+        <div class="admin-row-actions" id="subscribersActions">
+          <button class="btn btn-outline btn-sm" id="subscribersEditBtn" disabled><i class="fa-solid fa-pen"></i> Edit</button>
+          <button class="btn btn-danger btn-sm" id="subscribersDeleteBtn" disabled><i class="fa-solid fa-trash-can"></i> Delete</button>
+        </div>
+      </div>
       <div class="admin-table-wrap">
-        <table class="admin-table" style="min-width:520px">
+        <table class="admin-table" style="min-width:560px">
           <thead>
             <tr>
+              <th class="sel-col" aria-label="Select"></th>
               <th>Email</th>
               <th>Source</th>
               <th>Subscribed</th>
             </tr>
           </thead>
           <tbody id="subscribersBody">
-            <tr><td colspan="3" class="admin-empty">Loading…</td></tr>
+            <tr><td colspan="4" class="admin-empty">Loading…</td></tr>
           </tbody>
         </table>
       </div>
 
       <h2 style="font-size:1.3rem;margin:40px 0 6px">Admins with access</h2>
       <p class="muted" style="margin:0 0 16px">Everyone who can sign in to this control room.</p>
+      <div class="admin-toolbar">
+        <span class="muted" id="adminsHint" style="font-size:.86rem"></span>
+        <div class="admin-row-actions" id="adminsActions" style="display:none">
+          <button class="btn btn-outline btn-sm" id="adminsEditBtn" disabled><i class="fa-solid fa-pen"></i> Edit</button>
+          <button class="btn btn-danger btn-sm" id="adminsDeleteBtn" disabled><i class="fa-solid fa-trash-can"></i> Delete</button>
+        </div>
+      </div>
       <div class="admin-table-wrap">
-        <table class="admin-table" style="min-width:560px">
+        <table class="admin-table" style="min-width:640px">
           <thead>
             <tr>
+              <th class="sel-col" aria-label="Select"></th>
               <th>Name</th>
               <th>Email</th>
               <th>Sign-in method</th>
+              <th>Role</th>
               <th>Added</th>
             </tr>
           </thead>
           <tbody id="adminsBody">
-            <tr><td colspan="4" class="admin-empty">Loading…</td></tr>
+            <tr><td colspan="6" class="admin-empty">Loading…</td></tr>
           </tbody>
         </table>
       </div>
     </main>
+  </div>
+
+  <!-- Edit submission (registered user) modal -->
+  <div class="modal" id="editSubmissionModal" aria-hidden="true">
+    <div class="modal-box" style="max-width:560px;padding:30px">
+      <button class="modal-close" type="button" data-close aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      <h2 style="font-size:1.3rem;margin-bottom:4px">Edit registered user</h2>
+      <p class="muted" style="margin:0 0 18px;font-size:.9rem">Update this person's contact details and message.</p>
+      <div class="admin-msg" id="editSubmissionMsg"></div>
+      <form id="editSubmissionForm" novalidate>
+        <input type="hidden" name="id">
+        <div class="edit-field"><label>Name</label><input class="control" name="name" type="text" maxlength="120" required></div>
+        <div class="edit-field"><label>Email</label><input class="control" name="email" type="email" maxlength="160" required></div>
+        <div class="edit-field"><label>Phone</label><input class="control" name="phone" type="text" maxlength="40" placeholder="—"></div>
+        <div class="edit-field"><label>Type</label><select class="control" name="form_type" id="editSubmissionType"></select></div>
+        <div class="edit-field"><label>Trek interest</label><input class="control" name="subject" type="text" maxlength="200" placeholder="—"></div>
+        <div class="edit-field"><label>Message</label><textarea class="control" name="message" rows="4" maxlength="4000" placeholder="—"></textarea></div>
+        <div class="flex gap-1" style="justify-content:flex-end;margin-top:10px">
+          <button type="button" class="btn btn-outline btn-sm" data-close>Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit subscriber modal -->
+  <div class="modal" id="editSubscriberModal" aria-hidden="true">
+    <div class="modal-box" style="max-width:480px;padding:30px">
+      <button class="modal-close" type="button" data-close aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      <h2 style="font-size:1.3rem;margin-bottom:4px">Edit subscriber</h2>
+      <p class="muted" style="margin:0 0 18px;font-size:.9rem">Update this newsletter subscriber.</p>
+      <div class="admin-msg" id="editSubscriberMsg"></div>
+      <form id="editSubscriberForm" novalidate>
+        <input type="hidden" name="id">
+        <div class="edit-field"><label>Email</label><input class="control" name="email" type="email" maxlength="160" required></div>
+        <div class="edit-field"><label>Source</label><input class="control" name="source" type="text" maxlength="80" placeholder="—"></div>
+        <div class="flex gap-1" style="justify-content:flex-end;margin-top:10px">
+          <button type="button" class="btn btn-outline btn-sm" data-close>Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit admin modal (super admin only) -->
+  <div class="modal" id="editAdminModal" aria-hidden="true">
+    <div class="modal-box" style="max-width:480px;padding:30px">
+      <button class="modal-close" type="button" data-close aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      <h2 style="font-size:1.3rem;margin-bottom:4px">Edit admin</h2>
+      <p class="muted" style="margin:0 0 18px;font-size:.9rem">Manage this admin's access. Super admins can edit and delete admins.</p>
+      <div class="admin-msg" id="editAdminMsg"></div>
+      <form id="editAdminForm" novalidate>
+        <input type="hidden" name="id">
+        <div class="edit-field"><label>Name</label><input class="control" name="name" type="text" maxlength="120" required></div>
+        <div class="edit-field"><label>Email</label><input class="control" name="email" type="email" maxlength="160" required></div>
+        <div class="edit-field"><label>New password <span class="muted" style="font-weight:400">(leave blank to keep current)</span></label><input class="control" name="password" type="password" minlength="8" autocomplete="new-password" placeholder="••••••••"></div>
+        <label class="admin-check"><input type="checkbox" name="is_super"> <span><b>Super admin</b> — full privileges, including editing and deleting admins.</span></label>
+        <div class="flex gap-1" style="justify-content:flex-end;margin-top:10px">
+          <button type="button" class="btn btn-outline btn-sm" data-close>Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+        </div>
+      </form>
+    </div>
   </div>
 </body>
 </html>

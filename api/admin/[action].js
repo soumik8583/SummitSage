@@ -15,7 +15,7 @@
 
 const https = require('https');
 const {
-  createAdmin, getAdminByEmail, setAdminGoogleId,
+  createAdmin, getAdminByEmail, getAdminById, setAdminGoogleId,
   createTrek, listTreks, getTrekById, updateTrek, deleteTrek,
 } = require('../../lib/db');
 const {
@@ -66,14 +66,26 @@ function handleConfig(req, res) {
 }
 
 // ── session ───────────────────────────────────────────────────────────────────
-function handleSession(req, res) {
+async function handleSession(req, res) {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
     return res.status(405).json({ ok: false, error: 'Method not allowed.' });
   }
   const payload = verifyToken(getBearerToken(req));
   if (!payload) return res.status(401).json({ ok: false, error: 'Unauthorized.' });
-  return res.json({ ok: true, admin: { id: payload.sub, name: payload.name, email: payload.email } });
+  // Read the super-admin flag fresh from the DB so privilege changes take
+  // effect without needing to sign in again.
+  let isSuper = false;
+  try {
+    const me = await getAdminById(payload.sub);
+    isSuper = Boolean(me && Number(me.is_super) === 1);
+  } catch (e) {
+    isSuper = false;
+  }
+  return res.json({
+    ok: true,
+    admin: { id: payload.sub, name: payload.name, email: payload.email, is_super: isSuper },
+  });
 }
 
 // ── signup ────────────────────────────────────────────────────────────────────

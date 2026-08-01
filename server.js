@@ -38,10 +38,10 @@ app.use(express.urlencoded({ extended: true, limit: '6mb' }));
 // ── API routes (delegated to the Vercel-style handlers) ───────────────
 app.post('/api/contact', (req, res) => contactHandler(req, res));
 app.post('/api/subscribe', (req, res) => subscribeHandler(req, res));
-app.get('/api/submissions', (req, res) => submissionsHandler(req, res));
+app.all('/api/submissions', (req, res) => submissionsHandler(req, res));
 app.get('/api/health', (req, res) => healthHandler(req, res));
-app.get('/api/subscribers', (req, res) => subscribersHandler(req, res));
-app.get('/api/admins', (req, res) => adminsHandler(req, res));
+app.all('/api/subscribers', (req, res) => subscribersHandler(req, res));
+app.all('/api/admins', (req, res) => adminsHandler(req, res));
 app.get('/api/treks', (req, res) => treksHandler(req, res));
 app.get('/api/trek-image', (req, res) => trekImageHandler(req, res));
 

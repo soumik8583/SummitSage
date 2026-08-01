@@ -202,14 +202,15 @@
       return !filter || r.form_type === filter;
     });
     if (list.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" class="admin-empty">No submissions yet.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="8" class="admin-empty">No submissions yet.</td></tr>';
       return;
     }
     tbody.innerHTML = list
       .map(function (r) {
         var trek = trekOf(r);
         return (
-          '<tr>' +
+          '<tr data-id="' + r.id + '">' +
+          '<td class="admin-sel"><input type="radio" class="row-sel" name="subsSel" value="' + r.id + '" aria-label="Select this submission"></td>' +
           '<td>' + esc(r.name) + '</td>' +
           '<td><a href="mailto:' + esc(r.email) + '">' + esc(r.email) + '</a></td>' +
           '<td>' + (r.phone ? '<a href="tel:' + esc(r.phone) + '">' + esc(r.phone) + '</a>' : '—') + '</td>' +
@@ -227,13 +228,14 @@
     var tbody = document.getElementById('subscribersBody');
     if (!tbody) return;
     if (!rows || rows.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="3" class="admin-empty">No subscribers yet.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="4" class="admin-empty">No subscribers yet.</td></tr>';
       return;
     }
     tbody.innerHTML = rows
       .map(function (r) {
         return (
-          '<tr>' +
+          '<tr data-id="' + r.id + '">' +
+          '<td class="admin-sel"><input type="radio" class="row-sel" name="subscribersSel" value="' + r.id + '" aria-label="Select this subscriber"></td>' +
           '<td><a href="mailto:' + esc(r.email) + '">' + esc(r.email) + '</a></td>' +
           '<td>' + (r.source ? esc(r.source) : '—') + '</td>' +
           '<td class="admin-date">' + esc(r.created_at) + '</td>' +
@@ -250,20 +252,28 @@
     return '—';
   }
 
-  function renderAdmins(rows) {
+  function renderAdmins(rows, canManage) {
     var tbody = document.getElementById('adminsBody');
     if (!tbody) return;
     if (!rows || rows.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="4" class="admin-empty">No admins yet.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" class="admin-empty">No admins yet.</td></tr>';
       return;
     }
     tbody.innerHTML = rows
       .map(function (a) {
+        var sel = canManage
+          ? '<input type="radio" class="row-sel" name="adminsSel" value="' + a.id + '" aria-label="Select this admin">'
+          : '';
+        var role = a.is_super
+          ? '<span class="admin-tag" style="background:rgba(232,93,4,.18);color:var(--orange-300)">Super admin</span>'
+          : '<span class="admin-tag" style="background:var(--glass-2);color:var(--mist)">Admin</span>';
         return (
-          '<tr>' +
+          '<tr data-id="' + a.id + '">' +
+          '<td class="admin-sel">' + sel + '</td>' +
           '<td>' + esc(a.name) + '</td>' +
           '<td><a href="mailto:' + esc(a.email) + '">' + esc(a.email) + '</a></td>' +
           '<td><span class="admin-tag">' + esc(adminMethod(a)) + '</span></td>' +
+          '<td>' + role + '</td>' +
           '<td class="admin-date">' + esc(a.created_at) + '</td>' +
           '</tr>'
         );
@@ -275,32 +285,295 @@
     var root = document.getElementById('adminDash');
     if (!root) return;
 
-    // Guard: must have a valid session.
+    var isSuper = false; // current admin's super-admin status
+    var allRows = []; // submissions
+    var subscriberRows = []; // newsletter subscribers
+    var adminRows = []; // admins
+
+    // ── small utilities ───────────────────────────────────────────────────────
+    function findById(arr, id) {
+      for (var i = 0; i < arr.length; i++) {
+        if (String(arr[i].id) === String(id)) return arr[i];
+      }
+      return null;
+    }
+    function openModal(id) {
+      var m = document.getElementById(id);
+      if (m) { m.classList.add('open'); m.setAttribute('aria-hidden', 'false'); }
+    }
+    function closeModal(id) {
+      var m = document.getElementById(id);
+      if (m) { m.classList.remove('open'); m.setAttribute('aria-hidden', 'true'); }
+    }
+    function hideMsg(elId) {
+      var el = document.getElementById(elId);
+      if (el) { el.style.display = 'none'; el.textContent = ''; }
+    }
+    function errText(res) {
+      return (
+        (res && res.data && (res.data.error || (res.data.errors && res.data.errors.join(' ')))) ||
+        'Something went wrong. Please try again.'
+      );
+    }
+    function guard401(res) {
+      if (res.status === 401) {
+        clearToken();
+        window.location.href = '/admin-login';
+        return true;
+      }
+      return false;
+    }
+
+    // ── row selection controllers (single radio-select per table) ─────────────
+    function setupTableActions(opts) {
+      var tbody = document.getElementById(opts.tbodyId);
+      var editBtn = document.getElementById(opts.editBtnId);
+      var delBtn = document.getElementById(opts.deleteBtnId);
+      var selectedId = null;
+      function setEnabled(on) {
+        if (editBtn) editBtn.disabled = !on;
+        if (delBtn) delBtn.disabled = !on;
+      }
+      function markRows() {
+        if (!tbody) return;
+        var trs = tbody.querySelectorAll('tr');
+        for (var i = 0; i < trs.length; i++) {
+          trs[i].classList.toggle('is-selected', trs[i].getAttribute('data-id') === String(selectedId));
+        }
+      }
+      if (tbody) {
+        tbody.addEventListener('change', function (e) {
+          var t = e.target;
+          if (t && t.classList && t.classList.contains('row-sel')) {
+            selectedId = t.value;
+            setEnabled(true);
+            markRows();
+          }
+        });
+      }
+      if (editBtn) editBtn.addEventListener('click', function () {
+        if (selectedId != null) opts.onEdit(selectedId);
+      });
+      if (delBtn) delBtn.addEventListener('click', function () {
+        if (selectedId != null) opts.onDelete(selectedId);
+      });
+      return {
+        reset: function () { selectedId = null; setEnabled(false); markRows(); },
+      };
+    }
+
+    var subsSel = setupTableActions({
+      tbodyId: 'subsBody', editBtnId: 'subsEditBtn', deleteBtnId: 'subsDeleteBtn',
+      onEdit: openEditSubmission, onDelete: removeSubmission,
+    });
+    var subscribersSel = setupTableActions({
+      tbodyId: 'subscribersBody', editBtnId: 'subscribersEditBtn', deleteBtnId: 'subscribersDeleteBtn',
+      onEdit: openEditSubscriber, onDelete: removeSubscriber,
+    });
+    var adminsSel = setupTableActions({
+      tbodyId: 'adminsBody', editBtnId: 'adminsEditBtn', deleteBtnId: 'adminsDeleteBtn',
+      onEdit: openEditAdmin, onDelete: removeAdmin,
+    });
+
+    // ── submissions (registered users): edit + delete ────────────────────────
+    function fillTypeSelect(sel, current) {
+      if (!sel) return;
+      sel.innerHTML = '';
+      var keys = Object.keys(TYPE_LABELS);
+      if (current && keys.indexOf(current) === -1) keys.push(current);
+      keys.forEach(function (k) {
+        var o = document.createElement('option');
+        o.value = k;
+        o.textContent = TYPE_LABELS[k] || k;
+        if (k === current) o.selected = true;
+        sel.appendChild(o);
+      });
+    }
+    function openEditSubmission(id) {
+      var row = findById(allRows, id);
+      if (!row) return;
+      var f = document.getElementById('editSubmissionForm').elements;
+      f['id'].value = row.id;
+      f['name'].value = row.name || '';
+      f['email'].value = row.email || '';
+      f['phone'].value = row.phone || '';
+      fillTypeSelect(document.getElementById('editSubmissionType'), row.form_type || 'contact');
+      f['subject'].value = row.subject || trekOf(row) || '';
+      f['message'].value = row.message || '';
+      hideMsg('editSubmissionMsg');
+      openModal('editSubmissionModal');
+    }
+    function removeSubmission(id) {
+      var row = findById(allRows, id);
+      var who = row ? (row.name || row.email || ('#' + id)) : ('#' + id);
+      if (!window.confirm('Delete the record from ' + who + '? This cannot be undone.')) return;
+      api('/api/submissions?id=' + encodeURIComponent(id), { method: 'DELETE' }).then(function (res) {
+        if (guard401(res)) return;
+        if (res.data && res.data.ok) loadSubs();
+        else window.alert(errText(res));
+      }).catch(function () { window.alert('Network error. Please try again.'); });
+    }
+
+    // ── newsletter subscribers: edit + delete ─────────────────────────────────
+    function openEditSubscriber(id) {
+      var row = findById(subscriberRows, id);
+      if (!row) return;
+      var f = document.getElementById('editSubscriberForm').elements;
+      f['id'].value = row.id;
+      f['email'].value = row.email || '';
+      f['source'].value = row.source || '';
+      hideMsg('editSubscriberMsg');
+      openModal('editSubscriberModal');
+    }
+    function removeSubscriber(id) {
+      var row = findById(subscriberRows, id);
+      var who = row ? (row.email || ('#' + id)) : ('#' + id);
+      if (!window.confirm('Delete subscriber ' + who + '? This cannot be undone.')) return;
+      api('/api/subscribers?id=' + encodeURIComponent(id), { method: 'DELETE' }).then(function (res) {
+        if (guard401(res)) return;
+        if (res.data && res.data.ok) loadSubscribers();
+        else window.alert(errText(res));
+      }).catch(function () { window.alert('Network error. Please try again.'); });
+    }
+
+    // ── admins: edit + delete (super admin only) ──────────────────────────────
+    function openEditAdmin(id) {
+      if (!isSuper) return;
+      var row = findById(adminRows, id);
+      if (!row) return;
+      var f = document.getElementById('editAdminForm').elements;
+      f['id'].value = row.id;
+      f['name'].value = row.name || '';
+      f['email'].value = row.email || '';
+      f['password'].value = '';
+      f['is_super'].checked = !!row.is_super;
+      hideMsg('editAdminMsg');
+      openModal('editAdminModal');
+    }
+    function removeAdmin(id) {
+      if (!isSuper) return;
+      var row = findById(adminRows, id);
+      var who = row ? (row.name || row.email || ('#' + id)) : ('#' + id);
+      if (!window.confirm('Remove admin ' + who + '? They will lose access immediately.')) return;
+      api('/api/admins?id=' + encodeURIComponent(id), { method: 'DELETE' }).then(function (res) {
+        if (guard401(res)) return;
+        if (res.data && res.data.ok) loadAdmins();
+        else window.alert(errText(res));
+      }).catch(function () { window.alert('Network error. Please try again.'); });
+    }
+
+    // ── modal edit-form submissions ───────────────────────────────────────────
+    function wireEditForm(formId, msgId, buildBody, urlBase, onDone) {
+      var form = document.getElementById(formId);
+      if (!form) return;
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var body = buildBody(form.elements);
+        if (body === false) return; // validation failed inside buildBody
+        var id = form.elements['id'].value;
+        var msg = document.getElementById(msgId);
+        var btn = form.querySelector('[type="submit"]');
+        btn.disabled = true;
+        api(urlBase + '?id=' + encodeURIComponent(id), { method: 'PUT', body: body }).then(function (res) {
+          btn.disabled = false;
+          if (res.status >= 200 && res.status < 300 && res.data && res.data.ok) {
+            var modal = form.closest('.modal');
+            if (modal) closeModal(modal.id);
+            onDone();
+          } else {
+            showMsg(msg, errText(res), false);
+          }
+        }).catch(function () {
+          btn.disabled = false;
+          showMsg(msg, 'Network error. Please try again.', false);
+        });
+      });
+    }
+
+    wireEditForm('editSubmissionForm', 'editSubmissionMsg', function (f) {
+      return {
+        name: f['name'].value.trim(),
+        email: f['email'].value.trim(),
+        phone: f['phone'].value.trim(),
+        form_type: f['form_type'].value,
+        subject: f['subject'].value.trim(),
+        message: f['message'].value.trim(),
+      };
+    }, '/api/submissions', function () { loadSubs(); });
+
+    wireEditForm('editSubscriberForm', 'editSubscriberMsg', function (f) {
+      return {
+        email: f['email'].value.trim(),
+        source: f['source'].value.trim(),
+      };
+    }, '/api/subscribers', function () { loadSubscribers(); });
+
+    wireEditForm('editAdminForm', 'editAdminMsg', function (f) {
+      var body = {
+        name: f['name'].value.trim(),
+        email: f['email'].value.trim(),
+        is_super: f['is_super'].checked,
+      };
+      var pw = f['password'].value;
+      if (pw) {
+        if (pw.length < 8) {
+          showMsg(document.getElementById('editAdminMsg'), 'Password must be at least 8 characters.', false);
+          return false;
+        }
+        body.password = pw;
+      }
+      return body;
+    }, '/api/admins', function () { loadAdmins(); });
+
+    // Close modals via [data-close], backdrop click, or the Escape key.
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      var closer = t.closest ? t.closest('[data-close]') : null;
+      if (closer) {
+        var m = closer.closest('.modal');
+        if (m) closeModal(m.id);
+      } else if (t.classList && t.classList.contains('modal')) {
+        closeModal(t.id);
+      }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        var open = document.querySelectorAll('.modal.open');
+        for (var i = 0; i < open.length; i++) closeModal(open[i].id);
+      }
+    });
+
+    // ── session guard + initial load ──────────────────────────────────────────
     api('/api/admin/session').then(function (res) {
       if (res.status !== 200 || !res.data.ok) {
         clearToken();
         window.location.href = '/admin-login';
         return;
       }
+      var admin = res.data.admin || {};
+      isSuper = !!admin.is_super;
       var who = document.getElementById('adminWho');
-      if (who) who.textContent = res.data.admin.name + ' · ' + res.data.admin.email;
+      if (who) who.textContent = admin.name + ' · ' + admin.email + (isSuper ? ' · Super admin' : '');
+      var adminsActions = document.getElementById('adminsActions');
+      var adminsHint = document.getElementById('adminsHint');
+      if (isSuper) {
+        if (adminsActions) adminsActions.style.display = '';
+        if (adminsHint) adminsHint.textContent = 'Select an admin to edit or delete.';
+      } else {
+        if (adminsActions) adminsActions.style.display = 'none';
+        if (adminsHint) adminsHint.textContent = 'Only super admins can edit or delete admins.';
+      }
       loadSubs();
       loadSubscribers();
       loadAdmins();
       loadTreksManagement();
     });
 
-    var allRows = [];
-
     function loadSubs() {
       var status = document.getElementById('subsStatus');
       if (status) status.textContent = 'Loading…';
       api('/api/submissions?limit=200').then(function (res) {
-        if (res.status === 401) {
-          clearToken();
-          window.location.href = '/admin-login';
-          return;
-        }
+        if (guard401(res)) return;
         if (!res.data.ok) {
           if (status) status.textContent = 'Failed to load submissions.';
           return;
@@ -310,6 +583,7 @@
         updateStats(allRows);
         buildFilter(allRows);
         renderRows(allRows, currentFilter());
+        subsSel.reset();
       });
     }
 
@@ -320,31 +594,25 @@
 
     function loadSubscribers() {
       api('/api/subscribers?limit=500').then(function (res) {
-        if (res.status === 401) {
-          clearToken();
-          window.location.href = '/admin-login';
-          return;
-        }
+        if (guard401(res)) return;
         if (!res.data || !res.data.ok) return;
-        var rows = res.data.data || [];
+        subscriberRows = res.data.data || [];
         var stat = document.getElementById('statSubs');
-        if (stat) stat.textContent = res.data.total != null ? res.data.total : rows.length;
-        renderSubscribers(rows);
+        if (stat) stat.textContent = res.data.total != null ? res.data.total : subscriberRows.length;
+        renderSubscribers(subscriberRows);
+        subscribersSel.reset();
       });
     }
 
     function loadAdmins() {
       api('/api/admins').then(function (res) {
-        if (res.status === 401) {
-          clearToken();
-          window.location.href = '/admin-login';
-          return;
-        }
+        if (guard401(res)) return;
         if (!res.data || !res.data.ok) return;
-        var rows = res.data.data || [];
+        adminRows = res.data.data || [];
         var stat = document.getElementById('statAdmins');
-        if (stat) stat.textContent = res.data.total != null ? res.data.total : rows.length;
-        renderAdmins(rows);
+        if (stat) stat.textContent = res.data.total != null ? res.data.total : adminRows.length;
+        renderAdmins(adminRows, isSuper);
+        adminsSel.reset();
       });
     }
 
@@ -414,6 +682,7 @@
       });
       sel.addEventListener('change', function () {
         renderRows(allRows, sel.value);
+        subsSel.reset();
       });
     }
 

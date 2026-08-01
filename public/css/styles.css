@@ -486,6 +486,60 @@ p {
   background: var(--glass-2);
   color: #fff;
 }
+.admin-table tr.is-selected td {
+  background: rgba(232, 93, 4, 0.12);
+}
+.sel-col {
+  width: 42px;
+  text-align: center;
+}
+.admin-table td.admin-sel {
+  text-align: center;
+  vertical-align: middle;
+}
+.admin-table input[type="radio"].row-sel {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--orange);
+  cursor: pointer;
+}
+.admin-row-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+  align-items: center;
+}
+.admin-row-actions .btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.btn-danger {
+  border: 1px solid rgba(220, 60, 60, 0.5);
+  color: #ff9d9d;
+  background: rgba(220, 50, 50, 0.1);
+}
+.btn-danger:hover:not(:disabled) {
+  border-color: #e5484d;
+  color: #fff;
+  background: rgba(220, 50, 50, 0.28);
+}
+.admin-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.88rem;
+  color: var(--mist);
+  margin: 4px 0 6px;
+  cursor: pointer;
+}
+.admin-check input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  accent-color: var(--orange);
+  cursor: pointer;
+  flex: none;
+}
 .edit-field {
   margin-bottom: 16px;
 }
