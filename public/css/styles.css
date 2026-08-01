@@ -2792,3 +2792,117 @@ body.lang-bn [data-lang-bn] {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* =====================================================================
+   THEME — Light mode + toggle
+   Dark is the default (base :root). Light mode flips the surface/text/line
+   tokens; a few components hardcode dark colours and get explicit overrides.
+   ===================================================================== */
+
+/* Theme toggle button (navbar + admin topbar) */
+.theme-toggle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  color: var(--mist);
+  display: grid;
+  place-items: center;
+  font-size: 0.95rem;
+  flex: none;
+  transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.2s;
+}
+.theme-toggle:hover {
+  color: var(--orange-300);
+  border-color: var(--orange);
+  transform: translateY(-2px);
+}
+
+/* Smooth the page background when switching themes. */
+body {
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+:root[data-theme="light"] {
+  --navy: #eef2f8;
+  --navy-800: #e6ebf3;
+  --navy-700: #ffffff;
+  --navy-600: #f4f7fc;
+  --navy-500: #edf1f8;
+  --navy-400: #e3e9f3;
+  --navy-glass: rgba(255, 255, 255, 0.7);
+  --ink: #0a1628;
+  --mist: #35425a;
+  --mist-dim: #64748b;
+  --mist-faint: rgba(10, 22, 40, 0.03);
+  --line: rgba(10, 22, 40, 0.12);
+  --line-strong: rgba(10, 22, 40, 0.2);
+  --glass: rgba(10, 22, 40, 0.04);
+  --glass-2: rgba(10, 22, 40, 0.06);
+  --shadow-sm: 0 2px 10px rgba(20, 40, 80, 0.08);
+  --shadow: 0 18px 44px rgba(20, 40, 80, 0.12);
+  --shadow-lg: 0 40px 90px rgba(20, 40, 80, 0.16);
+  color-scheme: light;
+}
+
+/* Chrome surfaces that hardcode dark backgrounds. */
+:root[data-theme="light"] .navbar.scrolled {
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 10px 40px rgba(20, 40, 80, 0.1);
+}
+:root[data-theme="light"] .admin-topbar {
+  background: rgba(255, 255, 255, 0.9);
+}
+:root[data-theme="light"] .drop {
+  background: rgba(255, 255, 255, 0.98);
+}
+:root[data-theme="light"] .control,
+:root[data-theme="light"] select.control,
+:root[data-theme="light"] input.control,
+:root[data-theme="light"] textarea.control {
+  background: #ffffff;
+}
+:root[data-theme="light"] .modal-close {
+  background: rgba(255, 255, 255, 0.9);
+}
+:root[data-theme="light"] .nav-toggle span {
+  background: var(--ink);
+}
+@media (max-width: 820px) {
+  :root[data-theme="light"] .nav-links {
+    background: rgba(255, 255, 255, 0.98);
+  }
+}
+
+/* Text that hardcodes white on a (now light) surface → dark.
+   The [style*="color:#fff"] rules also flip inline whites used in
+   JS-generated markup, without needing to touch the scripts. */
+:root[data-theme="light"] h1,
+:root[data-theme="light"] h2,
+:root[data-theme="light"] h3,
+:root[data-theme="light"] h4,
+:root[data-theme="light"] h5,
+:root[data-theme="light"] .brand,
+:root[data-theme="light"] .btn-ghost,
+:root[data-theme="light"] .btn-outline,
+:root[data-theme="light"] .admin-stat .n,
+:root[data-theme="light"] .stat .n,
+:root[data-theme="light"] .nav-links > a,
+:root[data-theme="light"] .nav-links > .has-drop > button,
+:root[data-theme="light"] [style*="color:#fff"],
+:root[data-theme="light"] [style*="color: #fff"] {
+  color: var(--ink) !important;
+}
+:root[data-theme="light"] .nav-links > a:hover,
+:root[data-theme="light"] .nav-links > .has-drop:hover > button,
+:root[data-theme="light"] .drop a:hover {
+  color: var(--ink);
+}
+:root[data-theme="light"] .nav-links a.active {
+  color: var(--orange-300) !important;
+}
+:root[data-theme="light"] .gradient-text {
+  background: linear-gradient(105deg, var(--ink) 0%, var(--orange-300) 55%, var(--orange) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}

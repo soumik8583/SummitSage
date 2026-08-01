@@ -10,7 +10,7 @@
  * team. Runs as a Vercel Serverless Function (and locally via server.js).
  */
 
-const { saveSubmission } = require('../lib/db');
+const { saveSubmission, saveTrekRegistration } = require('../lib/db');
 const { sendSubmissionEmail, sendConfirmationEmail } = require('../lib/email');
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -113,6 +113,26 @@ module.exports = async (req, res) => {
     (Array.isArray(forwarded) ? forwarded[0] : forwarded || '')
       .split(',')[0]
       .trim() || null;
+  const userAgent = clean(req.headers['user-agent'] || '', 300);
+
+  // Trek registrations go to their own dedicated table; every other form type
+  // is stored in the generic submissions table.
+  const savePromise =
+    formType === 'registration'
+      ? saveTrekRegistration({
+          name: value.name,
+          email: value.email,
+          phone: value.phone,
+          people: details.people,
+          city: details.city,
+          tshirt_size: details.tShirtSize,
+          emergency_contact: details.emergencyContact,
+          trek: value.subject || details.trek || '',
+          message: value.message,
+          ip_address: ip,
+          user_agent: userAgent,
+        })
+      : saveSubmission({ ...value, ip_address: ip, user_agent: userAgent });
 
   // Email the submission and store it independently, so a failure in one
   // channel does not block the other. It succeeds if either one works.
@@ -139,11 +159,7 @@ module.exports = async (req, res) => {
         console.error('Failed to email submission:', (err && err.message) || err);
         return false;
       }),
-    saveSubmission({
-      ...value,
-      ip_address: ip,
-      user_agent: clean(req.headers['user-agent'] || '', 300),
-    })
+    savePromise
       .then(function (row) {
         return row;
       })

@@ -71,7 +71,7 @@
       '<p class="muted" style="font-size:.94rem">' + f.bio + '</p>' +
       '<div class="social" style="justify-content:center;margin-top:16px">' +
       '<a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>' +
-      '<a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>' +
+      '<a href="https://www.instagram.com/summitsage_?igsh=cHhrZGJjdHI4bzM=" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>' +
       '<a data-wa aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>' +
       '</div></article>'
     );

@@ -45,6 +45,7 @@
     '<button data-lang="en" class="active">EN</button>' +
     '<button data-lang="bn">বাংলা</button>' +
     '</div>' +
+    '<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme" title="Toggle theme"><i class="fa-solid fa-sun"></i></button>' +
     '<a class="btn btn-primary btn-sm" data-wa><i class="fa-brands fa-whatsapp"></i> Join</a>' +
     '<button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>' +
     '</div>';
@@ -63,7 +64,7 @@
     '<div><a href="/" class="brand" style="font-size:1.4rem">' + MARK + '<span>Summit<span class="b-sage">Sage</span></span></a>' +
     '<p class="about">A premium trekking & adventure community from Kolkata — turning first-timers into lifelong mountaineers, one summit at a time.</p>' +
     '<div class="social">' +
-    '<a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>' +
+    '<a href="https://www.instagram.com/summitsage_?igsh=cHhrZGJjdHI4bzM=" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>' +
     '<a data-wa aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>' +
     '<a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>' +
     '<a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>' +

@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="/js/theme.js"></script>
   <link rel="stylesheet" href="/css/styles.css">
   <script defer src="/js/admin.js"></script>
 </head>
@@ -23,6 +24,7 @@
       </a>
       <div class="spacer"></div>
       <span class="admin-who" id="adminWho"></span>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme" title="Toggle theme"><i class="fa-solid fa-sun"></i></button>
       <button class="btn btn-outline btn-sm" id="refreshBtn"><i class="fa-solid fa-rotate"></i> Refresh</button>
       <button class="btn btn-primary btn-sm" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
     </header>
@@ -101,6 +103,36 @@
         </table>
       </div>
 
+      <h2 style="font-size:1.3rem;margin:40px 0 6px">User Registered Trek</h2>
+      <p class="muted" style="margin:0 0 16px">Everyone who booked a spot through a trek registration form.</p>
+      <div class="admin-toolbar">
+        <span class="muted" id="regsStatus" style="font-size:.86rem"></span>
+        <div class="admin-row-actions" id="regsActions">
+          <button class="btn btn-outline btn-sm" id="regsEditBtn" disabled><i class="fa-solid fa-pen"></i> Edit</button>
+          <button class="btn btn-danger btn-sm" id="regsDeleteBtn" disabled><i class="fa-solid fa-trash-can"></i> Delete</button>
+        </div>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table" style="min-width:900px">
+          <thead>
+            <tr>
+              <th class="sel-col" aria-label="Select"></th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>WhatsApp</th>
+              <th>People</th>
+              <th>City</th>
+              <th>T-shirt</th>
+              <th>Trek</th>
+              <th>Received</th>
+            </tr>
+          </thead>
+          <tbody id="regsBody">
+            <tr><td colspan="9" class="admin-empty">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
       <h2 style="font-size:1.3rem;margin:40px 0 6px">Newsletter subscribers</h2>
       <p class="muted" style="margin:0 0 16px">People who signed up in the "Join the pack" section for trek drops &amp; alerts.</p>
       <div class="admin-toolbar">
@@ -169,6 +201,32 @@
         <div class="edit-field"><label>Type</label><select class="control" name="form_type" id="editSubmissionType"></select></div>
         <div class="edit-field"><label>Trek interest</label><input class="control" name="subject" type="text" maxlength="200" placeholder="—"></div>
         <div class="edit-field"><label>Message</label><textarea class="control" name="message" rows="4" maxlength="4000" placeholder="—"></textarea></div>
+        <div class="flex gap-1" style="justify-content:flex-end;margin-top:10px">
+          <button type="button" class="btn btn-outline btn-sm" data-close>Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit trek registration modal -->
+  <div class="modal" id="editRegistrationModal" aria-hidden="true">
+    <div class="modal-box" style="max-width:620px;padding:30px">
+      <button class="modal-close" type="button" data-close aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      <h2 style="font-size:1.3rem;margin-bottom:4px">Edit trek registration</h2>
+      <p class="muted" style="margin:0 0 18px;font-size:.9rem">Update this registrant's details — all the fields from the registration form.</p>
+      <div class="admin-msg" id="editRegistrationMsg"></div>
+      <form id="editRegistrationForm" novalidate>
+        <input type="hidden" name="id">
+        <div class="edit-field"><label>Full name</label><input class="control" name="name" type="text" maxlength="120" required></div>
+        <div class="edit-field"><label>Email</label><input class="control" name="email" type="email" maxlength="160" required></div>
+        <div class="edit-field"><label>WhatsApp number</label><input class="control" name="phone" type="text" maxlength="40" placeholder="+91"></div>
+        <div class="edit-field"><label>Number of people</label><input class="control" name="people" type="number" min="1" placeholder="1"></div>
+        <div class="edit-field"><label>City</label><input class="control" name="city" type="text" maxlength="80" placeholder="—"></div>
+        <div class="edit-field"><label>T-shirt size</label><select class="control" name="tshirt_size"><option value="">—</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></div>
+        <div class="edit-field"><label>Emergency contact</label><input class="control" name="emergency_contact" type="text" maxlength="200" placeholder="Name & phone"></div>
+        <div class="edit-field"><label>Trek</label><input class="control" name="trek" type="text" maxlength="160" placeholder="—"></div>
+        <div class="edit-field"><label>Anything we should know?</label><textarea class="control" name="message" rows="3" maxlength="4000" placeholder="—"></textarea></div>
         <div class="flex gap-1" style="justify-content:flex-end;margin-top:10px">
           <button type="button" class="btn btn-outline btn-sm" data-close>Cancel</button>
           <button type="submit" class="btn btn-primary btn-sm">Save changes</button>

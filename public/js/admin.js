@@ -252,6 +252,32 @@
     return '—';
   }
 
+  function renderRegistrations(rows) {
+    var tbody = document.getElementById('regsBody');
+    if (!tbody) return;
+    if (!rows || rows.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="9" class="admin-empty">No trek registrations yet.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows
+      .map(function (r) {
+        return (
+          '<tr data-id="' + r.id + '">' +
+          '<td class="admin-sel"><input type="radio" class="row-sel" name="regsSel" value="' + r.id + '" aria-label="Select this registration"></td>' +
+          '<td>' + esc(r.name) + '</td>' +
+          '<td><a href="mailto:' + esc(r.email) + '">' + esc(r.email) + '</a></td>' +
+          '<td>' + (r.phone ? '<a href="tel:' + esc(r.phone) + '">' + esc(r.phone) + '</a>' : '—') + '</td>' +
+          '<td>' + (r.people != null && r.people !== '' ? esc(r.people) : '—') + '</td>' +
+          '<td>' + (r.city ? esc(r.city) : '—') + '</td>' +
+          '<td>' + (r.tshirt_size ? esc(r.tshirt_size) : '—') + '</td>' +
+          '<td>' + (r.trek ? esc(r.trek) : '—') + '</td>' +
+          '<td class="admin-date">' + esc(r.created_at) + '</td>' +
+          '</tr>'
+        );
+      })
+      .join('');
+  }
+
   function renderAdmins(rows, canManage) {
     var tbody = document.getElementById('adminsBody');
     if (!tbody) return;
@@ -288,6 +314,7 @@
     var isSuper = false; // current admin's super-admin status
     var allRows = []; // submissions
     var subscriberRows = []; // newsletter subscribers
+    var registrationRows = []; // trek registrations
     var adminRows = []; // admins
 
     // ── small utilities ───────────────────────────────────────────────────────
@@ -370,6 +397,10 @@
       tbodyId: 'subscribersBody', editBtnId: 'subscribersEditBtn', deleteBtnId: 'subscribersDeleteBtn',
       onEdit: openEditSubscriber, onDelete: removeSubscriber,
     });
+    var regsSel = setupTableActions({
+      tbodyId: 'regsBody', editBtnId: 'regsEditBtn', deleteBtnId: 'regsDeleteBtn',
+      onEdit: openEditRegistration, onDelete: removeRegistration,
+    });
     var adminsSel = setupTableActions({
       tbodyId: 'adminsBody', editBtnId: 'adminsEditBtn', deleteBtnId: 'adminsDeleteBtn',
       onEdit: openEditAdmin, onDelete: removeAdmin,
@@ -432,6 +463,35 @@
       api('/api/subscribers?id=' + encodeURIComponent(id), { method: 'DELETE' }).then(function (res) {
         if (guard401(res)) return;
         if (res.data && res.data.ok) loadSubscribers();
+        else window.alert(errText(res));
+      }).catch(function () { window.alert('Network error. Please try again.'); });
+    }
+
+    // ── trek registrations (User Registered Trek): edit + delete ──────────────
+    function openEditRegistration(id) {
+      var row = findById(registrationRows, id);
+      if (!row) return;
+      var f = document.getElementById('editRegistrationForm').elements;
+      f['id'].value = row.id;
+      f['name'].value = row.name || '';
+      f['email'].value = row.email || '';
+      f['phone'].value = row.phone || '';
+      f['people'].value = (row.people != null ? row.people : '');
+      f['city'].value = row.city || '';
+      f['tshirt_size'].value = row.tshirt_size || '';
+      f['emergency_contact'].value = row.emergency_contact || '';
+      f['trek'].value = row.trek || '';
+      f['message'].value = row.message || '';
+      hideMsg('editRegistrationMsg');
+      openModal('editRegistrationModal');
+    }
+    function removeRegistration(id) {
+      var row = findById(registrationRows, id);
+      var who = row ? (row.name || row.email || ('#' + id)) : ('#' + id);
+      if (!window.confirm('Delete the registration from ' + who + '? This cannot be undone.')) return;
+      api('/api/registrations?id=' + encodeURIComponent(id), { method: 'DELETE' }).then(function (res) {
+        if (guard401(res)) return;
+        if (res.data && res.data.ok) loadRegistrations();
         else window.alert(errText(res));
       }).catch(function () { window.alert('Network error. Please try again.'); });
     }
@@ -508,6 +568,20 @@
       };
     }, '/api/subscribers', function () { loadSubscribers(); });
 
+    wireEditForm('editRegistrationForm', 'editRegistrationMsg', function (f) {
+      return {
+        name: f['name'].value.trim(),
+        email: f['email'].value.trim(),
+        phone: f['phone'].value.trim(),
+        people: f['people'].value.trim(),
+        city: f['city'].value.trim(),
+        tshirt_size: f['tshirt_size'].value,
+        emergency_contact: f['emergency_contact'].value.trim(),
+        trek: f['trek'].value.trim(),
+        message: f['message'].value.trim(),
+      };
+    }, '/api/registrations', function () { loadRegistrations(); });
+
     wireEditForm('editAdminForm', 'editAdminMsg', function (f) {
       var body = {
         name: f['name'].value.trim(),
@@ -565,6 +639,7 @@
       }
       loadSubs();
       loadSubscribers();
+      loadRegistrations();
       loadAdmins();
       loadTreksManagement();
     });
@@ -578,7 +653,8 @@
           if (status) status.textContent = 'Failed to load submissions.';
           return;
         }
-        allRows = res.data.data || [];
+        // Trek registrations now live in their own table — keep them out here.
+        allRows = (res.data.data || []).filter(function (r) { return r.form_type !== 'registration'; });
         if (status) status.textContent = '';
         updateStats(allRows);
         buildFilter(allRows);
@@ -613,6 +689,24 @@
         if (stat) stat.textContent = res.data.total != null ? res.data.total : adminRows.length;
         renderAdmins(adminRows, isSuper);
         adminsSel.reset();
+      });
+    }
+
+    function loadRegistrations() {
+      var status = document.getElementById('regsStatus');
+      if (status) status.textContent = 'Loading…';
+      api('/api/registrations?limit=500').then(function (res) {
+        if (guard401(res)) return;
+        if (!res.data || !res.data.ok) {
+          if (status) status.textContent = 'Failed to load registrations.';
+          return;
+        }
+        registrationRows = res.data.data || [];
+        if (status) status.textContent = '';
+        var stat = document.getElementById('statRegs');
+        if (stat) stat.textContent = res.data.total != null ? res.data.total : registrationRows.length;
+        renderRegistrations(registrationRows);
+        regsSel.reset();
       });
     }
 
@@ -661,11 +755,10 @@
 
     function updateStats(rows) {
       var total = document.getElementById('statTotal');
-      var regs = document.getElementById('statRegs');
       var contacts = document.getElementById('statContacts');
       if (total) total.textContent = rows.length;
-      if (regs) regs.textContent = rows.filter(function (r) { return r.form_type === 'registration'; }).length;
       if (contacts) contacts.textContent = rows.filter(function (r) { return r.form_type === 'contact'; }).length;
+      // statRegs is owned by loadRegistrations (dedicated trek_registrations table).
     }
 
     function buildFilter(rows) {
@@ -699,6 +792,7 @@
       refresh.addEventListener('click', function () {
         loadSubs();
         loadSubscribers();
+        loadRegistrations();
         loadAdmins();
         loadTreksManagement();
       });

@@ -12,7 +12,7 @@ window.SUMMIT = {
   whatsapp: ['917278601577'],
   whatsappText:
     "Hi Summit Sage! I'd love to know more about your upcoming treks.",
-  instagram: 'https://instagram.com',
+  instagram: 'https://www.instagram.com/summitsage_?igsh=cHhrZGJjdHI4bzM=',
   email: 'hello@summitsage.in',
   phoneDisplay: '+91 98300 12345',
   city: 'Kolkata, India',
