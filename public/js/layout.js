@@ -41,10 +41,6 @@
 
   const navRight =
     '<div class="nav-right">' +
-    '<div class="lang-toggle" role="group" aria-label="Language">' +
-    '<button data-lang="en" class="active">EN</button>' +
-    '<button data-lang="bn">বাংলা</button>' +
-    '</div>' +
     '<button class="theme-toggle" data-theme-toggle aria-label="Toggle theme" title="Toggle theme"><i class="fa-solid fa-sun"></i></button>' +
     '<a class="btn btn-primary btn-sm" data-wa><i class="fa-brands fa-whatsapp"></i> Join</a>' +
     '<button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>' +
@@ -86,7 +82,7 @@
     '</form>' +
     '<p class="muted" style="font-size:.8rem;margin-top:14px">Proudly partnered with <b style="color:#cdd9ec">Decathlon</b></p>' +
     '</div></div>' +
-    '<div class="footer-bottom"><span>© <span id="year">2026</span> Summit Sage · Kolkata, India. All rights reserved.</span>' +
+    '<div class="footer-bottom"><span>© <span id="year">2026</span> Summit Sage · Kolkata, India. All rights reserved. · copyright@soumikmondal723</span>' +
     '<span class="flex gap-1 wrap"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Safety</a></span></div>' +
     '</div></footer>';
 

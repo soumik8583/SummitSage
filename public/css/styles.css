@@ -707,23 +707,6 @@ p {
   align-items: center;
   gap: 12px;
 }
-.lang-toggle {
-  display: inline-flex;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  overflow: hidden;
-  font-size: 0.78rem;
-  font-weight: 700;
-}
-.lang-toggle button {
-  padding: 7px 12px;
-  color: var(--mist-dim);
-  transition: background 0.25s, color 0.25s;
-}
-.lang-toggle button.active {
-  background: var(--orange);
-  color: #fff;
-}
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -1497,6 +1480,13 @@ select.control {
 }
 
 /* ---------- Footer ---------- */
+.site-copy {
+  text-align: center;
+  padding: 22px 16px;
+  color: var(--mist-dim);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--line);
+}
 .footer {
   position: relative;
   background: var(--navy-800);
@@ -2660,17 +2650,6 @@ textarea.control {
   border-radius: 12px;
   padding: 12px 16px;
   text-align: center;
-}
-
-/* i18n visibility */
-[data-lang-bn] {
-  display: none;
-}
-body.lang-bn [data-lang-en] {
-  display: none;
-}
-body.lang-bn [data-lang-bn] {
-  display: revert;
 }
 
 /* ---------- Responsive ---------- */

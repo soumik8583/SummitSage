@@ -97,23 +97,6 @@ window.SUMMIT = {
     }
   });
 
-  /* ---- Language toggle (EN / বাংলা) ---- */
-  const savedLang = localStorage.getItem('ss_lang') || 'en';
-  function applyLang(lang) {
-    document.body.classList.toggle('lang-bn', lang === 'bn');
-    document.querySelectorAll('.lang-toggle button').forEach(function (b) {
-      b.classList.toggle('active', b.getAttribute('data-lang') === lang);
-    });
-    localStorage.setItem('ss_lang', lang);
-    document.documentElement.lang = lang === 'bn' ? 'bn' : 'en';
-  }
-  document.querySelectorAll('.lang-toggle button').forEach(function (b) {
-    b.addEventListener('click', function () {
-      applyLang(b.getAttribute('data-lang'));
-    });
-  });
-  applyLang(savedLang);
-
   /* ---- Footer year ---- */
   const yr = document.getElementById('year');
   if (yr) yr.textContent = new Date().getFullYear();
