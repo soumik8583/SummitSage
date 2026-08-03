@@ -64,4 +64,11 @@
   else document.addEventListener('DOMContentLoaded', init);
 
   window.SSTheme = { get: getTheme, set: setTheme, toggle: function () { setTheme(getTheme() === 'light' ? 'dark' : 'light'); } };
+
+  // Register the service worker (PWA install + offline support).
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/service-worker.js').catch(function () {});
+    });
+  }
 })();

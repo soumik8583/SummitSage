@@ -1,0 +1,24 @@
+{
+  "name": "Summit Sage — Himalayan Treks",
+  "short_name": "Summit Sage",
+  "description": "Premium Himalayan treks & adventure community from Kolkata. Browse treks, register for expeditions, and follow the journey.",
+  "id": "/",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a1628",
+  "theme_color": "#0a1628",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["travel", "sports", "lifestyle"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Browse treks", "url": "/treks", "description": "See all upcoming treks" },
+    { "name": "Contact us", "url": "/contact", "description": "Get in touch on WhatsApp or email" }
+  ]
+}
