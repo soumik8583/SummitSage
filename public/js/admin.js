@@ -80,6 +80,43 @@
       .replace(/"/g, '&quot;');
   }
 
+  // Derive up-to-two-letter initials from a name (or email) for the avatar.
+  function initialsOf(name, email) {
+    var src = (name && String(name).trim()) || (email && String(email).trim()) || '';
+    if (!src) return '?';
+    var parts = src.split(/\s+/).filter(Boolean);
+    if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    return src.slice(0, 2).toUpperCase();
+  }
+
+  // Fill the topbar avatar + hover dropdown with the signed-in admin's details.
+  function populateProfileWidget(admin, isSuper) {
+    if (!admin) return;
+    var initialsEl = document.getElementById('adminAvatarInitials');
+    if (initialsEl) initialsEl.textContent = initialsOf(admin.name, admin.email);
+    var avatarImg = document.getElementById('adminAvatarImg');
+    if (avatarImg) {
+      if (admin.avatar) {
+        avatarImg.src = admin.avatar;
+        avatarImg.hidden = false;
+        if (initialsEl) initialsEl.style.display = 'none';
+      } else {
+        avatarImg.hidden = true;
+        if (initialsEl) initialsEl.style.display = '';
+      }
+    }
+    var dropName = document.getElementById('adminDropName');
+    if (dropName) dropName.textContent = admin.name || '—';
+    var dropEmail = document.getElementById('adminDropEmail');
+    if (dropEmail) dropEmail.textContent = admin.email || '';
+    var dropRole = document.getElementById('adminDropRole');
+    if (dropRole) {
+      dropRole.innerHTML = isSuper
+        ? '<span class="admin-tag" style="background:rgba(232,93,4,.18);color:var(--orange-300)">Super admin</span>'
+        : '<span class="admin-tag" style="background:var(--glass-2);color:var(--mist)">Admin</span>';
+    }
+  }
+
   function api(path, opts) {
     opts = opts || {};
     var headers = opts.headers || {};
@@ -734,6 +771,7 @@
       isSuper = !!admin.is_super;
       var who = document.getElementById('adminWho');
       if (who) who.textContent = admin.name + ' · ' + admin.email + (isSuper ? ' · Super admin' : '');
+      populateProfileWidget(admin, isSuper);
       var adminsActions = document.getElementById('adminsActions');
       var adminsHint = document.getElementById('adminsHint');
       if (isSuper) {
@@ -920,6 +958,108 @@
     }
   }
 
+  // ── PROFILE PAGE ─────────────────────────────────────────────────────────────
+  function initProfile() {
+    var root = document.getElementById('adminProfile');
+    if (!root) return;
+
+    // Guard: must be signed in and not idle-expired.
+    if (!getToken() || isIdleExpired()) {
+      logoutForIdle();
+      return;
+    }
+    setupIdleTimeout();
+
+    var form = document.getElementById('profileForm');
+    var msg = document.getElementById('profileMsg');
+    var currentIsSuper = false;
+
+    function fill(admin) {
+      currentIsSuper = !!admin.is_super;
+      populateProfileWidget(admin, currentIsSuper);
+      if (form) {
+        form.elements['name'].value = admin.name || '';
+        form.elements['email'].value = admin.email || '';
+      }
+      var method = document.getElementById('profileMethod');
+      if (method) {
+        var m = admin.has_password && admin.has_google ? 'Password + Google'
+          : admin.has_password ? 'Password'
+          : admin.has_google ? 'Google' : '—';
+        method.textContent = m;
+      }
+      var role = document.getElementById('profileRole');
+      if (role) role.textContent = admin.is_super ? 'Super admin' : 'Admin';
+      var since = document.getElementById('profileSince');
+      if (since) since.textContent = admin.created_at || '—';
+      // Google-only admins have no password to change — relabel the fields.
+      var pwHint = document.getElementById('profilePwHint');
+      if (pwHint && !admin.has_password) {
+        pwHint.textContent = 'Set a password to also sign in with email + password.';
+      }
+    }
+
+    // Load the current admin's profile.
+    api('/api/admin/profile').then(function (res) {
+      if (res.status === 401) { logoutForIdle(); return; }
+      if (!res.data || !res.data.ok) {
+        showMsg(msg, (res.data && res.data.error) || 'Could not load your profile.', false);
+        return;
+      }
+      fill(res.data.admin || {});
+    });
+
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        hideMsgEl(msg);
+        var f = form.elements;
+        var body = {
+          name: f['name'].value.trim(),
+          email: f['email'].value.trim(),
+        };
+        var pw = f['password'].value;
+        var pw2 = f['confirm'].value;
+        if (pw || pw2) {
+          if (pw !== pw2) { showMsg(msg, 'Passwords do not match.', false); return; }
+          if (pw.length < 8) { showMsg(msg, 'Password must be at least 8 characters.', false); return; }
+          body.password = pw;
+        }
+        var btn = form.querySelector('[type="submit"]');
+        btn.disabled = true;
+        api('/api/admin/profile', { method: 'PUT', body: body }).then(function (res) {
+          btn.disabled = false;
+          if (res.status >= 200 && res.status < 300 && res.data && res.data.ok) {
+            if (res.data.token) setToken(res.data.token); // name/email may have changed
+            f['password'].value = '';
+            f['confirm'].value = '';
+            showMsg(msg, 'Your profile has been updated.', true);
+            if (res.data.admin) populateProfileWidget(res.data.admin, currentIsSuper);
+          } else {
+            var err = (res.data && (res.data.error || (res.data.errors && res.data.errors.join(' ')))) || 'Could not update your profile.';
+            showMsg(msg, err, false);
+          }
+        }).catch(function () {
+          btn.disabled = false;
+          showMsg(msg, 'Network error. Please try again.', false);
+        });
+      });
+    }
+
+    var logout = document.getElementById('logoutBtn');
+    if (logout) {
+      logout.addEventListener('click', function () {
+        notifyLogout();
+        clearToken();
+        window.location.href = '/admin-login';
+      });
+    }
+  }
+
+  function hideMsgEl(el) {
+    if (el) { el.style.display = 'none'; el.textContent = ''; }
+  }
+
   // ── Boot ────────────────────────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', function () {
     // If already logged in, skip login/signup pages.
@@ -940,5 +1080,6 @@
     initLogin();
     initSignup();
     initDashboard();
+    initProfile();
   });
 })();

@@ -15,7 +15,7 @@
 
 const https = require('https');
 const {
-  createAdmin, getAdminByEmail, getAdminById, setAdminGoogleId,
+  createAdmin, getAdminByEmail, getAdminById, setAdminGoogleId, updateAdmin,
   createTrek, listTreks, getTrekById, updateTrek, deleteTrek,
   createAuditSession, closeAuditSession, appendAuditUpdate, listAuditLogs,
 } = require('../../lib/db');
@@ -411,6 +411,79 @@ async function handleAudit(req, res) {
   }
 }
 
+// ── profile (self-service: view + edit your own account) ────────────────────────
+async function handleProfile(req, res) {
+  const payload = verifyToken(getBearerToken(req));
+  if (!payload) return res.status(401).json({ ok: false, error: 'Unauthorized.' });
+
+  let me;
+  try {
+    me = await getAdminById(payload.sub);
+  } catch (e) {
+    return res.status(500).json({ ok: false, error: 'Could not load your profile right now.' });
+  }
+  if (!me) return res.status(404).json({ ok: false, error: 'Admin not found.' });
+
+  // View own profile.
+  if (req.method === 'GET') {
+    return res.json({
+      ok: true,
+      admin: {
+        id: me.id,
+        name: me.name,
+        email: me.email,
+        has_password: Boolean(me.password_hash),
+        has_google: Boolean(me.google_id),
+        is_super: Number(me.is_super) === 1,
+        created_at: me.created_at,
+      },
+    });
+  }
+
+  // Edit own profile — name, email, and (optionally) password only. An admin
+  // can never change their own super-admin status here.
+  if (req.method === 'PUT' || req.method === 'PATCH') {
+    const body = req.body || {};
+    const data = {};
+    if (body.name !== undefined) data.name = clean(body.name, 120);
+    if (body.email !== undefined) data.email = clean(body.email, 160).toLowerCase();
+
+    const password = typeof body.password === 'string' ? body.password : '';
+    const errors = [];
+    if (data.name !== undefined && data.name.length < 2) errors.push('Please enter your name.');
+    if (data.email !== undefined && !EMAIL_RE.test(data.email)) errors.push('Please enter a valid email address.');
+    if (password) {
+      if (password.length < 8) errors.push('Password must be at least 8 characters.');
+      else data.password_hash = hashPassword(password);
+    }
+    if (errors.length) return res.status(400).json({ ok: false, errors });
+    if (Object.keys(data).length === 0) return res.status(400).json({ ok: false, error: 'No changes to save.' });
+
+    try {
+      await updateAdmin(me.id, data);
+      const updated = await getAdminById(me.id);
+      // Re-issue the session token so a new name/email takes effect immediately,
+      // keeping the same audit session id (sid) for continuity.
+      const token = signToken({ sub: updated.id, name: updated.name, email: updated.email, sid: payload.sid });
+      return res.json({
+        ok: true,
+        token,
+        admin: { id: updated.id, name: updated.name, email: updated.email },
+      });
+    } catch (err) {
+      const msg = (err && err.message) || '';
+      if (/UNIQUE|constraint/i.test(msg)) {
+        return res.status(409).json({ ok: false, error: 'Another admin already uses this email.' });
+      }
+      console.error('Failed to update profile:', msg);
+      return res.status(500).json({ ok: false, error: 'Could not update your profile right now.' });
+    }
+  }
+
+  res.setHeader('Allow', 'GET, PUT');
+  return res.status(405).json({ ok: false, error: 'Method not allowed.' });
+}
+
 // ── dispatcher ────────────────────────────────────────────────────────────────
 const ROUTES = {
   config: handleConfig,
@@ -420,6 +493,7 @@ const ROUTES = {
   google: handleGoogle,
   logout: handleLogout,
   audit: handleAudit,
+  profile: handleProfile,
   treks: handleTreks,
 };
 

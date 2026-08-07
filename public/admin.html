@@ -29,7 +29,21 @@
         <span>Summit<span class="b-sage">Sage</span> Admin</span>
       </a>
       <div class="spacer"></div>
-      <span class="admin-who" id="adminWho"></span>
+      <div class="admin-profile" id="adminProfileWidget" tabindex="0">
+        <a href="/admin-profile" class="admin-avatar" id="adminAvatar" aria-label="Your profile" title="Your profile">
+          <img id="adminAvatarImg" alt="Profile" hidden>
+          <span id="adminAvatarInitials" aria-hidden="true">–</span>
+        </a>
+        <div class="admin-profile-drop" id="adminProfileDrop" role="menu">
+          <div class="admin-profile-card">
+            <div class="admin-profile-name" id="adminDropName">—</div>
+            <div class="admin-profile-email" id="adminDropEmail"></div>
+            <div class="admin-profile-role" id="adminDropRole"></div>
+          </div>
+          <a href="/admin-profile"><i class="fa-solid fa-id-badge"></i> View &amp; edit profile</a>
+        </div>
+      </div>
+      <span class="admin-who" id="adminWho" hidden></span>
       <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme" title="Toggle theme"><i class="fa-solid fa-sun"></i></button>
       <button class="btn btn-outline btn-sm" id="refreshBtn"><i class="fa-solid fa-rotate"></i> Refresh</button>
       <button class="btn btn-primary btn-sm" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>

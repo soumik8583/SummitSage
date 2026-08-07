@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile | Summit Sage Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0a1628">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%230A1628'/%3E%3Cpath d='M8 34L19 15l6 9 3-5 12 15H8z' fill='%23E85D04'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="/js/theme.js"></script>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Summit Sage">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script defer src="/js/admin.js"></script>
+</head>
+<body>
+  <div id="adminProfile">
+    <header class="admin-topbar">
+      <a href="/" class="brand" aria-label="Summit Sage home">
+        <svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect width="48" height="48" rx="13" fill="#0A1628"/><path d="M8 34L19 15l6 9 3-5 12 15H8z" fill="#E85D04"/><path d="M19 15l6 9 3-5 3.6 4.5L27 24l-4 3-4-6-3.5 6H10L19 15z" fill="#fff" opacity=".92"/><circle cx="35" cy="13" r="3.2" fill="#fff"/></svg>
+        <span>Summit<span class="b-sage">Sage</span> Admin</span>
+      </a>
+      <div class="spacer"></div>
+      <div class="admin-profile" id="adminProfileWidget" tabindex="0">
+        <a href="/admin-profile" class="admin-avatar" id="adminAvatar" aria-label="Your profile" title="Your profile">
+          <img id="adminAvatarImg" alt="Profile" hidden>
+          <span id="adminAvatarInitials" aria-hidden="true">–</span>
+        </a>
+        <div class="admin-profile-drop" id="adminProfileDrop" role="menu">
+          <div class="admin-profile-card">
+            <div class="admin-profile-name" id="adminDropName">—</div>
+            <div class="admin-profile-email" id="adminDropEmail"></div>
+            <div class="admin-profile-role" id="adminDropRole"></div>
+          </div>
+          <a href="/admin-profile"><i class="fa-solid fa-id-badge"></i> View &amp; edit profile</a>
+        </div>
+      </div>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme" title="Toggle theme"><i class="fa-solid fa-sun"></i></button>
+      <a class="btn btn-outline btn-sm" href="/admin"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
+      <button class="btn btn-primary btn-sm" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </header>
+
+    <main class="admin-main" style="max-width:720px">
+      <h1 style="font-size:1.6rem">My profile</h1>
+      <p class="muted" style="margin:6px 0 22px">The details you signed up with. Update your name, email, or password below.</p>
+
+      <section class="card" style="margin-bottom:26px">
+        <h2 style="font-size:1.1rem;margin-bottom:16px"><i class="fa-solid fa-circle-info accent"></i> Account</h2>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <tbody>
+              <tr><td style="width:180px"><b>Sign-in method</b></td><td id="profileMethod">—</td></tr>
+              <tr><td><b>Role</b></td><td id="profileRole">—</td></tr>
+              <tr><td><b>Member since</b></td><td id="profileSince">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 style="font-size:1.1rem;margin-bottom:6px"><i class="fa-solid fa-user-pen accent"></i> Edit details</h2>
+        <p class="muted" style="margin:0 0 18px;font-size:.9rem">These are the fields used when your admin account was created.</p>
+        <div class="admin-msg" id="profileMsg"></div>
+        <form id="profileForm" novalidate>
+          <div class="edit-field"><label>Name</label><input class="control" name="name" type="text" maxlength="120" autocomplete="name" required></div>
+          <div class="edit-field"><label>Email</label><input class="control" name="email" type="email" maxlength="160" autocomplete="email" required></div>
+          <hr style="border:none;border-top:1px solid var(--line);margin:18px 0">
+          <p class="muted" style="margin:0 0 12px;font-size:.86rem"><b>Change password</b> — leave blank to keep your current password. <span id="profilePwHint"></span></p>
+          <div class="edit-field"><label>New password</label><input class="control" name="password" type="password" minlength="8" autocomplete="new-password" placeholder="••••••••"></div>
+          <div class="edit-field"><label>Confirm new password</label><input class="control" name="confirm" type="password" minlength="8" autocomplete="new-password" placeholder="••••••••"></div>
+          <div class="flex gap-1" style="justify-content:flex-end;margin-top:14px">
+            <a class="btn btn-outline" href="/admin">Cancel</a>
+            <button class="btn btn-primary" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save changes</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
