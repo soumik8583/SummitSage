@@ -189,6 +189,28 @@
           </tbody>
         </table>
       </div>
+
+      <!-- Audit logs (super admins only) -->
+      <section id="auditSection" style="display:none">
+        <h2 style="font-size:1.3rem;margin:40px 0 6px">Audit logs</h2>
+        <p class="muted" style="margin:0 0 16px">Admin sign-ins, session duration, and every change made — visible to super admins only.</p>
+        <div class="admin-table-wrap">
+          <table class="admin-table" style="min-width:820px">
+            <thead>
+              <tr>
+                <th>Admin</th>
+                <th>Login time</th>
+                <th>Logout time</th>
+                <th>Session length</th>
+                <th>Updates done</th>
+              </tr>
+            </thead>
+            <tbody id="auditBody">
+              <tr><td colspan="5" class="admin-empty">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </main>
   </div>
 

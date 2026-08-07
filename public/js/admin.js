@@ -8,15 +8,68 @@
  */
 (function () {
   var TOKEN_KEY = 'ss_admin_token';
+  var ACTIVITY_KEY = 'ss_admin_last_activity';
+  var IDLE_LIMIT_MS = 60 * 60 * 1000; // Sign out after 1 hour of inactivity.
 
   function getToken() {
     return localStorage.getItem(TOKEN_KEY) || '';
   }
   function setToken(t) {
     localStorage.setItem(TOKEN_KEY, t);
+    markActivity();
   }
   function clearToken() {
     localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(ACTIVITY_KEY);
+  }
+
+  // ── Inactivity tracking ──────────────────────────────────────────────────
+  function markActivity() {
+    localStorage.setItem(ACTIVITY_KEY, String(Date.now()));
+  }
+  function isIdleExpired() {
+    var last = parseInt(localStorage.getItem(ACTIVITY_KEY) || '0', 10);
+    if (!last) return false;
+    return Date.now() - last > IDLE_LIMIT_MS;
+  }
+  // Best-effort server notice so the audit log records a logout time. Uses
+  // keepalive so the request can complete even as the page navigates away.
+  function notifyLogout() {
+    var token = getToken();
+    if (!token) return;
+    try {
+      fetch('/api/admin/logout', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token },
+        keepalive: true,
+      }).catch(function () {});
+    } catch (e) {
+      /* ignore — logout notice is best-effort */
+    }
+  }
+  function logoutForIdle() {
+    notifyLogout();
+    clearToken();
+    window.location.href = '/admin-login';
+  }
+  // Sign the admin out after 1 hour of inactivity: on reload (checked at boot)
+  // and live via a timer + activity listeners while the page stays open.
+  function setupIdleTimeout() {
+    markActivity();
+    var lastWrite = Date.now();
+    function onActivity() {
+      // Throttle localStorage writes to at most once every 30 seconds.
+      if (Date.now() - lastWrite > 30 * 1000) {
+        lastWrite = Date.now();
+        markActivity();
+      }
+    }
+    ['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart', 'click'].forEach(function (evt) {
+      document.addEventListener(evt, onActivity, { passive: true });
+    });
+    setInterval(function () {
+      if (isIdleExpired()) logoutForIdle();
+    }, 60 * 1000);
   }
 
   function esc(s) {
@@ -307,9 +360,62 @@
       .join('');
   }
 
+  // Human-friendly session length between two datetime strings.
+  function sessionLength(login, logout) {
+    if (!login || !logout) return '';
+    var a = new Date(String(login).replace(' ', 'T') + 'Z').getTime();
+    var b = new Date(String(logout).replace(' ', 'T') + 'Z').getTime();
+    if (isNaN(a) || isNaN(b) || b < a) return '';
+    var mins = Math.round((b - a) / 60000);
+    if (mins < 1) return '<1 min';
+    if (mins < 60) return mins + ' min';
+    var h = Math.floor(mins / 60);
+    var m = mins % 60;
+    return m ? h + 'h ' + m + 'm' : h + 'h';
+  }
+
+  function renderAuditLogs(rows) {
+    var tbody = document.getElementById('auditBody');
+    if (!tbody) return;
+    if (!rows || rows.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" class="admin-empty">No admin activity recorded yet.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows
+      .map(function (r) {
+        var updates = Array.isArray(r.updates) ? r.updates : [];
+        var updatesHtml = updates.length
+          ? '<ul style="margin:0;padding-left:18px">' +
+              updates.map(function (u) { return '<li>' + esc(u) + '</li>'; }).join('') +
+            '</ul>'
+          : '—';
+        var name = esc(r.admin_name || '—');
+        if (r.admin_email) name += '<br><span class="muted" style="font-size:.8rem">' + esc(r.admin_email) + '</span>';
+        var len = sessionLength(r.login_at, r.logout_at);
+        return (
+          '<tr>' +
+          '<td>' + name + '</td>' +
+          '<td class="admin-date">' + esc(r.login_at || '—') + '</td>' +
+          '<td class="admin-date">' + (r.logout_at ? esc(r.logout_at) : '<span class="admin-tag">Active</span>') + '</td>' +
+          '<td>' + (len || '—') + '</td>' +
+          '<td class="admin-msg-cell">' + updatesHtml + '</td>' +
+          '</tr>'
+        );
+      })
+      .join('');
+  }
+
   function initDashboard() {
     var root = document.getElementById('adminDash');
     if (!root) return;
+
+    // If the admin has been idle for over an hour, sign out immediately
+    // (this covers reloading the page after the session went stale).
+    if (isIdleExpired()) {
+      logoutForIdle();
+      return;
+    }
+    setupIdleTimeout();
 
     var isSuper = false; // current admin's super-admin status
     var allRows = []; // submissions
@@ -637,11 +743,15 @@
         if (adminsActions) adminsActions.style.display = 'none';
         if (adminsHint) adminsHint.textContent = 'Only super admins can edit or delete admins.';
       }
+      // Audit logs are visible to super admins only.
+      var auditSection = document.getElementById('auditSection');
+      if (auditSection) auditSection.style.display = isSuper ? '' : 'none';
       loadSubs();
       loadSubscribers();
       loadRegistrations();
       loadAdmins();
       loadTreksManagement();
+      if (isSuper) loadAudit();
     });
 
     function loadSubs() {
@@ -689,6 +799,15 @@
         if (stat) stat.textContent = res.data.total != null ? res.data.total : adminRows.length;
         renderAdmins(adminRows, isSuper);
         adminsSel.reset();
+      });
+    }
+
+    function loadAudit() {
+      if (!isSuper) return;
+      api('/api/admin/audit?limit=200').then(function (res) {
+        if (guard401(res)) return;
+        if (!res.data || !res.data.ok) return;
+        renderAuditLogs(res.data.data || []);
       });
     }
 
@@ -782,6 +901,7 @@
     var logout = document.getElementById('logoutBtn');
     if (logout) {
       logout.addEventListener('click', function () {
+        notifyLogout();
         clearToken();
         window.location.href = '/admin-login';
       });
@@ -795,6 +915,7 @@
         loadRegistrations();
         loadAdmins();
         loadTreksManagement();
+        loadAudit();
       });
     }
   }
@@ -803,13 +924,18 @@
   document.addEventListener('DOMContentLoaded', function () {
     // If already logged in, skip login/signup pages.
     if ((document.getElementById('loginForm') || document.getElementById('signupForm')) && getToken()) {
-      api('/api/admin/session').then(function (res) {
-        if (res.status === 200 && res.data.ok) {
-          window.location.href = '/admin';
-        } else {
-          clearToken();
-        }
-      });
+      if (isIdleExpired()) {
+        // Session went stale from inactivity — clear it and stay on login.
+        clearToken();
+      } else {
+        api('/api/admin/session').then(function (res) {
+          if (res.status === 200 && res.data.ok) {
+            window.location.href = '/admin';
+          } else {
+            clearToken();
+          }
+        });
+      }
     }
     initLogin();
     initSignup();

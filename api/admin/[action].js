@@ -17,6 +17,7 @@ const https = require('https');
 const {
   createAdmin, getAdminByEmail, getAdminById, setAdminGoogleId,
   createTrek, listTreks, getTrekById, updateTrek, deleteTrek,
+  createAuditSession, closeAuditSession, appendAuditUpdate, listAuditLogs,
 } = require('../../lib/db');
 const {
   hashPassword, verifyPassword, signToken, verifyToken, getBearerToken,
@@ -30,6 +31,24 @@ function isAuthorised(req) {
   if (verifyToken(getBearerToken(req))) return true;
   const expected = process.env.ADMIN_API_KEY;
   return Boolean(expected) && req.headers['x-api-key'] === expected;
+}
+
+// Generate an opaque session id used to correlate an admin's login, the
+// updates they make, and their logout in the audit_logs table.
+function newSessionId() {
+  return require('crypto').randomBytes(16).toString('hex');
+}
+
+// Best-effort audit note for a change an admin made during their session.
+async function logTrekAudit(req, description) {
+  try {
+    const payload = verifyToken(getBearerToken(req));
+    if (payload && payload.sid) {
+      await appendAuditUpdate(payload.sid, description);
+    }
+  } catch (e) {
+    /* auditing must never block the primary action */
+  }
 }
 function toIntOrNull(v) {
   if (v === undefined || v === null || v === '') return null;
@@ -120,7 +139,9 @@ async function handleSignup(req, res) {
     const existing = await getAdminByEmail(email);
     if (existing) return res.status(409).json({ ok: false, error: 'An admin with this email already exists.' });
     const admin = await createAdmin({ name, email, password_hash: hashPassword(password), google_id: null });
-    const token = signToken({ sub: admin.id, name, email });
+    const sid = newSessionId();
+    try { await createAuditSession({ sessionId: sid, admin: { id: admin.id, name, email } }); } catch (e) { /* non-fatal */ }
+    const token = signToken({ sub: admin.id, name, email, sid });
     return res.status(201).json({ ok: true, token, admin: { id: admin.id, name, email } });
   } catch (err) {
     console.error('Admin signup failed:', (err && err.message) || err);
@@ -152,7 +173,9 @@ async function handleLogin(req, res) {
     if (!admin || !admin.password_hash || !ok) {
       return res.status(401).json({ ok: false, error: 'Invalid email or password.' });
     }
-    const token = signToken({ sub: admin.id, name: admin.name, email: admin.email });
+    const sid = newSessionId();
+    try { await createAuditSession({ sessionId: sid, admin: { id: admin.id, name: admin.name, email: admin.email } }); } catch (e) { /* non-fatal */ }
+    const token = signToken({ sub: admin.id, name: admin.name, email: admin.email, sid });
     return res.json({ ok: true, token, admin: { id: admin.id, name: admin.name, email: admin.email } });
   } catch (err) {
     console.error('Admin login failed:', (err && err.message) || err);
@@ -204,7 +227,9 @@ async function handleGoogle(req, res) {
     } else if (!admin.google_id) {
       await setAdminGoogleId(admin.id, info.sub);
     }
-    const token = signToken({ sub: admin.id, name: admin.name, email: admin.email });
+    const sid = newSessionId();
+    try { await createAuditSession({ sessionId: sid, admin: { id: admin.id, name: admin.name, email: admin.email } }); } catch (e) { /* non-fatal */ }
+    const token = signToken({ sub: admin.id, name: admin.name, email: admin.email, sid });
     return res.json({ ok: true, token, admin: { id: admin.id, name: admin.name, email: admin.email } });
   } catch (err) {
     console.error('Admin Google login failed:', (err && err.message) || err);
@@ -270,7 +295,10 @@ async function handleTreks(req, res) {
     const id = toIntOrNull(query.id || (req.body && req.body.id));
     if (!id) return res.status(400).json({ ok: false, error: 'A trek id is required.' });
     try {
+      let trekName = '';
+      try { const t = await getTrekById(id); if (t) trekName = t.name; } catch (e) { /* best-effort */ }
       await deleteTrek(id);
+      await logTrekAudit(req, 'Deleted trek "' + (trekName || ('#' + id)) + '"');
       return res.json({ ok: true });
     } catch (err) {
       console.error('Failed to delete trek:', err);
@@ -293,6 +321,7 @@ async function handleTreks(req, res) {
     const record = Object.assign({ slug: slug, difficulty: 'Moderate', active: 1 }, mapped);
     try {
       const created = await createTrek(record);
+      await logTrekAudit(req, 'Added trek "' + name + '"');
       return res.status(201).json({ ok: true, id: created.id, slug: created.slug });
     } catch (err) {
       const msg = (err && err.message) || '';
@@ -311,6 +340,7 @@ async function handleTreks(req, res) {
     if (Object.keys(mapped).length === 0) return res.status(400).json({ ok: false, error: 'No fields to update.' });
     try {
       await updateTrek(id, mapped);
+      await logTrekAudit(req, 'Updated trek "' + (mapped.name || ('#' + id)) + '"');
       return res.json({ ok: true, id: id });
     } catch (err) {
       console.error('Failed to update trek:', (err && err.message) || err);
@@ -322,6 +352,65 @@ async function handleTreks(req, res) {
   return res.status(405).json({ ok: false, error: 'Method not allowed.' });
 }
 
+// ── logout ────────────────────────────────────────────────────────────────────
+async function handleLogout(req, res) {
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST');
+    return res.status(405).json({ ok: false, error: 'Method not allowed.' });
+  }
+  const payload = verifyToken(getBearerToken(req));
+  // Always answer OK so the client can clear its token; only record the
+  // logout time when we can identify the session.
+  if (payload && payload.sid) {
+    try { await closeAuditSession(payload.sid); } catch (e) { /* non-fatal */ }
+  }
+  return res.json({ ok: true });
+}
+
+// ── audit (super admin only) ───────────────────────────────────────────────────
+async function handleAudit(req, res) {
+  if (req.method !== 'GET') {
+    res.setHeader('Allow', 'GET');
+    return res.status(405).json({ ok: false, error: 'Method not allowed.' });
+  }
+  const payload = verifyToken(getBearerToken(req));
+  const viaApiKey = !payload && isAuthorised(req);
+  if (!payload && !viaApiKey) return res.status(401).json({ ok: false, error: 'Unauthorized.' });
+
+  // Only super admins (or the master API key) may read the audit trail.
+  let isSuper = viaApiKey;
+  if (payload) {
+    try {
+      const me = await getAdminById(payload.sub);
+      isSuper = Boolean(me && Number(me.is_super) === 1);
+    } catch (e) {
+      isSuper = false;
+    }
+  }
+  if (!isSuper) return res.status(403).json({ ok: false, error: 'Only a super admin can view audit logs.' });
+
+  const limit = Math.min(Math.max(toIntOrNull(req.query && req.query.limit) || 200, 1), 500);
+  try {
+    const { total, rows } = await listAuditLogs({ limit });
+    const data = rows.map(function (r) {
+      let updates = [];
+      try { updates = r.updates ? JSON.parse(r.updates) : []; } catch (e) { updates = []; }
+      return {
+        id: r.id,
+        admin_name: r.admin_name,
+        admin_email: r.admin_email,
+        login_at: r.login_at,
+        logout_at: r.logout_at,
+        updates: updates,
+      };
+    });
+    return res.json({ ok: true, total, data });
+  } catch (err) {
+    console.error('Failed to load audit logs:', (err && err.message) || err);
+    return res.status(500).json({ ok: false, error: 'Failed to load audit logs.' });
+  }
+}
+
 // ── dispatcher ────────────────────────────────────────────────────────────────
 const ROUTES = {
   config: handleConfig,
@@ -329,6 +418,8 @@ const ROUTES = {
   signup: handleSignup,
   login: handleLogin,
   google: handleGoogle,
+  logout: handleLogout,
+  audit: handleAudit,
   treks: handleTreks,
 };
 

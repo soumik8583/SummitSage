@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Goechala Trek — Summit Sage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400..800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  @page{ size:A4; margin:0; }
+  html,body{ -webkit-print-color-adjust:exact; print-color-adjust:exact; font-family:"Manrope",sans-serif; }
+
+  /* ============ COVER POSTER (page 1) ============ */
+  .poster{ width:210mm; height:297mm; position:relative; overflow:hidden; color:#fff; background:linear-gradient(180deg,#183350,#0a1728); page-break-after:always; break-after:page; }
+  .sky{ position:absolute; inset:0; background:linear-gradient(180deg,#1c3d5e 0%,#14304c 28%,#0c1e33 58%,#081627 100%); }
+  .sun{ position:absolute; top:2.5%; left:50%; transform:translateX(-50%); width:150px; height:150px; border-radius:50%;
+        background:radial-gradient(circle at 50% 50%, #ffd27a 0%, #ff9d3c 40%, rgba(255,140,50,.22) 60%, transparent 70%); filter:blur(2px); }
+  .layers{ position:absolute; left:0; right:0; bottom:0; }
+  .lowerfade{ position:absolute; left:0; right:0; bottom:0; height:50%; background:linear-gradient(180deg, rgba(8,16,28,0) 0%, rgba(8,16,28,.5) 38%, rgba(6,12,22,.88) 70%, rgba(6,12,22,.96) 100%); }
+  .content{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; padding:16mm 14mm 12mm; text-align:center; }
+  .emblem{ width:118px; height:118px; }
+  .brand{ font-family:"Bricolage Grotesque",serif; font-weight:800; letter-spacing:6px; font-size:23px; margin-top:6px; text-shadow:0 2px 12px rgba(0,0,0,.55); }
+  .brand .s{ color:#ff9d3c; }
+  .subbrand{ font-size:9px; letter-spacing:5px; color:#ffb877; margin-top:5px; text-transform:uppercase; }
+  .rule{ width:120px; height:1px; background:linear-gradient(90deg,transparent,#ffb877,transparent); margin:6px 0 2px; }
+  .huge{ font-family:"Bricolage Grotesque",serif; font-weight:800; font-size:88px; line-height:.9; letter-spacing:-1px; margin-top:14px; text-shadow:0 6px 26px rgba(0,0,0,.55); }
+  .script{ font-family:"Caveat",cursive; font-weight:700; font-size:56px; color:#ffb04a; line-height:.7; margin:2px 0 0; text-shadow:0 4px 16px rgba(0,0,0,.5); }
+  .script .dash{ display:inline-block; width:38px; height:2px; background:#ffb04a; vertical-align:middle; margin:0 12px 10px; }
+  .tagline{ font-family:"Bricolage Grotesque",serif; font-weight:700; font-size:16px; letter-spacing:1px; margin-top:16px; line-height:1.5; text-transform:uppercase; color:#eaf1fb; }
+  .tagline .hl{ color:#ff9d3c; }
+  .spacer{ flex:1; }
+  .stats{ display:flex; justify-content:center; gap:0; width:100%; margin-bottom:14px; }
+  .stat{ flex:1; padding:0 6px; position:relative; }
+  .stat + .stat::before{ content:""; position:absolute; left:0; top:14px; bottom:6px; width:1px; background:rgba(255,255,255,.22); }
+  .stat .ic{ height:30px; display:flex; align-items:center; justify-content:center; color:#ffb04a; margin-bottom:7px; }
+  .stat .l{ font-size:9px; letter-spacing:2px; color:#e6edf7; text-transform:uppercase; text-shadow:0 1px 6px rgba(0,0,0,.6); }
+  .stat .v{ font-family:"Bricolage Grotesque",serif; font-weight:800; font-size:13.5px; color:#fff; margin-top:3px; text-transform:uppercase; }
+  .stat .v .o{ color:#ff9d3c; }
+  .box{ width:100%; border:1px solid rgba(255,176,74,.5); background:rgba(8,17,30,.62); border-radius:16px; display:flex; align-items:stretch; padding:16px 10px; margin-bottom:16px; }
+  .box .cell{ flex:1; padding:0 10px; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; }
+  .box .cell + .cell::before{ content:""; position:absolute; left:0; top:6px; bottom:6px; width:1px; background:rgba(255,255,255,.16); }
+  .box .k{ font-family:"Bricolage Grotesque",serif; font-weight:800; font-size:22px; line-height:1; }
+  .box .k .o{ color:#ff9d3c; }
+  .box .sm{ font-size:9.5px; letter-spacing:1.5px; color:#ffb877; text-transform:uppercase; margin-top:5px; font-weight:700; }
+  .box .price{ font-family:"Bricolage Grotesque",serif; font-weight:800; font-size:30px; color:#ff9d3c; line-height:1; }
+  .box .memo{ font-family:"Bricolage Grotesque",serif; font-weight:700; font-size:11px; line-height:1.35; color:#eaf1fb; text-transform:uppercase; }
+  .box .memo .o{ color:#ff9d3c; }
+  .booknow{ font-family:"Bricolage Grotesque",serif; font-weight:800; font-size:24px; letter-spacing:3px; color:#0a1628; background:linear-gradient(180deg,#ffcf7a,#ff9d3c); padding:13px 46px; border-radius:999px; text-transform:uppercase; box-shadow:0 12px 30px rgba(255,140,50,.4); }
+  .contact{ margin-top:14px; display:flex; align-items:center; justify-content:center; gap:12px; font-weight:700; font-size:13px; letter-spacing:1px; color:#eaf1fb; }
+  .contact .ci{ display:inline-flex; align-items:center; gap:7px; }
+  .contact .sep{ color:#ff9d3c; }
+
+  /* ============ ITINERARY (pages 2+) ============ */
+  .sheet{ width:210mm; background:#fff; color:#16233a; }
+  .it-hero{ background:radial-gradient(120% 130% at 85% -25%, rgba(255,120,30,.42), transparent 55%), linear-gradient(160deg,#0e2038,#0a1628); color:#fff; padding:13mm 14mm 12mm; position:relative; overflow:hidden; }
+  .it-ridge{ position:absolute; left:0; right:0; bottom:-1px; height:30px; display:block; }
+  .it-brand{ display:flex; align-items:center; gap:9px; font-family:"Bricolage Grotesque"; font-weight:800; letter-spacing:2px; font-size:13px; }
+  .it-brand .s{ color:#ff9d3c; }
+  .it-eyebrow{ display:inline-block; margin:14px 0 6px; font-size:10px; letter-spacing:4px; text-transform:uppercase; color:#ff9d3c; font-weight:800; }
+  .it-h1{ font-family:"Bricolage Grotesque"; font-weight:800; font-size:42px; line-height:.95; letter-spacing:-1px; }
+  .it-h1 .grad{ background:linear-gradient(100deg,#ffd27a,#ff7a1a); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .it-sub{ color:#cfdaea; font-size:12px; max-width:140mm; line-height:1.55; margin-top:9px; }
+  .glance{ display:flex; gap:9px; margin-top:15px; }
+  .g{ flex:1; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); border-radius:14px; padding:11px 6px; text-align:center; }
+  .g .n{ font-family:"Bricolage Grotesque"; font-weight:800; font-size:21px; color:#fff; }
+  .g .n .o{ color:#ff9d3c; }
+  .g .l{ font-size:8px; letter-spacing:2px; text-transform:uppercase; color:#9fb0c9; margin-top:3px; }
+  .meter{ margin-top:13px; }
+  .meter .top{ display:flex; justify-content:space-between; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:#c7d4e6; margin-bottom:5px; font-weight:700; }
+  .meter .bar{ height:7px; border-radius:5px; background:rgba(255,255,255,.15); overflow:hidden; }
+  .meter .fill{ height:100%; width:74%; background:linear-gradient(90deg,#23b57a,#f2a63b 55%,#ff6a3d); border-radius:5px; }
+
+  .pad{ padding:9mm 14mm 0; }
+  .it-sech{ font-family:"Bricolage Grotesque"; font-weight:800; font-size:19px; margin:0 0 5mm; letter-spacing:-.2px; }
+  .it-sech .bar{ display:inline-block; width:24px;height:4px;background:linear-gradient(90deg,#ff9d3c,#ff5c1a);border-radius:2px;vertical-align:middle;margin-right:9px; }
+
+  .day{ position:relative; border:1px solid #e7ebf2; border-radius:16px; padding:13px 15px 14px; margin-bottom:9px; background:#fff; break-inside:avoid; box-shadow:0 2px 9px rgba(20,40,80,.045); overflow:hidden; }
+  .day::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:linear-gradient(180deg,var(--dc),var(--dc2)); }
+  .day-top{ display:flex; align-items:flex-start; gap:13px; }
+  .dnum{ flex:none; width:48px;height:48px; border-radius:14px; display:flex;flex-direction:column;align-items:center;justify-content:center; color:#fff; background:linear-gradient(150deg,var(--dc),var(--dc2)); box-shadow:0 6px 13px rgba(0,0,0,.16); }
+  .dnum .d{ font-size:7.5px; letter-spacing:1.5px; opacity:.9; text-transform:uppercase; }
+  .dnum .n{ font-family:"Bricolage Grotesque"; font-weight:800; font-size:20px; line-height:1; }
+  .dhead{ flex:1; }
+  .dhead h3{ font-family:"Bricolage Grotesque"; font-size:16px; font-weight:700; line-height:1.15; }
+  .dhead .alt{ color:var(--dc); font-weight:800; }
+  .vibe{ display:inline-block; font-size:9px; font-weight:800; letter-spacing:.6px; text-transform:uppercase; padding:4px 10px; border-radius:999px; margin-top:6px; color:#fff; background:linear-gradient(135deg,var(--dc),var(--dc2)); }
+  .chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .chip{ font-size:10px; font-weight:700; color:#48587b; background:#f3f6fb; border:1px solid #e7ebf2; border-radius:999px; padding:3px 10px; }
+  .chip b{ color:#16233a; }
+  .dbody{ padding-left:61px; margin-top:7px; }
+  .lead{ font-size:10px; font-weight:800; color:var(--dc); margin-bottom:5px; text-transform:uppercase; letter-spacing:.6px; }
+  ul.hl{ list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:2px 16px; }
+  ul.hl li{ font-size:10.5px; color:#48587b; padding-left:14px; position:relative; line-height:1.55; }
+  ul.hl li::before{ content:""; position:absolute; left:0; top:7px; width:5px;height:5px;border-radius:50%; background:var(--dc); }
+  .stay{ margin-top:8px; font-size:10px; color:#8494ac; padding-left:61px; }
+  .stay b{ color:#48587b; }
+
+  .day.summit{ border:0; background:linear-gradient(135deg,#241a4d,#3a2a6e); color:#fff; box-shadow:0 12px 30px rgba(124,92,255,.28); }
+  .day.summit::before{ display:none; }
+  .day.summit .dhead h3{ color:#fff; } .day.summit .dhead .alt{ color:#c9bbff; }
+  .day.summit .chip{ background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.2); color:#e7e0ff; } .day.summit .chip b{ color:#fff; }
+  .day.summit .lead{ color:#c9bbff; }
+  .day.summit ul.hl li{ color:#d7cffb; } .day.summit ul.hl li::before{ background:#c9bbff; }
+  .day.summit .stay{ color:#b6a9ee; } .day.summit .stay b{ color:#e7e0ff; }
+  .ribbon{ position:absolute; top:13px; right:0; background:linear-gradient(90deg,#ff9d3c,#ff5c1a); color:#fff; font-family:"Bricolage Grotesque"; font-weight:800; font-size:9.5px; letter-spacing:1.5px; padding:5px 13px; border-radius:999px 0 0 999px; text-transform:uppercase; }
+
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .panel{ border-radius:16px; padding:15px 16px; break-inside:avoid; }
+  .panel.inc{ background:#f3f6fb; border:1px solid #e7ebf2; }
+  .panel.why{ background:linear-gradient(160deg,#0e2038,#0a1628); color:#fff; }
+  .panel h4{ font-family:"Bricolage Grotesque"; font-size:14.5px; font-weight:800; margin-bottom:11px; }
+  .taglist{ display:flex; flex-wrap:wrap; gap:7px; }
+  .tg{ font-size:10.5px; font-weight:700; padding:6px 11px; border-radius:999px; line-height:1.2; }
+  .panel.inc .tg{ background:#fff; border:1px solid #e7ebf2; color:#16233a; }
+  .panel.inc .tg .ic{ color:#23b57a; font-weight:800; margin-right:5px; }
+  .panel.why .tg{ background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.16); color:#eaf1fb; }
+  .panel.why .tg .ic{ color:#ff9d3c; margin-right:5px; }
+
+  .cta{ margin:11mm 14mm 0; background:linear-gradient(135deg,#ff9d3c,#ff5c1a); color:#fff; border-radius:18px; padding:16px 20px; display:flex; justify-content:space-between; align-items:center; break-inside:avoid; box-shadow:0 14px 30px rgba(255,110,40,.3); }
+  .cta .big{ font-family:"Bricolage Grotesque"; font-weight:800; font-size:18px; }
+  .cta .sm{ font-size:11px; opacity:.96; margin-top:2px; }
+  .cta .c{ text-align:right; font-size:12px; font-weight:800; line-height:1.7; }
+  .foot{ margin:7mm 14mm 9mm; border-top:1px solid #e7ebf2; padding-top:8px; display:flex; justify-content:space-between; font-size:9px; color:#8494ac; }
+  .foot b{ color:#48587b; }
+  .it-break{ break-before:page; }
+</style>
+</head>
+<body>
+
+<!-- ================= PAGE 1 · COVER POSTER ================= -->
+<div class="poster">
+  <div class="sky"></div>
+  <div class="sun"></div>
+  <svg class="layers" viewBox="0 0 840 620" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="snow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eaf2fb"/><stop offset="1" stop-color="#8ea6c4"/></linearGradient>
+      <linearGradient id="rock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a496b"/><stop offset="1" stop-color="#12293f"/></linearGradient>
+      <linearGradient id="front" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0e2136"/><stop offset="1" stop-color="#060f1c"/></linearGradient>
+    </defs>
+    <path d="M0 300 L120 200 L210 250 L320 150 L430 240 L540 140 L650 235 L760 175 L840 235 L840 620 L0 620 Z" fill="url(#snow)" opacity=".92"/>
+    <path d="M320 150 L360 205 L300 205 Z M540 140 L582 205 L500 205 Z M120 200 L150 245 L92 245 Z" fill="#c3d3e6" opacity=".7"/>
+    <path d="M0 360 L110 285 L220 345 L340 260 L470 350 L590 275 L700 355 L820 300 L840 330 L840 620 L0 620 Z" fill="url(#rock)"/>
+    <path d="M0 470 L150 400 L300 465 L460 395 L620 470 L780 410 L840 445 L840 620 L0 620 Z" fill="url(#front)"/>
+  </svg>
+  <div class="lowerfade"></div>
+  <div class="content">
+    <svg class="emblem" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="60" r="57" fill="none" stroke="#ffb04a" stroke-width="2"/>
+      <circle cx="60" cy="48" r="18" fill="#ffb04a" opacity=".9"/>
+      <path d="M18 84 L44 44 L58 64 L70 48 L102 84 Z" fill="#0a1628"/>
+      <path d="M44 44 L58 64 L48 64 L40 76 L30 66 Z" fill="#eef4fb" opacity=".9"/>
+      <path d="M70 48 L102 84 L82 84 L74 70 L66 78 Z" fill="#eef4fb" opacity=".85"/>
+      <rect x="14" y="84" width="92" height="3" rx="1.5" fill="#ffb04a"/>
+    </svg>
+    <div class="brand">SUMMIT <span class="s">SAGE</span></div>
+    <div class="rule"></div>
+    <div class="subbrand">Explore • Dream • Discover</div>
+    <div class="huge">GOECHALA</div>
+    <div class="script"><span class="dash"></span>Trek<span class="dash"></span></div>
+    <div class="tagline">Where the <span class="hl">mountains</span> whisper<br>and the <span class="hl">soul</span> finds peace.</div>
+    <div class="spacer"></div>
+    <div class="stats">
+      <div class="stat"><div class="ic"><svg width="30" height="24" viewBox="0 0 30 24"><path d="M2 22 L10 8 L15 15 L18 10 L28 22 Z" fill="none" stroke="#ffb04a" stroke-width="2" stroke-linejoin="round"/></svg></div><div class="l">Altitude</div><div class="v"><span class="o">15,100</span> FT</div></div>
+      <div class="stat"><div class="ic"><svg width="20" height="26" viewBox="0 0 20 26"><path d="M10 1C5 1 1 5 1 10c0 6 9 15 9 15s9-9 9-15c0-5-4-9-9-9z" fill="none" stroke="#ffb04a" stroke-width="2"/><circle cx="10" cy="10" r="3" fill="#ffb04a"/></svg></div><div class="l">Location</div><div class="v">Sikkim</div></div>
+      <div class="stat"><div class="ic"><svg width="24" height="26" viewBox="0 0 24 26"><circle cx="13" cy="4" r="2.4" fill="#ffb04a"/><path d="M12 8 l-4 6 4 2 M12 8 l3 4 5 1 M12 10 l-1 7 -3 5 M12 12 l2 5 4 4" fill="none" stroke="#ffb04a" stroke-width="1.8" stroke-linecap="round"/></svg></div><div class="l">Difficulty</div><div class="v">Moderate to<br>Challenging</div></div>
+      <div class="stat"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="18" rx="2" fill="none" stroke="#ffb04a" stroke-width="2"/><path d="M2 9 H22 M7 2 V6 M17 2 V6" stroke="#ffb04a" stroke-width="2"/></svg></div><div class="l">Duration</div><div class="v">9 Days</div></div>
+    </div>
+    <div class="box">
+      <div class="cell"><div class="k"><span class="o">12</span> Slots</div><div class="sm">Available Only</div></div>
+      <div class="cell"><div class="sm" style="margin:0 0 4px">Price</div><div class="price">₹21,500</div><div class="sm" style="color:#c7d4e6">Per Person</div></div>
+      <div class="cell"><div class="memo">One trek.<br>Many memories.<br><span class="o">A lifetime<br>experience.</span></div></div>
+    </div>
+    <div class="booknow">Book Now</div>
+    <div class="contact"><span class="ci"><svg width="15" height="15" viewBox="0 0 24 24" fill="#ff9d3c"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1z"/></svg>9051261182</span><span class="sep">|</span><span class="ci"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ff9d3c" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="#ff9d3c" stroke="none"/></svg>summitsaage_</span></div>
+  </div>
+</div>
+
+<!-- ================= PAGES 2+ · ITINERARY ================= -->
+<div class="sheet">
+  <div class="it-hero">
+    <div class="it-brand">
+      <svg width="26" height="26" viewBox="0 0 48 48"><rect width="48" height="48" rx="13" fill="#0A1628"/><path d="M8 34L19 15l6 9 3-5 12 15H8z" fill="#E85D04"/><path d="M19 15l6 9 3-5 3.6 4.5L27 24l-4 3-4-6-3.5 6H10L19 15z" fill="#fff" opacity=".92"/><circle cx="35" cy="13" r="3.2" fill="#fff"/></svg>
+      SUMMIT <span class="s">SAGE</span>
+    </div>
+    <span class="it-eyebrow">The Adventure · Day by Day</span>
+    <div class="it-h1">Your <span class="grad">Goechala</span> Story</div>
+    <div class="it-sub">8 days on the trail, 1 buffer for the mountain's mood. From your first stride in Yuksom to a jaw-dropping sunrise at 15,100 ft — here's every epic step of the journey. Lace up. 🥾</div>
+    <div class="glance">
+      <div class="g"><div class="n">9</div><div class="l">Days</div></div>
+      <div class="g"><div class="n">~90</div><div class="l">KM Round Trip</div></div>
+      <div class="g"><div class="n"><span class="o">15,100</span></div><div class="l">Ft Max</div></div>
+      <div class="g"><div class="n">8</div><div class="l">Campsites</div></div>
+    </div>
+    <div class="meter">
+      <div class="top"><span>Difficulty</span><span>Moderate → Difficult</span></div>
+      <div class="bar"><div class="fill"></div></div>
+    </div>
+    <svg class="it-ridge" viewBox="0 0 1200 30" preserveAspectRatio="none"><path d="M0 30 L0 18 L120 5 L240 20 L360 3 L500 22 L640 7 L780 24 L920 5 L1060 20 L1200 9 L1200 30 Z" fill="#ffffff"/></svg>
+  </div>
+
+  <div class="pad">
+    <div class="it-sech"><span class="bar"></span>The Trail, Step by Step</div>
+
+    <div class="day" style="--dc:#23b57a;--dc2:#1c9466">
+      <div class="day-top">
+        <div class="dnum"><span class="d">Day</span><span class="n">1</span></div>
+        <div class="dhead"><h3>Arrival at Yuksom <span class="alt">· 5,670 ft</span></h3>
+          <span class="vibe">🚐 Roadtrip Start</span>
+          <div class="chips"><span class="chip"><b>Drive:</b> NJP/Bagdogra → Yuksom</span><span class="chip">~150 km</span><span class="chip">7–8 hrs</span></div>
+        </div>
+      </div>
+      <div class="dbody"><ul class="hl"><li>Scenic drive through Himalayan valleys</li><li>Registration &amp; permit verification</li><li>Team briefing &amp; equipment check</li><li>Explore the historic town of Yuksom</li></ul></div>
+      <div class="stay"><b>Stay:</b> Guest House / Homestay</div>
+    </div>
+
+    <div class="day" style="--dc:#3aa9c9;--dc2:#2b86a3">
+      <div class="day-top">
+        <div class="dnum"><span class="d">Day</span><span class="n">2</span></div>
+        <div class="dhead"><h3>Yuksom → Sachen <span class="alt">· 7,200 ft</span></h3>
+          <span class="vibe">🌲 Into the Wild</span>
+          <div class="chips"><span class="chip"><b>Distance:</b> 8 km</span><span class="chip">5–6 hrs</span></div>
+        </div>
+      </div>
+      <div class="dbody"><ul class="hl"><li>Dense forests</li><li>Suspension bridges</li><li>River crossings</li><li>First taste of Himalayan wilderness</li></ul></div>
+      <div class="stay"><b>Stay:</b> Forest Campsite</div>
+    </div>
+
+    <div class="day" style="--dc:#f2a63b;--dc2:#d9852a">
+      <div class="day-top">
+        <div class="dnum"><span class="d">Day</span><span class="n">3</span></div>
+        <div class="dhead"><h3>Sachen → Tshoka <span class="alt">· 9,700 ft</span></h3>
+          <span class="vibe">🌸 Rhododendron Trails</span>
+          <div class="chips"><span class="chip"><b>Distance:</b> 8 km</span><span class="chip">5–6 hrs</span></div>
+        </div>
+      </div>
+      <div class="dbody"><ul class="hl"><li>Rhododendron forests</li><li>Wooden bridges</li><li>Charming Tibetan settlement</li><li>Your first big mountain views</li></ul></div>
+      <div class="stay"><b>Stay:</b> Tshoka Campsite</div>
+    </div>
+
+    <div class="day" style="--dc:#ff6a3d;--dc2:#e14e22">
+      <div class="day-top">
+        <div class="dnum"><span class="d">Day</span><span class="n">4</span></div>
+        <div class="dhead"><h3>Tshoka → Dzongri <span class="alt">· 13,200 ft</span></h3>
+          <span class="vibe">🌄 The Big Climb</span>
+          <div class="chips"><span class="chip"><b>Distance:</b> 10 km</span><span class="chip">6–7 hrs</span></div>
+        </div>
+      </div>
+      <div class="dbody"><div class="lead">🔥 One of the most rewarding days</div><ul class="hl"><li>Steep alpine climb</li><li>Magnificent rhododendron forests</li><li>Panoramic Himalayan views</li><li>Thin air, big rewards</li></ul></div>
+      <div class="stay"><b>Stay:</b> Dzongri Campsite</div>
+    </div>
+
+    <div class="day it-break" style="--dc:#f2a63b;--dc2:#d9852a">
+      <div class="day-top">
+        <div class="dnum"><span class="d">Day</span><span class="n">5</span></div>
+        <div class="dhead"><h3>Dzongri Sunrise → Kokchurang → Thansing <span class="alt">· 12,900 ft</span></h3>
+          <span class="vibe">🌅 Sunrise Magic</span>
+          <div class="chips"><span class="chip"><b>Distance:</b> 10 km</span><span class="chip">6–7 hrs</span></div>
+        </div>
+      </div>
+      <div class="dbody"><div class="lead">Early-morning sunrise from Dzongri Top</div><ul class="hl"><li>Kanchenjunga, Kabru, Pandim &amp; Rathong</li><li>Descend through forests</li><li>Cross Prek Chu River</li><li>Reach the dreamy Thansing meadow</li></ul></div>
+      <div class="stay"><b>Stay:</b> Thansing</div>
+    </div>
+
+    <div class="day summit">
+      <span class="ribbon">★ Summit Day</span>
+      <div class="day-top">
+        <div class="dnum" style="--dc:#a78bff;--dc2:#7c5cff"><span class="d">Day</span><span class="n">6</span></div>
+        <div class="dhead"><h3>Thansing → Lamuney → Goechala VP-1 → Thansing <span class="alt">· 15,100 ft</span></h3>
+          <span class="vibe" style="--dc:#a78bff;--dc2:#7c5cff">⛰️ Summit Push</span>
+          <div class="chips"><span class="chip"><b>Distance:</b> 16–18 km</span><span class="chip">10–12 hrs</span><span class="chip">Start ~2:00 AM</span></div>
+        </div>
+      </div>
+      <div class="dbody"><div class="lead">The moment you came for 💙</div><ul class="hl"><li>Magical Himalayan sunrise</li><li>Mirror-still Samiti Lake</li><li>The massive Kanchenjunga face</li><li>Pandim, Kabru &amp; glaciers</li></ul></div>
+      <div class="stay"><b>Return to Thansing after breakfast · Stay:</b> Thansing</div>
+    </div>
+
+    <div class="day" style="--dc:#3aa9c9;--dc2:#2b86a3">
+      <div class="day-top">
+        <div class="dnum"><span class="d">Day</span><span class="n">7</span></div>
+        <div class="dhead"><h3>Thansing → Tshoka</h3>
+          <span class="vibe">🍃 Victory Descent</span>
+          <div class="chips"><span class="chip"><b>Distance:</b> 16 km</span><span class="chip">7–8 hrs</span></div>
+        </div>
+      </div>
+      <div class="dbody"><ul class="hl"><li>Long, scenic descent</li><li>Forest trails</li><li>Peaceful campsites</li><li>Celebrate the summit you just crushed</li></ul></div>
+      <div class="stay"><b>Stay:</b> Tshoka</div>
+    </div>
+
+    <div class="day" style="--dc:#3aa9c9;--dc2:#2b86a3">
+      <div class="day-top">
+        <div class="dnum"><span class="d">Day</span><span class="n">8</span></div>
+        <div class="dhead"><h3>Tshoka → Yuksom</h3>
+          <span class="vibe">🏁 Final Stretch</span>
+          <div class="chips"><span class="chip"><b>Distance:</b> 16 km</span><span class="chip">6–7 hrs</span></div>
+        </div>
+      </div>
+      <div class="dbody"><ul class="hl"><li>Suspension bridges</li><li>Lush forests</li><li>River valleys</li><li>Evening chill at Yuksom</li></ul></div>
+      <div class="stay"><b>Stay:</b> Hotel / Homestay</div>
+    </div>
+
+    <div class="day" style="--dc:#7b8aa3;--dc2:#5c6b82">
+      <div class="day-top">
+        <div class="dnum"><span class="d">Day</span><span class="n">9</span></div>
+        <div class="dhead"><h3>Buffer Day <span class="alt">· Weather Reserve</span></h3>
+          <span class="vibe">🧭 Bonus Day</span>
+          <div class="chips"><span class="chip">Flexible</span><span class="chip">Acclimatization</span></div>
+        </div>
+      </div>
+      <div class="dbody"><div class="lead">Held back for bad weather, landslides, snowfall or extra acclimatization</div><ul class="hl"><li>Explore Yuksom</li><li>Visit ancient monasteries</li><li>Shop for local souvenirs</li><li>Depart for NJP / Bagdogra</li></ul></div>
+    </div>
+
+    <div class="it-sech" style="margin-top:8mm"><span class="bar"></span>What's in the Pack</div>
+    <div class="grid2">
+      <div class="panel inc">
+        <h4>🎒 Everything Included</h4>
+        <div class="taglist">
+          <span class="tg"><span class="ic">✔</span>Certified Trek Leader</span>
+          <span class="tg"><span class="ic">✔</span>Local Expert Guides</span>
+          <span class="tg"><span class="ic">✔</span>Forest Permits</span>
+          <span class="tg"><span class="ic">✔</span>Camping Gear</span>
+          <span class="tg"><span class="ic">✔</span>All Meals on Trek</span>
+          <span class="tg"><span class="ic">✔</span>First Aid + Oxygen</span>
+          <span class="tg"><span class="ic">✔</span>Support Staff</span>
+        </div>
+      </div>
+      <div class="panel why">
+        <h4>🌟 Why You'll Love It</h4>
+        <div class="taglist">
+          <span class="tg"><span class="ic">▲</span>Closest view of Kanchenjunga</span>
+          <span class="tg"><span class="ic">▲</span>India's finest sunrises</span>
+          <span class="tg"><span class="ic">▲</span>Crystal-clear Samiti Lake</span>
+          <span class="tg"><span class="ic">▲</span>Rhododendron forests</span>
+          <span class="tg"><span class="ic">▲</span>Premium Himalayan camping</span>
+          <span class="tg"><span class="ic">▲</span>Endless photo ops 📸</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <div><div class="big">Ready to walk with the giants? 🏔️</div><div class="sm">Only 12 slots · Grab your Goechala spot before they're gone</div></div>
+    <div class="c">📞 9051261182<br>📷 summitsaage_ · summitsage.in</div>
+  </div>
+
+  <div class="foot">
+    <span>Summit Sage · Kolkata, India · <b>summitsage.in</b></span>
+    <span>copyright@soumikmondal723</span>
+  </div>
+</div>
+
+</body>
+</html>

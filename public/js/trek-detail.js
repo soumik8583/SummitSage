@@ -159,6 +159,7 @@
     '<div class="countdown lg" data-deadline="' + t.startDate + '" style="margin-top:8px"><div class="unit"><b>00</b><span>days</span></div><div class="unit"><b>00</b><span>hrs</span></div><div class="unit"><b>00</b><span>min</span></div><div class="unit"><b>00</b><span>sec</span></div></div></div>' +
     '<div>' + seatMeter() + '<div class="flex gap-1" style="margin-top:14px"><a href="#register" class="btn btn-primary" style="flex:1">Register now</a>' +
     '<button class="btn btn-outline" data-fav="' + t.slug + '" aria-label="Save"><i class="fa-regular fa-heart"></i></button>' +
+    '<a class="btn btn-outline" href="/brochure?trek=' + t.slug + '" target="_blank" rel="noopener" title="Download Brochure"><i class="fa-solid fa-file-pdf"></i></a>' +
     '<button class="btn btn-outline" id="dlItinerary" title="Download offline itinerary"><i class="fa-solid fa-file-arrow-down"></i></button></div></div>' +
     '</div></div></section>' +
 
@@ -192,7 +193,7 @@
     t.itinerary.map(function (d, i) {
       return '<div class="acc-item' + (i === 0 ? ' open' : '') + '"><button class="acc-head"><span class="day">' + (i + 1) + '</span><span>' + d.title + '</span><i class="fa-solid fa-chevron-down chev"></i></button><div class="acc-body"' + (i === 0 ? ' style="max-height:200px"' : '') + '><div class="acc-body-inner">' + d.desc + '</div></div></div>';
     }).join('') +
-    '</div><div class="center mt-2"><button class="btn btn-outline" id="dlItinerary2"><i class="fa-solid fa-file-arrow-down"></i> Download offline itinerary (PDF-ready)</button></div></div>' +
+    '</div><div class="center mt-2 flex gap-1" style="justify-content:center;flex-wrap:wrap"><a href="/brochure?trek=' + t.slug + '" target="_blank" rel="noopener" class="btn btn-primary"><i class="fa-solid fa-file-pdf"></i> Download Brochure</a><button class="btn btn-outline" id="dlItinerary2"><i class="fa-solid fa-file-arrow-down"></i> Download offline itinerary (PDF-ready)</button></div></div>' +
 
     // Route & Altitude
     '<div class="tab-panel" data-panel="route"><div class="split" style="align-items:start"><div><h2>Route map</h2><p class="muted mt-1">Interactive map centred on ' + t.base + '. The full GPX route is shared with confirmed trekkers.</p><div class="map-frame mt-2"><iframe src="' + mapSrc + '" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Trek route map"></iframe></div></div>' +

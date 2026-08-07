@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Goechala Trek Itinerary — Summit Sage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0a1628; --navy-700:#0e2038; --navy-600:#122744;
+    --orange:#e85d04; --orange-300:#ff7f34; --orange-soft:#fdf0e7;
+    --ink:#16233a; --slate:#4a5a73; --mist:#7b8aa3;
+    --line:#e5e9f0; --cream:#f6f8fb;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  @page{ size:A4; margin:0; }
+  html,body{ font-family:"Manrope",system-ui,sans-serif; color:var(--ink); background:#fff; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .display{ font-family:"Bricolage Grotesque","Georgia",serif; }
+  .page{ width:210mm; min-height:297mm; padding:0 0 18mm; position:relative; }
+  .pad{ padding:0 16mm; }
+  .accent{ color:var(--orange); }
+
+  /* ---- Header band ---- */
+  .hero{
+    background:radial-gradient(120% 140% at 80% -20%, rgba(232,93,4,.35), transparent 55%), linear-gradient(160deg,#0e2038,#0a1628);
+    color:#fff; padding:14mm 16mm 12mm; position:relative; overflow:hidden;
+  }
+  .hero .ridge{ position:absolute; left:0; right:0; bottom:-1px; height:34px; display:block; }
+  .brandrow{ display:flex; align-items:center; gap:12px; }
+  .brandrow .mark{ width:40px;height:40px; }
+  .brandrow .bn{ font-family:"Bricolage Grotesque",serif; font-weight:800; font-size:18px; letter-spacing:.5px; }
+  .brandrow .tag{ font-size:9.5px; letter-spacing:3px; color:var(--orange-300); text-transform:uppercase; margin-top:2px; }
+  .eyebrow{ display:inline-block; margin:14px 0 6px; font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--orange-300); font-weight:700; }
+  h1.title{ font-family:"Bricolage Grotesque",serif; font-weight:800; font-size:46px; line-height:.98; letter-spacing:-1px; }
+  h1.title small{ display:block; font-size:15px; font-weight:600; letter-spacing:.3px; color:#cdd9ec; margin-top:8px; font-family:"Manrope",sans-serif; }
+
+  .facts{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:16px; }
+  .fact{ background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.14); border-radius:12px; padding:10px 12px; }
+  .fact .l{ font-size:8.5px; letter-spacing:2px; text-transform:uppercase; color:#9fb0c9; }
+  .fact .v{ font-family:"Bricolage Grotesque",serif; font-weight:700; font-size:14px; color:#fff; margin-top:3px; }
+
+  /* ---- Day cards ---- */
+  .section-h{ font-family:"Bricolage Grotesque",serif; font-weight:800; font-size:20px; margin:14mm 0 6mm; letter-spacing:-.3px; }
+  .section-h .bar{ display:inline-block; width:26px; height:4px; background:var(--orange); border-radius:2px; vertical-align:middle; margin-right:10px; }
+  .day{ border:1px solid var(--line); border-radius:16px; padding:14px 16px 15px; margin-bottom:11px; background:#fff; break-inside:avoid; }
+  .day-top{ display:flex; align-items:flex-start; gap:13px; }
+  .badge{ flex:none; width:46px; height:46px; border-radius:12px; background:linear-gradient(150deg,var(--orange-300),var(--orange)); color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow:0 6px 14px rgba(232,93,4,.28); }
+  .badge .d{ font-size:8px; letter-spacing:1.5px; text-transform:uppercase; opacity:.9; margin-top:2px; }
+  .badge .n{ font-family:"Bricolage Grotesque",serif; font-weight:800; font-size:19px; line-height:1; }
+  .day h3{ font-family:"Bricolage Grotesque",serif; font-size:16.5px; font-weight:700; color:var(--ink); }
+  .alt{ color:var(--orange); font-weight:700; font-size:13px; }
+  .meta{ display:flex; flex-wrap:wrap; gap:7px; margin:8px 0 2px; }
+  .chip{ font-size:10.5px; font-weight:600; color:var(--slate); background:var(--cream); border:1px solid var(--line); border-radius:999px; padding:4px 11px; }
+  .chip b{ color:var(--ink); }
+  .day .body{ padding-left:59px; margin-top:6px; }
+  .lead{ font-size:11.5px; color:var(--orange); font-weight:700; margin-bottom:5px; }
+  ul.hl{ list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:3px 18px; }
+  ul.hl li{ font-size:11px; color:var(--slate); padding-left:15px; position:relative; line-height:1.5; }
+  ul.hl li::before{ content:""; position:absolute; left:0; top:7px; width:5px; height:5px; border-radius:50%; background:var(--orange); }
+  .stay{ margin-top:9px; font-size:10.5px; color:var(--mist); }
+  .stay b{ color:var(--slate); }
+
+  /* ---- Includes / Why ---- */
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .panel{ border:1px solid var(--line); border-radius:16px; padding:16px 18px; break-inside:avoid; }
+  .panel.inc{ background:var(--cream); }
+  .panel.why{ background:linear-gradient(160deg,#0e2038,#0a1628); color:#fff; border-color:transparent; }
+  .panel h4{ font-family:"Bricolage Grotesque",serif; font-size:15px; font-weight:800; margin-bottom:11px; }
+  .panel.why h4{ color:#fff; }
+  .list{ list-style:none; display:grid; gap:7px; }
+  .list li{ font-size:11.5px; line-height:1.4; padding-left:24px; position:relative; color:var(--slate); }
+  .panel.why .list li{ color:#d5deec; }
+  .list li .ic{ position:absolute; left:0; top:0; color:var(--orange); font-weight:800; }
+  .panel.why .list li .ic{ color:var(--orange-300); }
+
+  /* ---- Footer ---- */
+  .foot{ margin:12mm 16mm 0; border-top:1px solid var(--line); padding-top:9px; display:flex; justify-content:space-between; align-items:center; font-size:9.5px; color:var(--mist); }
+  .foot b{ color:var(--slate); }
+  .cta{ margin:9mm 16mm 0; background:linear-gradient(135deg,var(--orange-300),var(--orange)); color:#fff; border-radius:16px; padding:15px 20px; display:flex; justify-content:space-between; align-items:center; break-inside:avoid; }
+  .cta .big{ font-family:"Bricolage Grotesque",serif; font-weight:800; font-size:17px; }
+  .cta .sm{ font-size:11px; opacity:.95; margin-top:2px; }
+  .cta .contact{ text-align:right; font-size:11.5px; font-weight:700; line-height:1.6; }
+</style>
+</head>
+<body>
+<div class="page">
+  <!-- HEADER -->
+  <div class="hero">
+    <div class="brandrow">
+      <svg class="mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect width="48" height="48" rx="13" fill="#0A1628"/><path d="M8 34L19 15l6 9 3-5 12 15H8z" fill="#E85D04"/><path d="M19 15l6 9 3-5 3.6 4.5L27 24l-4 3-4-6-3.5 6H10L19 15z" fill="#fff" opacity=".92"/><circle cx="35" cy="13" r="3.2" fill="#fff"/></svg>
+      <div>
+        <div class="bn">SUMMIT<span class="accent">SAGE</span></div>
+        <div class="tag">Explore • Dream • Discover</div>
+      </div>
+    </div>
+    <span class="eyebrow">Himalayan Expedition · West Sikkim</span>
+    <h1 class="title">Goechala Trek<small>Complete Itinerary · 8 Days + 1 Buffer Day</small></h1>
+    <div class="facts">
+      <div class="fact"><div class="l">Location</div><div class="v">West Sikkim</div></div>
+      <div class="fact"><div class="l">Max Altitude</div><div class="v">15,100 ft</div></div>
+      <div class="fact"><div class="l">Difficulty</div><div class="v">Moderate–Difficult</div></div>
+      <div class="fact"><div class="l">Distance</div><div class="v">~90 km RT</div></div>
+    </div>
+    <svg class="ridge" viewBox="0 0 1200 34" preserveAspectRatio="none"><path d="M0 34 L0 20 L120 6 L240 22 L360 4 L500 24 L640 8 L780 26 L920 6 L1060 22 L1200 10 L1200 34 Z" fill="#ffffff"/></svg>
+  </div>
+
+  <div class="pad">
+    <div class="section-h"><span class="bar"></span>Day-by-Day Journey</div>
+
+    <div class="day">
+      <div class="day-top">
+        <div class="badge"><span class="d">Day</span><span class="n">1</span></div>
+        <div><h3>Arrival at Yuksom <span class="alt">· 5,670 ft</span></h3>
+        <div class="meta"><span class="chip"><b>Drive:</b> NJP/Bagdogra → Yuksom</span><span class="chip">~150 km</span><span class="chip">7–8 hrs</span></div></div>
+      </div>
+      <div class="body">
+        <ul class="hl"><li>Scenic drive through Himalayan valleys</li><li>Registration &amp; permit verification</li><li>Team briefing and equipment check</li><li>Explore the historic town of Yuksom</li></ul>
+        <div class="stay"><b>Stay:</b> Guest House / Homestay</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-top">
+        <div class="badge"><span class="d">Day</span><span class="n">2</span></div>
+        <div><h3>Yuksom → Sachen <span class="alt">· 7,200 ft</span></h3>
+        <div class="meta"><span class="chip"><b>Distance:</b> 8 km</span><span class="chip">5–6 hrs</span></div></div>
+      </div>
+      <div class="body">
+        <ul class="hl"><li>Dense forests</li><li>Suspension bridges</li><li>River crossings</li><li>First glimpse of Himalayan wilderness</li></ul>
+        <div class="stay"><b>Stay:</b> Forest Campsite</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-top">
+        <div class="badge"><span class="d">Day</span><span class="n">3</span></div>
+        <div><h3>Sachen → Tshoka <span class="alt">· 9,700 ft</span></h3>
+        <div class="meta"><span class="chip"><b>Distance:</b> 8 km</span><span class="chip">5–6 hrs</span></div></div>
+      </div>
+      <div class="body">
+        <ul class="hl"><li>Rhododendron forests</li><li>Wooden bridges</li><li>Beautiful Tibetan settlement</li><li>First mountain views</li></ul>
+        <div class="stay"><b>Stay:</b> Tshoka Campsite</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-top">
+        <div class="badge"><span class="d">Day</span><span class="n">4</span></div>
+        <div><h3>Tshoka → Dzongri <span class="alt">· 13,200 ft</span></h3>
+        <div class="meta"><span class="chip"><b>Distance:</b> 10 km</span><span class="chip">6–7 hrs</span></div></div>
+      </div>
+      <div class="body">
+        <div class="lead">One of the most rewarding days</div>
+        <ul class="hl"><li>Steep alpine climb</li><li>Magnificent rhododendron forests</li><li>Panoramic Himalayan views</li></ul>
+        <div class="stay"><b>Stay:</b> Dzongri Campsite</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-top">
+        <div class="badge"><span class="d">Day</span><span class="n">5</span></div>
+        <div><h3>Dzongri Top Sunrise → Kokchurang → Thansing <span class="alt">· 12,900 ft</span></h3>
+        <div class="meta"><span class="chip"><b>Distance:</b> 10 km</span><span class="chip">6–7 hrs</span></div></div>
+      </div>
+      <div class="body">
+        <div class="lead">Early morning sunrise from Dzongri Top</div>
+        <ul class="hl"><li>Views of Kanchenjunga, Kabru, Pandim &amp; Rathong</li><li>Descend through forests</li><li>Cross Prek Chu River</li><li>Reach beautiful Thansing campsite</li></ul>
+        <div class="stay"><b>Stay:</b> Thansing</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-top">
+        <div class="badge"><span class="d">Day</span><span class="n">6</span></div>
+        <div><h3>Thansing → Lamuney → Goechala View Point 1 → Thansing <span class="alt">· 15,100 ft</span></h3>
+        <div class="meta"><span class="chip"><b>Distance:</b> 16–18 km</span><span class="chip">10–12 hrs</span><span class="chip">Start ~2:00 AM</span></div></div>
+      </div>
+      <div class="body">
+        <div class="lead">★ The trek highlight — summit day</div>
+        <ul class="hl"><li>Magical Himalayan sunrise</li><li>Samiti Lake</li><li>Massive Kanchenjunga face</li><li>Pandim, Kabru &amp; Himalayan glaciers</li></ul>
+        <div class="stay"><b>Return to Thansing after breakfast · Stay:</b> Thansing</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-top">
+        <div class="badge"><span class="d">Day</span><span class="n">7</span></div>
+        <div><h3>Thansing → Tshoka</h3>
+        <div class="meta"><span class="chip"><b>Distance:</b> 16 km</span><span class="chip">7–8 hrs</span></div></div>
+      </div>
+      <div class="body">
+        <ul class="hl"><li>Long scenic descent</li><li>Forest trails</li><li>Peaceful campsites</li><li>Celebrate completing the summit journey</li></ul>
+        <div class="stay"><b>Stay:</b> Tshoka</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-top">
+        <div class="badge"><span class="d">Day</span><span class="n">8</span></div>
+        <div><h3>Tshoka → Yuksom</h3>
+        <div class="meta"><span class="chip"><b>Distance:</b> 16 km</span><span class="chip">6–7 hrs</span></div></div>
+      </div>
+      <div class="body">
+        <ul class="hl"><li>Suspension bridges</li><li>Lush forests</li><li>River valleys</li><li>Evening at Yuksom</li></ul>
+        <div class="stay"><b>Stay:</b> Hotel / Homestay</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-top">
+        <div class="badge" style="background:linear-gradient(150deg,#5f6b78,#3a4655)"><span class="d">Day</span><span class="n">9</span></div>
+        <div><h3>Buffer Day <span class="alt" style="color:var(--slate)">· Weather Reserve</span></h3>
+        <div class="meta"><span class="chip">Flexible / acclimatization</span></div></div>
+      </div>
+      <div class="body">
+        <div class="lead" style="color:var(--slate)">Reserved for bad weather, landslides, heavy snowfall or extra acclimatization</div>
+        <ul class="hl"><li>Explore Yuksom</li><li>Visit monasteries</li><li>Shop for local souvenirs</li><li>Depart for NJP / Bagdogra</li></ul>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel inc">
+        <h4>🎒 The Trek Includes</h4>
+        <ul class="list">
+          <li><span class="ic">✔</span>Certified Trek Leader</li>
+          <li><span class="ic">✔</span>Experienced Local Guides</li>
+          <li><span class="ic">✔</span>Forest Permits</li>
+          <li><span class="ic">✔</span>Camping Equipment</li>
+          <li><span class="ic">✔</span>All Meals During Trek</li>
+          <li><span class="ic">✔</span>First Aid &amp; Oxygen Cylinder</li>
+          <li><span class="ic">✔</span>Experienced Support Staff</li>
+        </ul>
+      </div>
+      <div class="panel why">
+        <h4>🌟 Why Trek Goechala?</h4>
+        <ul class="list">
+          <li><span class="ic">▲</span>Closest trekking view of Kanchenjunga</li>
+          <li><span class="ic">▲</span>One of India's finest Himalayan sunrises</li>
+          <li><span class="ic">▲</span>Crystal-clear Samiti Lake</li>
+          <li><span class="ic">▲</span>Rhododendron forests in bloom</li>
+          <li><span class="ic">▲</span>Premium Himalayan camping experience</li>
+          <li><span class="ic">▲</span>Endless photography opportunities</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <div><div class="big">Ready to walk with the giants?</div><div class="sm">Limited slots · Book your Goechala expedition today</div></div>
+    <div class="contact">📞 9051261182<br>📷 summitsaage_ · summitsage.in</div>
+  </div>
+
+  <div class="foot">
+    <span>Summit Sage · Kolkata, India · <b>summitsage.in</b></span>
+    <span>copyright@soumikmondal723</span>
+  </div>
+</div>
+</body>
+</html>

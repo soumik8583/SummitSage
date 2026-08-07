@@ -88,7 +88,9 @@
       '<div class="flex gap-1" style="margin-top:16px">' +
       '<a href="/trek-detail?trek=' + t.slug + '" class="btn btn-primary btn-sm" style="flex:1">View trek</a>' +
       '<button class="btn btn-outline btn-sm" data-compare="' + t.slug + '" title="Add to compare"><i class="fa-solid fa-code-compare"></i></button>' +
-      '</div></div></div></article>'
+      '</div>' +
+      '<a href="/brochure?trek=' + t.slug + '" target="_blank" rel="noopener" class="brochure-link"><i class="fa-solid fa-file-arrow-down"></i> Download Brochure</a>' +
+      '</div></div></article>'
     );
   };
 

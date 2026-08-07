@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trek Brochure — Summit Sage</title>
+  <meta name="robots" content="noindex, follow">
+  <meta name="theme-color" content="#0a1628">
+  <link rel="icon" href="/icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Manrope:wght@400..800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    @page{ size:A4; margin:0; }
+    html,body{ font-family:"Manrope",system-ui,sans-serif; background:#e9edf3; color:#16233a; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .wrap{ width:210mm; margin:0 auto; background:#fff; box-shadow:0 20px 60px rgba(10,22,40,.18); }
+    .display{ font-family:"Bricolage Grotesque","Georgia",serif; }
+    a{ color:inherit; }
+
+    /* ---------- COVER ---------- */
+    .cover{ position:relative; min-height:297mm; background:#0a1628; color:#fff; overflow:hidden; display:flex; flex-direction:column; }
+    .cover-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; }
+    .cover-shade{ position:absolute; inset:0; z-index:1; background:
+        radial-gradient(80% 45% at 80% 8%, rgba(255,140,50,.35), transparent 60%),
+        linear-gradient(180deg, rgba(6,12,22,.35) 0%, rgba(6,12,22,.5) 42%, rgba(6,12,22,.82) 78%, rgba(6,12,22,.96) 100%); }
+    .cover-in{ position:relative; z-index:2; flex:1; display:flex; flex-direction:column; padding:16mm 15mm 14mm; }
+    .brandrow{ display:flex; align-items:center; gap:11px; font-family:"Bricolage Grotesque"; }
+    .brandrow span{ font-weight:800; letter-spacing:1px; font-size:19px; }
+    .brandrow span b{ color:#ff9d3c; font-weight:800; }
+    .brandrow i{ font-style:normal; font-size:9px; letter-spacing:3px; text-transform:uppercase; color:#ffb877; margin-left:auto; }
+    .cover-main{ margin-top:auto; }
+    .theme-pill{ display:inline-block; font-size:11px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:#0a1628; background:linear-gradient(180deg,#ffcf7a,#ff9d3c); padding:6px 14px; border-radius:999px; }
+    .cover-title{ font-family:"Bricolage Grotesque"; font-weight:800; font-size:62px; line-height:.98; letter-spacing:-1.5px; margin:14px 0 0; text-shadow:0 6px 30px rgba(0,0,0,.55); }
+    .cover-tag{ font-family:"Caveat",cursive; font-weight:700; font-size:34px; color:#ffce8a; margin-top:6px; text-shadow:0 3px 14px rgba(0,0,0,.5); }
+    .cover-facts{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:22px; }
+    .cover-facts > div{ background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.16); border-radius:13px; padding:11px 12px; backdrop-filter:blur(4px); }
+    .cover-facts b{ display:block; font-family:"Bricolage Grotesque"; font-weight:800; font-size:16px; }
+    .cover-facts span{ font-size:8.5px; letter-spacing:1.5px; text-transform:uppercase; color:#bccadd; margin-top:3px; display:block; }
+    .cover-foot{ display:flex; justify-content:space-between; align-items:flex-end; margin-top:22px; padding-top:16px; border-top:1px solid rgba(255,255,255,.18); }
+    .cover-foot .dates{ font-weight:700; font-size:14px; display:flex; align-items:center; gap:8px; }
+    .cover-foot .dates .cal{ width:9px;height:9px;border:2px solid #ff9d3c;border-radius:2px;display:inline-block; }
+    .cover-foot .price{ font-family:"Bricolage Grotesque"; font-weight:800; font-size:30px; color:#ff9d3c; text-align:right; }
+    .cover-foot .price s{ color:#9fb0c9; font-size:15px; font-weight:600; }
+    .cover-foot .price span{ display:block; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:#bccadd; font-weight:700; }
+
+    /* ---------- DETAILS ---------- */
+    .details{ padding:14mm 15mm 12mm; break-before:page; }
+    .hook{ font-size:13.5px; line-height:1.6; color:#3a4a63; border-left:4px solid #ff9d3c; padding:4px 0 4px 14px; margin-bottom:11mm; }
+    .details h2{ font-family:"Bricolage Grotesque"; font-weight:800; font-size:20px; margin:0 0 6mm; letter-spacing:-.2px; }
+    .details h2 .bar{ display:inline-block; width:24px;height:4px;background:linear-gradient(90deg,#ff9d3c,#ff5c1a);border-radius:2px;vertical-align:middle;margin-right:9px; }
+    .glance{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:11mm; }
+    .g{ border:1px solid #e7ebf2; border-radius:13px; padding:12px 14px; background:#f7f9fc; }
+    .g .gv{ font-family:"Bricolage Grotesque"; font-weight:800; font-size:16px; color:#16233a; }
+    .g .gl{ font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:#8494ac; margin-top:3px; }
+
+    .why{ display:grid; grid-template-columns:1fr 1fr; gap:11px; margin-bottom:11mm; }
+    .wc{ display:flex; gap:11px; border:1px solid #e7ebf2; border-radius:14px; padding:13px 14px; break-inside:avoid; }
+    .wc .wi{ font-size:20px; flex:none; }
+    .wc b{ font-family:"Bricolage Grotesque"; font-size:13.5px; color:#16233a; }
+    .wc p{ font-size:10.5px; color:#54637d; line-height:1.5; margin-top:3px; }
+
+    .two{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:10mm; }
+    .panel{ border-radius:16px; padding:15px 16px; break-inside:avoid; }
+    .panel h3{ font-family:"Bricolage Grotesque"; font-size:14px; font-weight:800; margin-bottom:10px; }
+    .panel.diff{ background:linear-gradient(160deg,#0e2038,#0a1628); color:#fff; }
+    .panel.incl{ background:#f3f6fb; border:1px solid #e7ebf2; }
+    .diff-list,.incl-list{ list-style:none; display:grid; gap:7px; }
+    .diff-list li{ font-size:11px; color:#dbe4f1; padding-left:20px; position:relative; line-height:1.4; }
+    .diff-list .tick{ position:absolute; left:0; color:#ff9d3c; }
+    .incl-list li{ font-size:11px; color:#48587b; padding-left:20px; position:relative; line-height:1.4; }
+    .incl-list .chk{ position:absolute; left:0; color:#23b57a; font-weight:800; }
+
+    .urgency{ background:#fff4ec; border:1px solid #ffd9bf; color:#c2541a; border-radius:12px; padding:11px 15px; font-size:11.5px; margin-bottom:9mm; }
+    .urgency b{ color:#a83c0a; }
+    .cta{ background:linear-gradient(135deg,#ff9d3c,#ff5c1a); color:#fff; border-radius:18px; padding:16px 20px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 14px 30px rgba(255,110,40,.28); break-inside:avoid; }
+    .cta-big{ font-family:"Bricolage Grotesque"; font-weight:800; font-size:17px; }
+    .cta-sm{ font-size:11px; opacity:.96; margin-top:2px; }
+    .cta-c{ text-align:right; font-size:12px; font-weight:800; line-height:1.7; }
+    .brofoot{ margin-top:8mm; border-top:1px solid #e7ebf2; padding-top:8px; display:flex; justify-content:space-between; font-size:9px; color:#8494ac; }
+    .brofoot b{ color:#48587b; }
+
+    .msg{ padding:60px 24px; text-align:center; color:#54637d; }
+    .msg a{ color:#e85d04; font-weight:700; }
+
+    /* ---------- Action bar (screen only) ---------- */
+    .actionbar{ position:fixed; left:50%; bottom:22px; transform:translateX(-50%); z-index:50; display:flex; gap:10px;
+      background:rgba(10,22,40,.92); backdrop-filter:blur(10px); padding:10px 12px; border-radius:999px; box-shadow:0 16px 40px rgba(3,9,20,.4); }
+    .actionbar button, .actionbar a{ font-family:"Manrope"; font-weight:700; font-size:13px; border:0; cursor:pointer; border-radius:999px; padding:11px 20px; display:inline-flex; align-items:center; gap:8px; text-decoration:none; }
+    .ab-dl{ background:linear-gradient(135deg,#ff9d3c,#ff5c1a); color:#fff; }
+    .ab-back{ background:rgba(255,255,255,.1); color:#fff; border:1px solid rgba(255,255,255,.2)!important; }
+
+    @media print{
+      html,body{ background:#fff; }
+      .wrap{ width:auto; box-shadow:none; }
+      .actionbar{ display:none !important; }
+      .cover{ height:297mm; min-height:0; break-after:page; }
+      .details{ padding:12mm 14mm; }
+    }
+    @media (max-width:820px){
+      .wrap{ width:100%; }
+      .cover-title{ font-size:44px; }
+      .cover-facts{ grid-template-columns:repeat(2,1fr); }
+      .why,.two,.glance{ grid-template-columns:1fr; }
+      .glance{ grid-template-columns:1fr 1fr; }
+    }
+  </style>
+  <script defer src="/js/treks-data.js"></script>
+  <script defer src="/js/brochure.js"></script>
+</head>
+<body>
+  <div class="wrap"><div id="broMount"><div class="msg">Loading brochure…</div></div></div>
+
+  <div class="actionbar">
+    <button class="ab-dl" id="dlBtn"><i>⬇</i> Download PDF</button>
+    <a class="ab-back" id="backLink" href="/treks">← Back to site</a>
+  </div>
+
+  <script>
+    (function () {
+      function qp(k) { return new URLSearchParams(location.search).get(k); }
+      var slug = qp('trek') || qp('slug') || '';
+      var mount = document.getElementById('broMount');
+
+      document.getElementById('dlBtn').addEventListener('click', function () { window.print(); });
+
+      function start() {
+        var render = function () {
+          var t = window.SS && SS.getTrek ? SS.getTrek(slug) : null;
+          if (t) {
+            SS.renderBrochure(t, mount);
+            var back = document.getElementById('backLink');
+            if (back) back.href = '/trek-detail?trek=' + encodeURIComponent(slug);
+          } else {
+            mount.innerHTML = '<div class="msg">Sorry, we couldn\u2019t find that trek.<br><br><a href="/treks">Browse all treks →</a></div>';
+          }
+        };
+        if (window.SS && SS.loadDbTreks) SS.loadDbTreks().then(render);
+        else render();
+      }
+      if (document.readyState !== 'loading') start();
+      else document.addEventListener('DOMContentLoaded', start);
+    })();
+  </script>
+</body>
+</html>
