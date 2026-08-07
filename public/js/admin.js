@@ -80,29 +80,19 @@
       .replace(/"/g, '&quot;');
   }
 
-  // Derive up-to-two-letter initials from a name (or email) for the avatar.
-  function initialsOf(name, email) {
-    var src = (name && String(name).trim()) || (email && String(email).trim()) || '';
-    if (!src) return '?';
-    var parts = src.split(/\s+/).filter(Boolean);
-    if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-    return src.slice(0, 2).toUpperCase();
-  }
-
   // Fill the topbar avatar + hover dropdown with the signed-in admin's details.
   function populateProfileWidget(admin, isSuper) {
     if (!admin) return;
-    var initialsEl = document.getElementById('adminAvatarInitials');
-    if (initialsEl) initialsEl.textContent = initialsOf(admin.name, admin.email);
+    var iconEl = document.getElementById('adminAvatarIcon');
     var avatarImg = document.getElementById('adminAvatarImg');
     if (avatarImg) {
       if (admin.avatar) {
         avatarImg.src = admin.avatar;
         avatarImg.hidden = false;
-        if (initialsEl) initialsEl.style.display = 'none';
+        if (iconEl) iconEl.style.display = 'none';
       } else {
         avatarImg.hidden = true;
-        if (initialsEl) initialsEl.style.display = '';
+        if (iconEl) iconEl.style.display = '';
       }
     }
     var dropName = document.getElementById('adminDropName');

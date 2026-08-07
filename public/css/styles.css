@@ -428,6 +428,12 @@ p {
   height: 100%;
   object-fit: cover;
 }
+.admin-avatar-icon {
+  width: 22px;
+  height: 22px;
+  color: #fff;
+  display: block;
+}
 .admin-profile-drop {
   position: absolute;
   top: calc(100% + 10px);
