@@ -87,6 +87,12 @@ video {
   display: block;
   max-width: 100%;
 }
+/* Keep the HTML `hidden` attribute working — the `img { display:block }`
+   reset above (author origin) otherwise overrides the UA rule and would
+   reveal hidden/broken images (e.g. the empty avatar <img>). */
+[hidden] {
+  display: none !important;
+}
 a {
   color: inherit;
   text-decoration: none;
