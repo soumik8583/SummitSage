@@ -13,7 +13,7 @@
  * Bump CACHE_VERSION to invalidate old caches on the next deploy.
  */
 
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const CACHE = 'summitsage-' + CACHE_VERSION;
 
 const PRECACHE = [
